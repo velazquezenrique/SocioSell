@@ -161,7 +161,7 @@
 
 # def main():
 #     # Your Google API key
-#     GOOGLE_API_KEY = " AIzaSyBCHP3hO3pLjqeSoyibkzn3C7tiquvMaCA"
+#     GOOGLE_API_KEY = " Enter Your Api Key"
     
 #     # Initialize processor
 #     processor = VideoProcessor(GOOGLE_API_KEY)
