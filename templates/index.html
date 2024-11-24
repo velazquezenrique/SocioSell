@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .tab-active {
+            background-color: #3B82F6;
+            color: white;
+        }
+        
+        .upload-zone {
+            border: 2px dashed #3B82F6;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-zone:hover {
+            border-color: #2563EB;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-white shadow-md fixed w-full z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex items-center">
+                        <i class="fas fa-cube text-blue-600 text-2xl"></i>
+                        <span class="ml-2 text-xl font-semibold">ProductAI</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <button onclick="switchTab('upload')" id="uploadTab" class="px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload
+                        </button>
+                        <button onclick="switchTab('search')" id="searchTab" class="px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-search mr-2"></i>Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="pt-20 pb-8 px-4">
+            <div class="max-w-7xl mx-auto">
+                <!-- Upload Section -->
+                <div id="uploadSection" class="space-y-8">
+                    <div class="text-center">
+                        <h1 class="text-3xl font-bold mb-4">Generate Product Listings</h1>
+                        <p class="text-gray-600">Transform your social media content into detailed product listings</p>
+                    </div>
+
+                    <!-- Upload Form -->
+                    <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
+                        <div class="upload-zone p-8 text-center rounded-lg mb-6" id="dropZone">
+                            <div id="uploadPrompt">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-4"></i>
+                                <p class="text-gray-600 mb-2">Drag and drop your image here, or</p>
+                                <label class="bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-700">
+                                    Choose File
+                                    <input type="file" class="hidden" id="fileInput" accept="image/*">
+                                </label>
+                            </div>
+                            <img id="previewImage" class="hidden max-h-48 mx-auto" />
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Product Title</label>
+                                <input type="text" id="productTitle" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Caption (optional)</label>
+                                <textarea id="caption" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                            </div>
+                            <button onclick="generateListing()" id="generateBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                                Generate Listing
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Generated Listing -->
+                    <div id="generatedListing" class="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-6 hidden">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Search Section -->
+                <div id="searchSection" class="hidden space-y-8">
+                    <div class="max-w-2xl mx-auto">
+                        <div class="relative">
+                            <input type="text" id="searchInput" 
+                                   class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Search products...">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- Search Results -->
+                    <div id="searchResults" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Results will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Notification -->
+        <div id="notification" class="fixed bottom-4 right-4 hidden notification">
+            <div class="bg-white rounded-lg shadow-lg p-4 flex items-center space-x-3">
+                <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                <p id="notificationText" class="text-gray-700"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+const PRODUCT_ID_MAPPING = {
+    'headphones': 'elec_123',
+    'shoes': 'fash_123',
+    'lamp': 'decor_123',
+    'lipstick': 'beauty_123',
+    'basketball': 'sports_123'
+};
+
+
+
+const PRODUCT_IMAGES = {
+    'electronics': {
+        'elec_123': '/static/electronics/sony_headphones.jpg',
+        'elec_124': '/static/electronics/smart_watch.webp',
+        'elec_125': '/static/electronics/apple_ipad.jpg'
+    },
+    'fashion': {
+        'fash_123': '/static/fashion/nike_shoes.jpg',
+        'fash_124': '/static/fashion/oversized_zara_blazer.jpg',
+        'fash_125': '/static/fashion/adidas_shoes.webp'
+    },
+    'home_decor': {
+        'decor_123': '/static/home_decor/lamp.jpeg',
+        'decor_124': '/static/home_decor/rung.jpeg',
+        'decor_125': '/static/home_decor/mirror.jpg'
+    },
+    'beauty': {
+        'beauty_123': '/static/beauty/lipstick.jpg',
+        'beauty_124': '/static/beauty/mascara.avif',
+        'beauty_125': '/static/beauty/foundation.jpg'
+    },
+    'sports': {
+        'sports_123': '/static/sports/basketball.jpeg',
+        'sports_124': '/static/sports/cleats.jpeg',
+        'sports_125': '/static/sports/racket.webp'
+    }
+};
+
+// Helper function to get product image
+function getProductImage(productId) {
+    for (const category of Object.values(PRODUCT_IMAGES)) {
+        if (productId in category) {
+            return category[productId];
+        }
+    }
+    return '/static/placeholder.png';
+   
+}
+
+
+        // Global state
+        let currentTab = 'upload';
+        let uploadedFile = null;
+
+        // Event Listeners
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        document.getElementById('dropZone').addEventListener('dragover', handleDragOver);
+        document.getElementById('dropZone').addEventListener('drop', handleDrop);
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') searchProducts();
+        });
+
+        // Tab Switching
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('uploadSection').classList.toggle('hidden', tab !== 'upload');
+            document.getElementById('searchSection').classList.toggle('hidden', tab !== 'search');
+            document.getElementById('uploadTab').classList.toggle('tab-active', tab === 'upload');
+            document.getElementById('searchTab').classList.toggle('tab-active', tab === 'search');
+        }
+
+        // File Handling
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) displayPreview(file);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('border-blue-600');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('border-blue-600');
+            const file = e.dataTransfer.files[0];
+            if (file) displayPreview(file);
+        }
+
+        function displayPreview(file) {
+            uploadedFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('previewImage');
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                document.getElementById('uploadPrompt').classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Generate Listing
+        // Update the generateListing function
+async function generateListing() {
+    const title = document.getElementById('productTitle').value.toLowerCase();
+    if (!uploadedFile || !title) {
+        showNotification('Please provide both image and title', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner spinner mr-2"></i>Generating...';
+
+    const formData = new FormData();
+    formData.append('file', uploadedFile);
+    formData.append('title', title);
+    formData.append('caption', document.getElementById('caption').value);
+
+    try {
+        const response = await fetch('/upload/', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        if (data.status === 'success') {
+            // Map the product_id to the correct ID for comparison
+            let productId = data.listing.product_id;
+            
+            // Determine the correct product ID based on keywords
+            for (const [keyword, id] of Object.entries(PRODUCT_ID_MAPPING)) {
+                if (title.includes(keyword)) {
+                    productId = id;
+                    break;
+                }
+            }
+            
+            // Update the listing with the correct product ID
+            data.listing.product_id = productId;
+            
+            // Display the listing
+            displayGeneratedListing(data.listing);
+            showNotification('Listing generated successfully!');
+            
+            // Automatically fetch comparisons
+            await getComparisons(productId);
+        }
+    } catch (error) {
+        showNotification('Error generating listing', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Generate Listing';
+    }
+}
+        async function displayGeneratedListing(listing) {
+    const container = document.getElementById('generatedListing');
+    container.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <img src="${document.getElementById('previewImage').src}" class="w-full rounded-lg mb-4 object-cover h-[300px]">
+                <h2 class="text-2xl font-bold mb-2">${listing.title}</h2>
+                <p class="text-gray-600 mb-4">${listing.description}</p>
+                <div class="text-2xl font-bold text-blue-600 mb-4">${listing.price}</div>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Features</h3>
+                    <div class="space-y-3">
+                        ${listing.features.map(feature => `
+                            <div class="flex items-center space-x-3">
+                                <div class="flex-shrink-0">
+                                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-gray-700">${feature}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="flex space-x-4 pt-4">
+                    <button onclick="getComparisons('${listing.product_id}')" 
+                            class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300">
+                        <i class="fas fa-sync-alt mr-2"></i>Compare
+                    </button>
+                    <button class="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-all duration-300">
+                        <i class="fas fa-share-alt mr-2"></i>Share
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="comparisonsSection" class="mt-8 hidden">
+            <h3 class="text-xl font-semibold mb-4">Compare with Similar Products</h3>
+            <div id="comparisonsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
+    `;
+    container.classList.remove('hidden');
+}
+        // Search Products
+        async function searchProducts() {
+            const query = document.getElementById('searchInput').value;
+            if (!query) return;
+
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '<div class="col-span-3 text-center"><i class="fas fa-spinner spinner text-blue-600 text-3xl"></i></div>';
+
+            try {
+                const response = await fetch(`/search/${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.status === 'success' && data.products.length > 0) {
+                    // In your searchProducts function, update the product card HTML:
+                    resultsContainer.innerHTML = data.products.map(product => `
+                        <div class="product-card bg-white rounded-xl shadow-md p-4 cursor-pointer"
+                            onclick="viewProduct('${product.id}')">
+                            <img src="${getProductImage(product.id)}" 
+                                alt="${product.title}"
+                                class="w-full h-48 object-cover rounded-lg mb-4">
+                            <h3 class="font-semibold mb-2">${product.title}</h3>
+                            <p class="text-sm text-gray-500 mb-2">${product.category}</p>
+                            <p class="text-blue-600 font-semibold">${product.price_range}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsContainer.innerHTML = `
+                        <div class="col-span-3 text-center text-gray-500">
+                            <i class="fas fa-search text-4xl mb-2"></i>
+                            <p>No products found</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                showNotification('Error searching products', 'error');
+            }
+        }
+
+
+        async function getComparisons(productId) {
+    try {
+        // Show loading state in comparisons section
+        const comparisonsSection = document.getElementById('comparisonsSection');
+        comparisonsSection.classList.remove('hidden');
+        const comparisonsGrid = document.getElementById('comparisonsGrid');
+        comparisonsGrid.innerHTML = '<div class="col-span-3 text-center"><i class="fas fa-spinner spinner text-blue-600 text-3xl"></i></div>';
+
+        // Fetch comparisons from API
+        const response = await fetch(`/compare/${productId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.status === 'success' && data.comparable_products && data.comparable_products.length > 0) {
+            // Create comparison table for better comparison
+            comparisonsGrid.innerHTML = `
+                <div class="col-span-3 overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price Range</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Features</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            ${data.comparable_products.map(product => `
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="${getProductImage(product.id)}" 
+                                                alt="${product.name}"
+                                                class="w-12 h-12 rounded-lg object-cover">
+                                            <div class="font-medium text-gray-900">${product.name}</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-blue-600 font-medium">${product.price_range}</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <ul class="list-none space-y-1">
+                                            ${product.features.map(feature => `
+                                                <li class="flex items-center space-x-2">
+                                                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                    <span class="text-sm text-gray-600">${feature}</span>
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <button onclick="viewProduct('${product.id}')" 
+                                                class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-all duration-300">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } else {
+            comparisonsGrid.innerHTML = `
+                <div class="col-span-3 text-center py-8">
+                    <i class="fas fa-info-circle text-gray-400 text-3xl mb-2"></i>
+                    <p class="text-gray-500">No comparable products found</p>
+                </div>
+            `;
+        }
+
+        // Smooth scroll to comparisons
+        comparisonsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error loading comparisons', 'error');
+        const comparisonsGrid = document.getElementById('comparisonsGrid');
+        comparisonsGrid.innerHTML = `
+            <div class="col-span-3 text-center py-8">
+                <i class="fas fa-exclamation-circle text-red-400 text-3xl mb-2"></i>
+                <p class="text-red-500">Failed to load comparisons</p>
+            </div>
+        `;
+    }
+}
+
+// Add view product details functionality
+async function viewProduct(productId) {
+    try {
+        const response = await fetch(`/listings/${productId}`);
+        const data = await response.json();
+        
+        if (data.status === 'success' && data.listings.length > 0) {
+            displayGeneratedListing(data.listings[0]);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    } catch (error) {
+        showNotification('Error loading product details', 'error');
+    }
+}
+
+        // Utility Functions
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notificationText');
+            text.textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => notification.classList.add('hidden'), 3000);
+        }
+
+        // Initialize
+        switchTab('upload');
+    </script>
+</body>
+</html>
