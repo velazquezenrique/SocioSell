@@ -25,6 +25,14 @@
 
 ---
 
+## 📺 Project Preview
+
+Check out our project demo video here:
+
+[🎥 Watch Demo](https://github.com/Varsha-1605/SocioSell/blob/main/static/folder/Untitled%20video%20-%20Made%20with%20Clipchamp.mp4)
+
+---
+
 ## 🌟 Features
 
 <table>
