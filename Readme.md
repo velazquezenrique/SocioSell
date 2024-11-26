@@ -1,257 +1,235 @@
-<h1 align="center">🛍️ Social Media to Amazon Listings Converter 🚀</h1>
+<div align="center">
+  <img src="https://img.shields.io/badge/AI%20Powered-Product%20Listings-FF5733" width="300" alt="Project Logo"/>
+
+# Social Media to Product Listing Generator 🛍️
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248.svg)](https://www.mongodb.com/atlas)
+[![Gemini AI](https://img.shields.io/badge/Gemini-1.5%20Pro-red.svg)](https://cloud.google.com/ai-platform)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python Version"/>
-  <img src="https://img.shields.io/badge/FastAPI-0.68+-green.svg" alt="FastAPI Version"/>
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"/>
-  <img src="https://img.shields.io/badge/Gemini-Pro-red.svg" alt="AI Model"/>
+  Transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology
 </p>
 
-<p align="center">
-  <em>Transform social media content into comprehensive Amazon product listings with AI-powered analysis</em>
-</p>
+[Features](#features) •
+[Installation](#installation) •
+[Usage](#usage) •
+[API](#api-endpoints) •
+[Contributing](#contributing) •
+[Support](#support)
+
+</div>
 
 ---
 
-## ✨ Features
+## 🌟 Features
 
 <table>
   <tr>
-    <td>🖼️ <b>Image Analysis</b></td>
-    <td>🎥 <b>Video Processing</b></td>
-    <td>🔍 <b>Smart Search</b></td>
-    <td>📊 <b>Analytics</b></td>
+    <td>
+      <h3>🤖 AI-Powered Analysis</h3>
+      <ul>
+        <li>Google Generative AI integration</li>
+        <li>Smart product detection</li>
+        <li>Automatic feature extraction</li>
+      </ul>
+    </td>
+    <td>
+      <h3>🔄 Smart Processing</h3>
+      <ul>
+        <li>Real-time processing</li>
+        <li>Async operations</li>
+        <li>Intelligent matching</li>
+      </ul>
+    </td>
   </tr>
   <tr>
-    <td>Intelligent product detection</td>
-    <td>Frame extraction & analysis</td>
-    <td>Multi-category search</td>
-    <td>Performance tracking</td>
-  </tr>
-  <tr>
-    <td>Feature extraction</td>
-    <td>Audio transcription</td>
-    <td>Product comparison</td>
-    <td>Engagement metrics</td>
+    <td>
+      <h3>🎯 Product Categories</h3>
+      <ul>
+        <li>Electronics</li>
+        <li>Fashion</li>
+        <li>Home Decor</li>
+        <li>Beauty</li>
+        <li>Sports Equipment</li>
+      </ul>
+    </td>
+    <td>
+      <h3>💫 User Experience</h3>
+      <ul>
+        <li>Modern UI/UX</li>
+        <li>Drag-and-drop uploads</li>
+        <li>Interactive comparisons</li>
+      </ul>
+    </td>
   </tr>
 </table>
 
-## 🎯 Problem Statement
+## 🔧 Technology Stack
 
-> "Develop a system that seamlessly converts social media content into comprehensive Amazon product listings, enabling buyers to easily compare and purchase products."
-
-## 🏗️ Architecture
-
+### Backend Infrastructure
 ```mermaid
 graph LR
-    A[Social Media Content] --> B[Content Processor]
-    B --> C[Image Processor]
-    B --> D[Video Processor]
-    C --> E[AI Analysis]
-    D --> E
-    E --> F[Product Listing Generator]
-    F --> G[Amazon-Style Listing]
+    A[Python 3.8+] --> B[FastAPI]
+    B --> C[MongoDB]
+    B --> D[Gemini AI]
+    B --> E[AsyncIO]
 ```
 
-## 🛠️ Tech Stack
+### Frontend Technologies
+```mermaid
+graph LR
+    A[HTML5] --> B[TailwindCSS]
+    B --> C[JavaScript]
+    C --> D[Font Awesome]
+```
 
-<table>
-  <tr>
-    <td align="center"><b>Core</b></td>
-    <td align="center"><b>AI/ML</b></td>
-    <td align="center"><b>Data</b></td>
-    <td align="center"><b>Processing</b></td>
-  </tr>
-  <tr>
-    <td>
-      • Python 3.8+<br/>
-      • FastAPI<br/>
-      • AsyncIO
-    </td>
-    <td>
-      • Gemini Pro<br/>
-      • PyTorch<br/>
-      • Wav2Vec2
-    </td>
-    <td>
-      • MongoDB<br/>
-      • Redis Cache<br/>
-      • JWT Auth
-    </td>
-    <td>
-      • OpenCV<br/>
-      • FFmpeg<br/>
-      • Pillow
-    </td>
-  </tr>
-</table>
+## ⚙️ Installation
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/social-media-product-listing.git
+cd social-media-product-listing
+
+# Set up virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file
+cat > .env << EOL
+GOOGLE_API_KEY=your_google_api_key
+MONGODB_URL=your_mongodb_connection_string
+EOL
+
+# Initialize database
+python database_setup.py
+```
 
 ## 📁 Project Structure
 
 ```ascii
-📦 social-media-product-listings
- ┣ 📜 image_processor.py     # 🖼️ Image analysis engine
- ┣ 📜 video_processor.py     # 🎥 Video processing logic
- ┣ 📜 content_processor.py   # 🔄 Core content handling
- ┣ 📜 main.py               # 🚀 FastAPI application
- ┣ 📜 image_data.py         # 📊 Image sample data
- ┣ 📜 video_data.py         # 📊 Video sample data
- ┗ 📜 requirements.txt      # 📋 Dependencies
+project/
+├── 📜 main.py                # Entry point
+├── 🖼️ image_processor.py     # AI image analysis
+├── 🔄 content_processor.py   # Content processing
+├── 💾 database_setup.py      # DB initialization
+├── 📁 static/               # Static assets
+│   ├── electronics/
+│   ├── fashion/
+│   ├── home_decor/
+│   ├── beauty/
+│   ├── sports/
+│   └── styles.css
+├── 📝 templates/            # HTML templates
+│   └── index.html
+├── 🔒 .env                 # Environment vars
+└── 📋 requirements.txt     # Dependencies
 ```
 
-## ⚡ Quick Start
+## 🚀 Usage
 
-### 1️⃣ Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd social-media-product-listings
-
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 2️⃣ Configuration
-
-```env
-# .env file
-GOOGLE_API_KEY=your_google_api_key
-MONGODB_URL=your_mongodb_url
-```
-
-### 3️⃣ Launch
-
+1. Start the server:
 ```bash
 uvicorn main:app --reload
+# or
+python main.py
 ```
 
-## 🚀 API Endpoints
+2. Access the application:
+   - Open browser: `http://localhost:8000`
+   - Upload product images
+   - Add titles and captions
+   - Generate listings
+   - Compare products
 
-### Image Processing 🖼️
-```http
-POST   /upload/                  # Upload product images
-GET    /search/{title}          # Search products
-GET    /listings/{product_id}   # Get listings
-GET    /compare/{product_id}    # Compare products
-```
+## 💡 API Endpoints
 
-### Video Processing 🎥
-```http
-POST   /upload/video/           # Upload videos
-GET    /video/search/{title}    # Search videos
-GET    /video/listings/{id}     # Get video listings
-GET    /video/analytics/{id}    # Get analytics
-```
+<table>
+  <tr>
+    <th>Endpoint</th>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>/upload/</code></td>
+    <td>POST</td>
+    <td>Upload & analyze products</td>
+  </tr>
+  <tr>
+    <td><code>/search/{title}</code></td>
+    <td>GET</td>
+    <td>Search product database</td>
+  </tr>
+  <tr>
+    <td><code>/listings/{product_id}</code></td>
+    <td>GET</td>
+    <td>Get listing details</td>
+  </tr>
+  <tr>
+    <td><code>/compare/{product_id}</code></td>
+    <td>GET</td>
+    <td>Compare products</td>
+  </tr>
+</table>
 
-## 💡 Key Components
+## ⚠️ Prerequisites
 
-<details>
-<summary><b>🖼️ ImageProcessor</b></summary>
+- Python 3.8+
+- MongoDB Atlas account
+- Google Cloud account with Generative AI API access
+- Node.js & npm
 
-- AI-powered image analysis
-- Feature extraction
-- Price detection
-- Category classification
-</details>
+## 🔒 Environment Variables
 
-<details>
-<summary><b>🎥 VideoProcessor</b></summary>
-
-- Frame extraction
-- Audio transcription
-- Rate limiting
-- Parallel processing
-</details>
-
-<details>
-<summary><b>🔄 ContentProcessor</b></summary>
-
-- Database matching
-- Listing generation
-- Analytics tracking
-- Comparison logic
-</details>
-
-## 📊 Data Models
-
-<details>
-<summary><b>Product Listing Schema</b></summary>
-
-```typescript
-{
-  product_id: string
-  title: string
-  category: string
-  description: string
-  price: string
-  features: string[]
-  keywords: string[]
-  created_at: DateTime
-  status: string
-}
-```
-</details>
-
-## 🔒 Error Handling
-
-- ⏰ Rate limiting
-- 🔄 Automatic retries
-- 📝 Detailed logging
-- 🛡️ Graceful degradation
-
-## 🚀 Performance Features
-
-- ⚡ Async processing
-- 🪣 Token bucket limiting
-- 🎯 Smart frame extraction
-- 💾 Efficient caching
-
-## 🛣️ Roadmap
-
-- [ ] Enhanced AI model training
-- [ ] Real-time price tracking
-- [ ] Social media integrations
-- [ ] Multi-language support
-- [ ] Advanced analytics dashboard
+| Variable | Description |
+|----------|-------------|
+| `GOOGLE_API_KEY` | Google Cloud API key |
+| `MONGODB_URL` | MongoDB connection string |
 
 ## 🤝 Contributing
 
-1. 🍴 Fork the repository
-2. 🌿 Create feature branch (`git checkout -b feature/awesome`)
-3. 💾 Commit changes (`git commit -m 'Add awesome feature'`)
-4. 🚀 Push to branch (`git push origin feature/awesome`)
-5. 🔍 Open Pull Request
+```mermaid
+graph TD
+    A[Fork Repository] --> B[Create Branch]
+    B --> C[Make Changes]
+    C --> D[Commit Changes]
+    D --> E[Push to Branch]
+    E --> F[Create Pull Request]
+```
+
+## 📧 Support & Contact
+
+<details>
+<summary>Get Help</summary>
+
+- 📧 Email: varshadewangan454@gmail.com
+- 🐛 Issue Tracker: [GitHub Issues](https://github.com/yourusername/social-media-product-listing/issues)
+- 💬 Discussion: [GitHub Discussions](https://github.com/yourusername/social-media-product-listing/discussions)
+</details>
+
+## 🙏 Acknowledgments
+
+- [Google Generative AI](https://cloud.google.com/ai-platform) - AI capabilities
+- [MongoDB Atlas](https://www.mongodb.com/atlas) - Database services
+- [TailwindCSS](https://tailwindcss.com/) - UI framework
+- [FastAPI](https://fastapi.tiangolo.com/) - Backend framework
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
-
-<details>
-<summary>Get Help</summary>
-
-- 📫 Open GitHub Issue
-- 💬 Contact Development Team
-- 📚 Check Documentation
-</details>
-
 ---
 
-<p align="center">
-  Made with ❤️ by Your Team
-</p>
+<div align="center">
 
-<p align="center">
-  <a href="#" target="_blank">Documentation</a> •
-  <a href="#" target="_blank">Website</a> •
-  <a href="#" target="_blank">Report Bug</a>
-</p>
+Made with ❤️ by [Your Team]
+
+[⬆ Back to Top](#social-media-to-product-listing-generator-)
+
+</div>
