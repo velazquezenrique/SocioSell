@@ -24,8 +24,12 @@
 </div>
 
 ---
+🎮 Demo
+<div align="center">
+[https://github.com/Varsha-1605/SocioSell/assets/138766573/6c0b05e2-52f5-4a7e-9aad-cca5ce69be62](https://github.com/Varsha-1605/SocioSell/blob/main/static/Product%20%26%20Video%20Listing%20Generator%20-%20Google%20Chrome%202024-11-26%2017-00-41.mp4)
+</div>
 
-
+---
 
 ## 🌟 Features
 
