@@ -24,12 +24,6 @@
 </div>
 
 ---
-🎮 Demo
-<div align="center">
-A![Demo](./static/Product%20&%20Video%20Listing%20Generator.mp4)
-</div>
-
----
 
 ## 🌟 Features
 
