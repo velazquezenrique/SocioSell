@@ -228,7 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-Made with ❤️ by [Your Team]
+Made with ❤️ by @Varsha-1605
 
 [⬆ Back to Top](#social-media-to-product-listing-generator-)
 
