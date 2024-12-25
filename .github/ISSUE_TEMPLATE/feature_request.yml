@@ -1,0 +1,73 @@
+name: 💡 Feature Request
+description: Suggest a new feature for SocioSell
+title: "[Feature Request]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ Feature Request Form
+        Share your ideas to make SocioSell even better!
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🎯 Problem to Solve
+      description: What problem does this feature solve?
+      placeholder: |
+        Describe the challenge you're facing...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💫 Proposed Solution
+      description: Describe your feature idea
+      placeholder: |
+        How would your feature work?
+        What would it look like?
+        How would users interact with it?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-area
+    attributes:
+      label: 🎨 Feature Category
+      description: What area would this feature enhance?
+      multiple: true
+      options:
+        - "🤖 AI Capabilities"
+        - "🎨 User Interface"
+        - "🔌 API Integration"
+        - "📱 Social Media Features"
+        - "💾 Data Management"
+        - "🚀 Performance"
+        - "📚 Documentation"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternative Solutions
+      description: Have you considered any alternatives?
+      placeholder: What other approaches could solve this?
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📋 Additional Context
+      description: Any other information to share?
+      placeholder: Screenshots, mockups, or additional details...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 📜 Confirmation
+      options:
+        - label: I have searched for similar feature requests
+          required: true
+        - label: This feature aligns with SocioSell's purpose
+          required: true
