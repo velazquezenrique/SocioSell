@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
     <h2🎉 Selected for Social Winter of Code 2025! 🎉</h2>
-    <img src="https://raw.githubusercontent.com/Varsha-1605/SocioSell/main/static/banner.png" width="100%" alt="Project Banner"/>
+    
     
 </div>
 
@@ -28,7 +28,7 @@
 [🤝 Contributing](#-contributing) •
 [👥 Community](#-community)
 
-
+<img src="https://raw.githubusercontent.com/Varsha-1605/SocioSell/main/static/banner.png" width="100%" alt="Project Banner"/>
 
 </div>
 
