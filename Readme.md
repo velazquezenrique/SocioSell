@@ -1,5 +1,5 @@
 <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
-    <h2 🎉 Selected for Social Winter of Code 2025! 🎉</h2>
+    <h2>🎉 Selected for Social Winter of Code 2025! 🎉</h2>
 </div>
 
 
