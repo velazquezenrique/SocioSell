@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
-    <h2 style="margin: 0; font-size: 24px; margin-right: 10px;">Selected for Social Winter of Code 2024!</h2>
-    <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="50" height="50" alt="Social Winter of Code Logo">
+    <h2 style="margin: 0; font-size: 24px; margin-right: 10px;">Selected for Social Winter of Code 2024!
+    <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="50" height="50" alt="Social Winter of Code Logo"></h2>
 </div>
 
 
