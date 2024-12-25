@@ -265,19 +265,15 @@ graph TD
     E --> F[Create Pull Request]
 ```
 
-Check out our [Contributing Guidelines](CONTRIBUTING.md) to get started.
-
 ### 🎯 Good First Issues
 - Look for issues tagged with `good-first-issue`
-- Check the [Project Board](https://github.com/Varsha-1605/SocioSell/projects) for tasks
-- Join our community discussions for guidance
+- Join our [community discussions](https://github.com/Varsha-1605/SocioSell/discussions) for guidance
 
 ## 👥 Community
 
-- 💬 Join our [Discord Server](discord-invite-link)
-- 📝 Follow our [Blog](blog-link)
-- 🐦 Follow us on [Twitter](twitter-link)
-- 📧 Contact maintainers: varshadewangan454@gmail.com
+- 💬 Join our [Discord Server](https://discord.gg/vC93Cjy8)
+- 🐦 Follow us on [Twitter]( https://x.com/varsha_dew454)
+- 📧 Contact maintainers: varshadewangan1605@gmail.com
 
 ### 🌟 Contributors
 
