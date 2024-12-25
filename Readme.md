@@ -1,3 +1,39 @@
+Got it! Here's a banner-style showcase for your project inspired by the provided design:
+
+---
+
+<div align="center">
+  <img src="https://img.shields.io/badge/AI%20Powered-Product%20Listings-FF5733" width="300" alt="Project Logo"/>
+
+  # Social Media to Product Listing Generator 🛍️
+
+  [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
+  [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
+  [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248.svg)](https://www.mongodb.com/atlas)
+  [![Gemini AI](https://img.shields.io/badge/Gemini-1.5%20Pro-red.svg)](https://cloud.google.com/ai-platform)
+  [![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
+  [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+  <p align="center">
+    Transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology.
+  </p>
+
+  <a href="https://github.com/Varsha-1605/SocioSell" style="display:inline-block; margin-top: 20px; padding: 10px 20px; background-color: #FF5733; color: white; text-decoration: none; border-radius: 5px;">GitHub Repository</a>
+
+  <p style="margin-top: 10px;">An open-source project by Varsha Dewangan</p>
+
+  <div style="margin-top: 20px;">
+    <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/folder/Untitled%20video%20-%20Made%20with%20Clipchamp.mp4" width="250" alt="Project Demo Video"/>
+    <p><a href="https://github.com/Varsha-1605/SocioSell/blob/main/static/folder/Untitled%20video%20-%20Made%20with%20Clipchamp.mp4">Watch Demo</a></p>
+  </div>
+</div>
+
+---
+
+How does this look? If you need any changes or further customization, feel free to let me know!
+
+
+
 <div align="center">
   <img src="https://img.shields.io/badge/AI%20Powered-Product%20Listings-FF5733" width="300" alt="Project Logo"/>
 
