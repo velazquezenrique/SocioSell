@@ -202,19 +202,26 @@ Solution: Verify image format (supported: jpg, png) and size (<5MB)
 
 
 ## 📁 Project Structure
-
-```ascii
-project/
-├── 📜 main.py                # Entry point
-├── 🖼️ image_processor.py     # AI image analysis
-├── 🔄 content_processor.py   # Content processing
-├── 💾 database_setup.py      # DB initialization
-├── 📁 static/               # Static assets
-├── 📝 templates/            # HTML templates
-├── 🔒 .env                 # Environment vars
-└── 📋 requirements.txt     # Dependencies
 ```
-
+SocioSell/
+├── 📜 main.py                    # FastAPI application entry point
+├── 📁 .github/                   # GitHub specific files
+│   └── ISSUE_TEMPLATE/          # Issue templates for contributions
+├── 📁 static/                    # Static assets and files
+├── 📁 templates/                 # HTML templates
+├── 🔧 content_processor.py       # Content analysis and processing
+├── 💾 database_setup.py          # Database initialization
+├── 🖼️ image_processor.py         # Image processing module
+├── 📊 image_data.py              # Image data structures
+├── 🎥 video_processor.py         # Video processing module
+├── 📊 video_data.py              # Video data structures
+├── 🧪 test_image_processor.py    # Image processing tests
+├── 🧪 test_video_processor.py    # Video processing tests
+├── 📋 requirements.txt           # Project dependencies
+├── 📝 README.md                  # Project documentation
+├── 🔒 .env                       # Environment variables
+└── 📝 .gitignore                # Git ignore rules
+```
 ## 🚀 Usage
 
 1. Start the development server:
