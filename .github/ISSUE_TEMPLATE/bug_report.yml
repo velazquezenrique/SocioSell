@@ -1,0 +1,79 @@
+name: 🐛 Bug Report
+description: Report a bug in SocioSell
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🔍 Bug Report Form
+        Thanks for taking the time to help improve SocioSell!
+        
+  - type: dropdown
+    id: bug-type
+    attributes:
+      label: 🎯 Bug Category
+      description: What area of SocioSell is affected?
+      options:
+        - "🤖 AI Processing"
+        - "🎨 User Interface"
+        - "🔌 API Integration"
+        - "💾 Database"
+        - "🏃 Performance"
+        - "🎭 Other"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 Bug Description
+      description: What happened?
+      placeholder: |
+        1. What were you trying to do?
+        2. What went wrong?
+        3. What should have happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🔄 Steps to Reproduce
+      description: How can we see this bug ourselves?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: 🖥️ System Information
+      description: Please provide your system details
+      value: |
+        - Operating System:
+        - Browser:
+        - SocioSell Version:
+        - Social Media Platform:
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 Error Logs
+      description: If applicable, paste any error messages or logs
+      render: shell
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 📜 Confirmation
+      options:
+        - label: I have searched for similar bugs before reporting this
+          required: true
+        - label: I have included all the required information
+          required: true
