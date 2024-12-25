@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
-    <h2 style="margin: 0; font-size: 24px; margin-right: 10px;">Selected for Social Winter of Code 2024!
-    <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="50" height="50" alt="Social Winter of Code Logo"></h2>
+    <h2 style="margin: 0; font-size: 24px; margin-right: 10px;">Selected for Social Winter of Code 2025!
+   
 </div>
 
 
@@ -14,7 +14,7 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Social Winter of Code](https://img.shields.io/badge/SWOC-2024-orange.svg)](https://swoc.tech)
+[![Social Winter of Code](https://img.shields.io/badge/SWOC-2025-orange.svg)](https://swoc.tech)
 [![Contributors](https://img.shields.io/github/contributors/Varsha-1605/SocioSell)](https://github.com/Varsha-1605/SocioSell/graphs/contributors)
 
 <p align="center">
