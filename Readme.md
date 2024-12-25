@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Varsha-1605/SocioSell/main/static/banner.png" width="100%" alt="Project Banner"/>
+  
   <img src="https://img.shields.io/badge/AI%20Powered-Product%20Listings-FF5733" width="300" alt="Project Logo"/>
 
 # Social Media to Product Listing Generator 🛍️
@@ -21,6 +21,8 @@
 [💡 API Endpoints](#-api-endpoints) •
 [🤝 Contributing](#-contributing) •
 [📧 Support & Contact](#-support--contact)
+
+<img src="https://raw.githubusercontent.com/Varsha-1605/SocioSell/main/static/banner.png" width="100%" alt="Project Banner"/>
 
 </div>
 
