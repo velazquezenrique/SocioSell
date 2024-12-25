@@ -86,23 +86,19 @@ Watch our community demo:
   </tr>
 </table>
 
-##⚠️ Current Implementation Status and Limitations
-Processing Limitations
+## ⚠️ Current Implementation Status and Limitations
 
-The system currently processes custom data that is not linked to the database
-Uses image_data and video_data for accessing media details
-Maximum processing capacity (due to Gemini API constraints):
+### Processing Limitations
+- The system currently processes custom data that is not linked to the database
+- Uses `image_data` and `video_data` for accessing media details
+- Maximum processing capacity (due to Gemini API constraints):
+  - Images: Maximum 5 images per request
+  - Videos: Maximum 3 videos, each limited to 10 seconds
 
-Images: Maximum 5 images per request
-Videos: Maximum 3 videos, each limited to 10 seconds
-
-
-
-Implementation Notes for Contributors
-
-image_processor.py and video_processor.py are implemented and functional
-Integration needed: These processors need to be linked to main.py
-Database integration is pending and is a key area for contribution
+### Implementation Notes for Contributors
+- `image_processor.py` and `video_processor.py` are implemented and functional
+- Integration needed: These processors need to be linked to `main.py`
+- Database integration is pending and is a key area for contribution
 
 
 ## 🔧 Technology Stack
