@@ -2,7 +2,7 @@
   
   <img src="https://img.shields.io/badge/AI%20Powered-Product%20Listings-FF5733" width="300" alt="Project Logo"/>
 
-# Social Media to Product Listing Generator 🛍️
+# SocioSell: Social Media to Product Listing Generator 🛍️
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
@@ -10,9 +10,12 @@
 [![Gemini AI](https://img.shields.io/badge/Gemini-1.5%20Pro-red.svg)](https://cloud.google.com/ai-platform)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Social Winter of Code](https://img.shields.io/badge/SWOC-2024-orange.svg)](https://swoc.tech)
+[![Contributors](https://img.shields.io/github/contributors/Varsha-1605/SocioSell)](https://github.com/Varsha-1605/SocioSell/graphs/contributors)
 
 <p align="center">
-  Transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology
+  An open-source initiative to transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology. Selected for Social Winter of Code 2024! 🎉
 </p>
 
 [🌟 Features](#-features) •
@@ -20,7 +23,7 @@
 [🚀 Usage](#-usage) •
 [💡 API Endpoints](#-api-endpoints) •
 [🤝 Contributing](#-contributing) •
-[📧 Support & Contact](#-support--contact)
+[👥 Community](#-community)
 
 <img src="https://raw.githubusercontent.com/Varsha-1605/SocioSell/main/static/banner.png" width="100%" alt="Project Banner"/>
 
@@ -28,9 +31,13 @@
 
 ---
 
-## 📺 Project Preview
+## 🎯 Project Vision
 
-Check out our project demo video here:
+SocioSell aims to bridge the gap between social media content and e-commerce by providing an open-source solution for automated product listing generation. Whether you're a developer, marketer, or e-commerce enthusiast, your contributions can help shape the future of social commerce.
+
+## 📺 Project Demo
+
+Watch our community demo:
 
 [🎥 Watch Demo](https://github.com/Varsha-1605/SocioSell/blob/main/static/folder/Untitled%20video%20-%20Made%20with%20Clipchamp.mp4)
 
@@ -98,12 +105,12 @@ graph LR
     C --> D[Font Awesome]
 ```
 
-## ⚙️ Installation
+## ⚙️ Development Setup
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/social-media-product-listing.git
-cd social-media-product-listing
+git clone https://github.com/Varsha-1605/SocioSell.git
+cd SocioSell
 
 # Set up virtual environment
 python -m venv venv
@@ -131,33 +138,19 @@ project/
 ├── 🔄 content_processor.py   # Content processing
 ├── 💾 database_setup.py      # DB initialization
 ├── 📁 static/               # Static assets
-│   ├── electronics/
-│   ├── fashion/
-│   ├── home_decor/
-│   ├── beauty/
-│   ├── sports/
-│   └── styles.css
 ├── 📝 templates/            # HTML templates
-│   └── index.html
 ├── 🔒 .env                 # Environment vars
 └── 📋 requirements.txt     # Dependencies
 ```
 
 ## 🚀 Usage
 
-1. Start the server:
+1. Start the development server:
 ```bash
 uvicorn main:app --reload
-# or
-python main.py
 ```
 
-2. Access the application:
-   - Open browser: `http://localhost:8000`
-   - Upload product images
-   - Add titles and captions
-   - Generate listings
-   - Compare products
+2. Access the application at `http://localhost:8000`
 
 ## 💡 API Endpoints
 
@@ -189,21 +182,9 @@ python main.py
   </tr>
 </table>
 
-## ⚠️ Prerequisites
-
-- Python 3.8+
-- MongoDB Atlas account
-- Google Cloud account with Generative AI API access
-- Node.js & npm
-
-## 🔒 Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `GOOGLE_API_KEY` | Google Cloud API key |
-| `MONGODB_URL` | MongoDB connection string |
-
 ## 🤝 Contributing
+
+We warmly welcome contributions from developers of all skill levels! Here's how you can help:
 
 ```mermaid
 graph TD
@@ -214,33 +195,47 @@ graph TD
     E --> F[Create Pull Request]
 ```
 
-## 📧 Support & Contact
+Check out our [Contributing Guidelines](CONTRIBUTING.md) to get started.
 
-<details>
-<summary>Get Help</summary>
+### 🎯 Good First Issues
+- Look for issues tagged with `good-first-issue`
+- Check the [Project Board](https://github.com/Varsha-1605/SocioSell/projects) for tasks
+- Join our community discussions for guidance
 
-- 📧 Email: varshadewangan454@gmail.com
-- 🐛 Issue Tracker: [GitHub Issues](https://github.com/yourusername/social-media-product-listing/issues)
-- 💬 Discussion: [GitHub Discussions](https://github.com/yourusername/social-media-product-listing/discussions)
-</details>
+## 👥 Community
 
-## 🙏 Acknowledgments
+- 💬 Join our [Discord Server](discord-invite-link)
+- 📝 Follow our [Blog](blog-link)
+- 🐦 Follow us on [Twitter](twitter-link)
+- 📧 Contact maintainers: varshadewangan454@gmail.com
 
-- [Google Generative AI](https://cloud.google.com/ai-platform) - AI capabilities
-- [MongoDB Atlas](https://www.mongodb.com/atlas) - Database services
-- [TailwindCSS](https://tailwindcss.com/) - UI framework
-- [FastAPI](https://fastapi.tiangolo.com/) - Backend framework
+### 🌟 Contributors
+
+Thanks to these wonderful people:
+
+<a href="https://github.com/Varsha-1605/SocioSell/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Varsha-1605/SocioSell" />
+</a>
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🙏 Acknowledgments
+
+- All our amazing contributors
+- [Social Winter of Code](https://swoc.tech) for selecting our project
+- [Google Generative AI](https://cloud.google.com/ai-platform)
+- [MongoDB Atlas](https://www.mongodb.com/atlas)
+- [TailwindCSS](https://tailwindcss.com/)
+- [FastAPI](https://fastapi.tiangolo.com/)
+
 ---
 
 <div align="center">
 
-Made with ❤️ by [Varsha Dewangan](https://github.com/Varsha-1605)
+Made with ❤️ by the SocioSell Community
 
-[⬆ Back to Top](#social-media-to-product-listing-generator-)
+[⬆ Back to Top](#socialsell-social-media-to-product-listing-generator-)
 
 </div>
