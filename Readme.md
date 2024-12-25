@@ -2,6 +2,7 @@
   <img src="https://img.shields.io/badge/AI%20Powered-Product%20Listings-FF5733" width="300" alt="Project Logo"/>
 
 # Social Media to Product Listing Generator 🛍️
+https://github.com/Varsha-1605/SocioSell/blob/main/static/banner.png
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
