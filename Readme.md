@@ -280,6 +280,7 @@ graph TD
 ## 👥 Community
 
 - 💬 Join our [Discord Server](https://discord.gg/vC93Cjy8)
+- 🔗 Connect on [LinkedIn](www.linkedin.com/in/varsha-dewangan-197983256)
 - 🐦 Follow us on [Twitter]( https://x.com/varsha_dew454)
 - 📧 Contact maintainers: varshadewangan1605@gmail.com
 
