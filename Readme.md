@@ -100,6 +100,39 @@ Watch our community demo:
 - Integration needed: These processors need to be linked to `main.py`
 - Database integration is pending and is a key area for contribution
 
+### Priority Areas for Contribution
+1. Database Integration
+   - Implement MongoDB connection for media storage
+   - Create data models for products and listings
+   - Add database querying functionality
+
+2. Processor Integration
+   - Link `image_processor.py` and `video_processor.py` to `main.py`
+   - Implement error handling for processing failures
+   - Add input validation for media files
+
+3. UI/UX Improvements
+   - Add progress indicators for processing
+   - Implement drag-and-drop file upload
+   - Create responsive design for mobile users
+
+## 🛣️ Project Roadmap
+
+### Phase 1 (Current)
+- ✅ Basic image and video processing
+- ✅ Initial API setup
+- 🔄 Database integration
+
+### Phase 2 (Upcoming)
+- 📋 Enhanced error handling
+- 📋 User authentication
+- 📋 Batch processing capabilities
+
+### Phase 3 (Future)
+- 📋 Advanced AI features
+- 📋 Social media platform integration
+- 📋 Analytics dashboard
+
 
 ## 🔧 Technology Stack
 
@@ -143,6 +176,28 @@ EOL
 # Initialize database
 python database_setup.py
 ```
+
+### Troubleshooting Common Issues
+
+1. Gemini API Connection
+```bash
+Error: Failed to connect to Gemini API
+Solution: Ensure GOOGLE_API_KEY is properly set in .env file
+```
+
+2. MongoDB Connection
+```bash
+Error: MongoDB connection failed
+Solution: Check MONGODB_URL format and network connectivity
+```
+
+3. Image Processing
+```bash
+Error: Image processing failed
+Solution: Verify image format (supported: jpg, png) and size (<5MB)
+```
+
+
 
 ## 📁 Project Structure
 
