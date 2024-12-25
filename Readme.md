@@ -1,7 +1,6 @@
 <div align="center">
-<h2>Selected for Social Winter of Code 2024! 🎉<img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="200" alt="Social Winter of Code Logo"/></h2>
-  
----
+<h2>Selected for Social Winter of Code 2024! 🎉 <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="35" height="35" alt="Social Winter of Code Logo" style="vertical-align: middle;"/></h2>
+</div>
 
 # SocioSell: Social Media to Product Listing Generator 🛍️
 
