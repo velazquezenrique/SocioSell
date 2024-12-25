@@ -1,5 +1,6 @@
 <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background-color: #1e1e2f; color: white; height: 150px;">
-    <h2 style="margin: 0; font-size: 24px; margin-right: 10px;">Selected for Social Winter of Code 2025!
+    <h2>style="margin: 0; font-size: 24px; margin-right: 10px;"</h2>Selected for Social Winter of Code 2025! 🎉
+
    
 </div>
 
@@ -18,8 +19,7 @@
 [![Contributors](https://img.shields.io/github/contributors/Varsha-1605/SocioSell)](https://github.com/Varsha-1605/SocioSell/graphs/contributors)
 
 <p align="center">
-  An open-source initiative to transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology. Selected for Social Winter of Code 2024! 🎉
-</p>
+  An open-source initiative to transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology. </p>
 
 [🌟 Features](#-features) •
 [⚙️ Installation](#️-installation) •
