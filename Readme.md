@@ -1,7 +1,8 @@
-<div style="position: relative; text-align: center; padding: 20px 0;">
-    <h2 style="margin: 0;">Selected for Social Winter of Code 2024!</h2>
-    <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="100" height="100" alt="Social Winter of Code Logo" style="position: absolute; top: 10px; right: 10px;"/>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px; background-color: #1e1e2f; color: white; text-align: center; height: 200px;">
+    <h2 style="margin: 0; font-size: 24px;">Selected for Social Winter of Code 2024!</h2>
+    <img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" width="100" height="100" alt="Social Winter of Code Logo" style="margin-top: 10px;">
 </div>
+
 
 # SocioSell: Social Media to Product Listing Generator 🛍️
 
