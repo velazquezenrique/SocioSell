@@ -85,8 +85,8 @@ Watch our community demo:
     </td>
   </tr>
 </table>
----
-⚠️ Current Implementation Status and Limitations
+
+##⚠️ Current Implementation Status and Limitations
 Processing Limitations
 
 The system currently processes custom data that is not linked to the database
@@ -104,7 +104,7 @@ image_processor.py and video_processor.py are implemented and functional
 Integration needed: These processors need to be linked to main.py
 Database integration is pending and is a key area for contribution
 
----
+
 ## 🔧 Technology Stack
 
 ### Backend Infrastructure
