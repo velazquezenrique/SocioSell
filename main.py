@@ -57,7 +57,7 @@ app = FastAPI(
 )
 
 # MongoDB setup
-MONGODB_URL = "mongodb+srv://varshadewangan1605:Varsha1605@cluster0.d5ant.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGODB_URL = "add your mongodb url"
 client = AsyncIOMotorClient(MONGODB_URL)
 db = client.social_media_products
 
