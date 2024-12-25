@@ -1,5 +1,5 @@
 <div align="center">
-<h2>Selected for Social Winter of Code 2024! 🎉</h2><img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" height = "200" width="100" alt="Social Winter of Code Logo"/>
+<h2>Selected for Social Winter of Code 2024! 🎉<img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" height = "200" width="200" alt="Social Winter of Code Logo"/></h2>
   
 ---
 
