@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" height = "100" width="300" alt="Social Winter of Code Logo"/>
+<img src="https://github.com/Varsha-1605/SocioSell/blob/main/static/logo-1.png" height = "200" width="300" alt="Social Winter of Code Logo"/>
 
 <h2>Selected for Social Winter of Code 2024! 🎉</h2>
 ---
