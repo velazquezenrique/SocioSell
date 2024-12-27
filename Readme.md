@@ -274,7 +274,7 @@ graph TD
 ```
 
 ### Detailed Contribution Guide
-
+## Star this repository ⭐
 #### 1. Environment Setup
 ```bash
 # Fork and clone
