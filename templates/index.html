@@ -60,11 +60,11 @@
                         <span class="ml-2 text-xl font-semibold">SocioSell</span>
                     </div>
                     <div class="flex space-x-4">
-                        <button onclick="switchTab('upload')" id="uploadTab" class="px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-cloud-upload-alt mr-2"></i>Upload
-                        </button>
                         <button onclick="switchTab('search')" id="searchTab" class="px-4 py-2 rounded-lg transition-colors">
                             <i class="fas fa-search mr-2"></i>Search
+                        </button>
+                        <button onclick="switchTab('upload')" id="uploadTab" class="px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-image mr-2"></i>Image
                         </button>
                         <button onclick="switchTab('video')" id="videoTab" class="px-4 py-2 rounded-lg transition-colors">
                             <i class="fas fa-video mr-2"></i>Video
@@ -80,7 +80,7 @@
                 <!-- Upload Section -->
                 <div id="uploadSection" class="space-y-8">
                     <div class="text-center">
-                        <h1 class="text-3xl font-bold mb-4">Generate Product Listings</h1>
+                        <h1 class="text-3xl font-bold mb-4">Generate Image Listings</h1>
                         <p class="text-gray-600">Transform your product images into detailed listings</p>
                     </div>
 
@@ -88,8 +88,8 @@
                     <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6">
                         <div class="upload-zone p-8 text-center rounded-lg mb-6" id="dropZone">
                             <div id="uploadPrompt">
-                                <i class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-4"></i>
-                                <p class="text-gray-600 mb-2">Drag and drop your image here, or</p>
+                                <i class="fas fa-image text-4xl text-blue-500 mb-4"></i>
+                                <p class="text-gray-600 mb-4">Drag and drop your image here, or</p>
                                 <label class="bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-700">
                                     Choose File
                                     <input type="file" class="hidden" id="fileInput" accept="image/*">
@@ -148,7 +148,7 @@
                         <div class="upload-zone p-8 text-center rounded-lg mb-6" id="videoDropZone">
                             <div id="videoUploadPrompt">
                                 <i class="fas fa-video text-4xl text-blue-500 mb-4"></i>
-                                <p class="text-gray-600 mb-2">Drag and drop your video here, or</p>
+                                <p class="text-gray-600 mb-4">Drag and drop your video here, or</p>
                                 <label class="bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-700">
                                     Choose Video
                                     <input type="file" class="hidden" id="videoInput" accept="video/*">
