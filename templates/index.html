@@ -285,7 +285,7 @@
             formData.append('caption', document.getElementById('caption').value);
 
             try {
-                const response = await fetch('/upload/', {
+                const response = await fetch('/upload/image/', {
                     method: 'POST',
                     body: formData
                 });
