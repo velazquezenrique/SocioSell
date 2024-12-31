@@ -273,6 +273,57 @@ graph TD
     E --> F[Create Pull Request]
 ```
 
+### Detailed Contribution Guide
+## Star this repository ⭐
+#### 1. Environment Setup
+```bash
+# Fork and clone
+git fork https://github.com/Varsha-1605/SocioSell
+git clone [your-fork-url]
+cd SocioSell
+
+# Setup virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+#### 2. Development Workflow
+1. Find or create an issue
+2. Comment for assignment
+3. Create feature branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+#### 3. Code Guidelines
+- Follow PEP 8
+- Add docstrings
+- Write unit tests
+- Handle exceptions properly
+- Use type hints
+
+#### 4. Submitting Changes
+```bash
+# Test your changes
+python -m pytest
+
+# Commit and push
+git add .
+git commit -m "feat: description"
+git push origin feature/your-feature-name
+```
+
+#### 5. Pull Request Process
+1. Create PR from feature branch
+2. Fill PR template
+3. Link related issue
+4. Await review
+
 ### 🎯 Good First Issues
 - Look for issues tagged with `good-first-issue`
 - Join our [community discussions](https://github.com/Varsha-1605/SocioSell/discussions) for guidance

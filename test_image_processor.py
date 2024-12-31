@@ -1,7 +1,8 @@
 
 import asyncio
 import os
-from image_processor import ImageProcessor, TextProcessor
+from image_processor import ImageProcessor
+from text_processor import TextProcessor
 import logging
 import json
 from datetime import datetime
