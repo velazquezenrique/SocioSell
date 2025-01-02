@@ -66,7 +66,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Image Processing Endpoints
-@app.post("/upload/", 
+@app.post("/upload/image", 
     summary="Upload Product Image",
     description="Upload and analyze a product image for listing generation."
 )

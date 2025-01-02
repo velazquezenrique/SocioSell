@@ -1,0 +1,40 @@
+name: Issue Automation
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+    - name: Label issues
+      uses: actions/github-script@v7
+      with:
+        script: |
+          await github.rest.issues.addLabels({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: ['swoc', 'good first issue']
+          });
+          
+          const comment = `👋 Thanks for opening this issue!\n\n` +
+            `This issue has been automatically labeled with \`swoc\` and \`good first issue\` tags by our GitHub Actions bot 🤖.\n\n` +
+            `Feel free to start working on this issue by:\n` +
+            `1. Commenting below to get assigned\n` +
+            `2. Creating a fork of the repository\n` +
+            `3. Making your changes in a new branch\n` +
+            `4. Opening a pull request\n\n` +
+            `Need help? Join our [Discord](https://discord.gg/n34tSJ3TBs) community!\n\n` +
+            `_This is an automated message from SocioSell's GitHub Actions bot_ 🦾`;
+          
+          await github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

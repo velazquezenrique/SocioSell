@@ -1,0 +1,46 @@
+name: ✍️ Custom Issue
+description: Create a custom issue for SocioSell
+title: "[Custom Issue]: "
+labels: ["custom"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📝 Custom Issue Form
+        Use this template for creating issues that don't fall under "Bug Report" or "Feature Request."
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: 📝 Issue Description
+      description: Describe the issue or request in detail
+      placeholder: |
+        What do you want to achieve or report?
+        Why is this important for SocioSell?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-outcome
+    attributes:
+      label: 🎯 Expected Outcome
+      description: What should happen or be achieved?
+      placeholder: |
+        Describe the desired outcome or resolution...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📋 Additional Context
+      description: Any other relevant information to share?
+      placeholder: Links, screenshots, mockups, or other details...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 📜 Confirmation
+      options:
+        - label: I have reviewed the existing issues to avoid duplication
+          required: true
+        - label: I have provided sufficient detail for others to understand the issue
+          required: true

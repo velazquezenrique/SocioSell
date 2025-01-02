@@ -3,7 +3,7 @@ contact_links:
   - name: 💬 SocioSell Community Discussions
     url: https://github.com/Varsha-1605/SocioSell/discussions
     about: Please ask and answer questions in our community discussions
-  
+    
   - name: 📚 SocioSell Documentation
     url: https://github.com/Varsha-1605/SocioSell#readme
     about: Check our documentation for answers
@@ -11,3 +11,7 @@ contact_links:
   - name: 📧 Contact Support
     url: mailto:varshadewangan1605@gmail.com
     about: Contact the maintainer directly
+    
+  - name: 🌐 Join the SocioSell Discord Community
+    url: https://discord.gg/n34tSJ3TBs
+    about: Connect with our community on Discord for live discussions and support
