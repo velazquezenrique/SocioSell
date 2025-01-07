@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 
@@ -13,6 +13,4 @@ class ProductListing(BaseModel):
     updated_at: Optional[str] = datetime.now().isoformat()
     class Config:
         # Allow population of fields with alias names
-        fields = {
-            "id": "_id"  
-        }
+        my_field: str = Field(alias="myField")

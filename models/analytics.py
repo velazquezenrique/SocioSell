@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, Dict, List
 from datetime import datetime
 
@@ -36,6 +36,5 @@ class Analytics(BaseModel):
     updated_at: Optional[str] = datetime.now().isoformat()
 
     class Config:
-        fields = {
-            "id": "_id"  # Map the MongoDB `_id` field to `id`
-        }
+        # Allow population of fields with alias names
+        my_field: str = Field(alias="myField")

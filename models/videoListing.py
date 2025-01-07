@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
 from datetime import datetime
 
@@ -23,7 +23,5 @@ class VideoListing(BaseModel):
 
     class Config:
         # Allow population of fields with alias names
-        fields = {
-            "id": "_id"  
-        }
+        my_field: str = Field(alias="myField")
 
