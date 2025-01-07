@@ -34,8 +34,3 @@ class Analytics(BaseModel):
     marketing_metrics: MarketingMetrics
     created_at: Optional[str] = datetime.now().isoformat()
     updated_at: Optional[str] = datetime.now().isoformat()
-
-    class Config:
-        fields = {
-            "id": "_id"  # Map the MongoDB `_id` field to `id`
-        }
