@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from schemas.combined import search_all_content
 
 router = APIRouter()

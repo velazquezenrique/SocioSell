@@ -1,12 +1,6 @@
-from fastapi import APIRouter, HTTPException
-from models.video import Video
-from models.videoListing import VideoListing, ProductLink
-from models.analyticsVideo import VideoAnalytics, VideoAudience, VideoEngagement, VideoPerformance  
-from bson import ObjectId
+from fastapi import APIRouter
 from typing import Optional
 from fastapi import File, UploadFile, Form
-from video_data import VIDEO_DATABASE
-from datetime import datetime 
 from schemas.video import (
     upload_video,
     search_videos,

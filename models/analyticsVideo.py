@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Dict, List, Optional
 from datetime import datetime
 
@@ -24,7 +24,3 @@ class VideoAnalytics(BaseModel):
     performance: VideoPerformance
     created_at: Optional[str] = datetime.now().isoformat()
     updated_at: Optional[str] = datetime.now().isoformat()
-
-    class Config:
-        # Allow population of fields with alias names
-        my_field: str = Field(alias="myField")
