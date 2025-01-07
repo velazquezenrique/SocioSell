@@ -29,16 +29,13 @@ logger = logging.getLogger(__name__)
     description="Upload and analyze a product image for listing generation."
 )
 async def upload_image(
-    files: List[UploadFile] = File(...),
+    files: List[UploadFile] = File(...),  # Accepts multiple files
     title: str = Form(...),
     caption: Optional[str] = Form(None)
 ):
     try:
-
-        # Log the incoming request
         logger.info(f"Received upload request - Files: {len(files)}, Title: {title}")
 
-        # To check if over 5 files are uploaded
         if len(files) > 5:
             logger.warning(f"Upload rejected - Too many files: {len(files)}")
             raise HTTPException(
@@ -46,19 +43,19 @@ async def upload_image(
                 detail="Max 5 images are allowed. Please remove extra files and try again."
             )
         
-        # Process files for easier handling
         processed_files = []
         for file in files:
             processed_files.append(file.filename)
             logger.info(f"Processed file: {file.filename}")
 
+        # Your existing logic for generating listings...
         for key, response in SAMPLE_RESPONSES.items():
             if key in title.lower():
                 logger.info(f"Generated listing for title: {title}")
                 return {
                     "status": "success",
                     "message": f"Successfully processed {len(files)} image(s)",
-                     "processed_files": processed_files,
+                    "processed_files": processed_files,
                     "listing": response
                 }
 
