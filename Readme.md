@@ -237,7 +237,6 @@ uvicorn main:app --reload
     <th>Endpoint</th>
     <th>Method</th>
     <th>Description</th>
-    <th>Health</th>
   </tr>
   <tr>
     <td><code>/upload/</code></td>
