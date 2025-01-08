@@ -22,6 +22,13 @@ logger = logging.getLogger(__name__)
     description="Upload and analyze a product image for listing generation."
 )
 
+async def upload_image_route(
+    files: List[UploadFile] = File(...),
+    title: str = Form(...),
+    caption: Optional[str] = Form(None)
+):
+    return await upload_image(files, title, caption)
+
 @router.get("/search/{title}",
     summary="Search Products",
     description="Search for products by title across different categories."
