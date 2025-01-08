@@ -11,8 +11,3 @@ class ProductListing(BaseModel):
     features: List[str]
     created_at: Optional[str] = datetime.now().isoformat()
     updated_at: Optional[str] = datetime.now().isoformat()
-    class Config:
-        # Allow population of fields with alias names
-        fields = {
-            "id": "_id"  
-        }

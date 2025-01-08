@@ -1,18 +1,10 @@
 
 
-from fastapi import FastAPI, File, UploadFile, Form, HTTPException, Request, APIRouter
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, Request
 from motor.motor_asyncio import AsyncIOMotorClient
-from typing import Optional, List
-from pydantic import BaseModel
 import logging
-from pathlib import Path
-import aiofiles
 import os
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-from datetime import datetime
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from routers import image, video, combined
