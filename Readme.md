@@ -237,6 +237,7 @@ uvicorn main:app --reload
     <th>Endpoint</th>
     <th>Method</th>
     <th>Description</th>
+    <th>Health</th>
   </tr>
   <tr>
     <td><code>/upload/</code></td>
@@ -257,6 +258,11 @@ uvicorn main:app --reload
     <td><code>/compare/{product_id}</code></td>
     <td>GET</td>
     <td>Compare products</td>
+  </tr>
+  <tr>
+    <td><code>/health</code></td>
+    <td>GET</td>
+    <td>Check health status of DB</td>
   </tr>
 </table>
 
