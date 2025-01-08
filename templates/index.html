@@ -64,28 +64,40 @@
   </head>
   <body class="bg-gray-50">
     <div class="min-h-screen">
-        <!-- Navigation -->
-        <nav class="bg-white shadow-md fixed w-full z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
-                    <div class="flex items-center">
-                        <i class="fas fa-cube text-blue-600 text-2xl"></i>
-                        <span class="ml-2 text-xl font-semibold">SocioSell</span>
-                    </div>
-                    <div class="flex space-x-4">
-                        <button onclick="switchTab('search')" id="searchTab" class="px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-search mr-2"></i>Search
-                        </button>
-                        <button onclick="switchTab('upload')" id="uploadTab" class="px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-image mr-2"></i>Image
-                        </button>
-                        <button onclick="switchTab('video')" id="videoTab" class="px-4 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-video mr-2"></i>Video
-                        </button>
-                    </div>
-                </div>
+      <!-- Navigation -->
+      <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center">
+              <i class="fas fa-cube text-blue-600 text-2xl"></i>
+              <span class="ml-2 text-xl font-semibold">SocioSell</span>
             </div>
-        </nav>
+            <div class="flex space-x-4">
+              <button
+                onclick="switchTab('search')"
+                id="searchTab"
+                class="px-4 py-2 rounded-lg transition-colors"
+              >
+                <i class="fas fa-search mr-2"></i>Search
+              </button>
+              <button
+                onclick="switchTab('upload')"
+                id="uploadTab"
+                class="px-4 py-2 rounded-lg transition-colors"
+              >
+                <i class="fas fa-image mr-2"></i>Image
+              </button>
+              <button
+                onclick="switchTab('video')"
+                id="videoTab"
+                class="px-4 py-2 rounded-lg transition-colors"
+              >
+                <i class="fas fa-video mr-2"></i>Video
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       <!-- Main Content -->
       <main class="pt-20 pb-8 px-4">
@@ -106,9 +118,7 @@
                 id="dropZone"
               >
                 <div id="uploadPrompt">
-                  <i
-                    class="fas fa-image text-4xl text-blue-500 mb-4"
-                  ></i>
+                  <i class="fas fa-image text-4xl text-blue-500 mb-4"></i>
                   <p class="text-gray-600 mb-4">
                     Drag and drop your image here, or
                   </p>
@@ -121,12 +131,12 @@
                       class="hidden"
                       id="fileInput"
                       accept="image/*"
+                      multiple
                     />
                   </label>
                 </div>
                 <div class="relative">
                   <img id="previewImage" class="hidden max-h-48 mx-auto" />
-
                   <i
                     class="fa-solid fa-circle-xmark text-red-400 hover:text-red-600 absolute top-2 right-2 hidden"
                     id="removeButton"
@@ -354,9 +364,17 @@
       }
 
       // File Handling
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", handleFileSelect);
+
       function handleFileSelect(e) {
-        const file = e.target.files[0];
-        if (file) displayPreview(file);
+        const file = e.target.files[0]; // Get the first file
+        if (file) {
+          displayPreview(file);
+        } else {
+          console.error("No file selected or file is invalid");
+        }
       }
 
       function handleVideoSelect(e) {
@@ -384,7 +402,11 @@
       }
 
       function displayPreview(file) {
-        uploadedFile = file;
+        if (!file || !(file instanceof Blob)) {
+          console.error("Invalid file object:", file);
+          return;
+        }
+
         const reader = new FileReader();
         reader.onload = function (e) {
           const preview = document.getElementById("previewImage");
@@ -424,8 +446,10 @@
       // Generate Listings
       async function generateListing() {
         const title = document.getElementById("productTitle").value;
-        if (!uploadedFile || !title) {
-          showNotification("Please provide both image and title", "error");
+        const files = document.getElementById("fileInput").files;
+
+        if (!files || files.length === 0 || !title) {
+          showNotification("Please provide both image(s) and title", "error");
           return;
         }
 
@@ -435,9 +459,13 @@
           '<i class="fas fa-spinner spinner mr-2"></i>Generating...';
 
         const formData = new FormData();
-        formData.append("file", uploadedFile);
         formData.append("title", title);
         formData.append("caption", document.getElementById("caption").value);
+
+        // Append all files to FormData
+        Array.from(files).forEach((file, index) => {
+          formData.append("files", file); // Use "files" to match the backend parameter
+        });
 
         try {
           const response = await fetch("/upload/image/", {
@@ -445,13 +473,24 @@
             body: formData,
           });
 
+          if (!response.ok) {
+            // If the response is not OK, log the error details
+            const errorData = await response.json();
+            console.error("Error details:", errorData);
+            throw new Error(errorData.detail || "Failed to generate listing");
+          }
+
           const data = await response.json();
+
           if (data.status === "success") {
             displayGeneratedListing(data.listing);
             showNotification("Listing generated successfully!");
+          } else {
+            throw new Error(data.message || "Failed to generate listing");
           }
         } catch (error) {
-          showNotification("Error generating listing", "error");
+          console.error("Error generating listing:", error); // Log the full error
+          showNotification(`Error: ${error.message}`, "error");
         } finally {
           btn.disabled = false;
           btn.innerHTML = "Generate Listing";
@@ -644,68 +683,79 @@
 
       function displayGeneratedListing(listing) {
         const container = document.getElementById("generatedListing");
+        const previewImage = document.getElementById("previewImage");
+
+        if (!previewImage) {
+          console.error("previewImage element not found");
+          return;
+        }
+
+        // Ensure the previewImage has a valid src
+        if (!previewImage.src) {
+          console.error("previewImage.src is undefined or empty");
+          return;
+        }
+
+        // Update the container with the generated listing details
         container.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <img src="${
-                          document.getElementById("previewImage").src
-                        }" class="w-full rounded-lg mb-4 object-cover h-[300px]">
-                        <h2 class="text-2xl font-bold mb-2">${
-                          listing.title
-                        }</h2>
-                        <p class="text-gray-600 mb-4">${listing.description}</p>
-                        <div class="text-2xl font-bold text-blue-600 mb-4">${
-                          listing.price
-                        }</div>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <h3 class="text-xl font-semibold mb-4">Features</h3>
-                            <div class="space-y-3">
-                                ${listing.features
-                                  .map(
-                                    (feature) => `
-                                    <div class="flex items-center space-x-3">
-                                        <div class="flex-shrink-0">
-                                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                            </svg>
-                                        </div>
-                                        <span class="text-gray-700">${feature}</span>
-                                    </div>
-                                `
-                                  )
-                                  .join("")}
-                            </div>
-                        </div>
-                        <div class="flex space-x-4 pt-4">
-                            <button onclick="getComparisons('${
-                              listing.product_id
-                            }')" 
-                                    class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300">
-                                <i class="fas fa-sync-alt mr-2"></i>Compare
-                            </button>
-                            <button onclick="getAnalytics('${
-                              listing.product_id
-                            }')"
-                                    class="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-all duration-300">
-                                <i class="fas fa-chart-line mr-2"></i>Analytics
-                            </button>
-                        </div>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <img src="${
+          previewImage.src
+        }" class="w-full rounded-lg mb-4 object-cover h-[300px]">
+        <h2 class="text-2xl font-bold mb-2">${listing.title}</h2>
+        <p class="text-gray-600 mb-4">${listing.description}</p>
+        <div class="text-2xl font-bold text-blue-600 mb-4">${
+          listing.price
+        }</div>
+      </div>
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Features</h3>
+          <div class="space-y-3">
+            ${listing.features
+              .map(
+                (feature) => `
+              <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
                 </div>
-                <div id="comparisonsSection" class="mt-8 hidden">
-                    <h3 class="text-xl font-semibold mb-4">Compare with Similar Products</h3>
-                    <div id="comparisonsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-                </div>
-                <div id="analyticsSection" class="mt-8 hidden">
-                    <h3 class="text-xl font-semibold mb-4">Product Analytics</h3>
-                    <div id="analyticsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-                </div>
-            `;
+                <span class="text-gray-700">${feature}</span>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+        <div class="flex space-x-4 pt-4">
+          <button onclick="getComparisons('${listing.product_id}')" 
+                  class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300">
+            <i class="fas fa-sync-alt mr-2"></i>Compare
+          </button>
+          <button onclick="getAnalytics('${listing.product_id}')"
+                  class="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-all duration-300">
+            <i class="fas fa-chart-line mr-2"></i>Analytics
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="comparisonsSection" class="mt-8 hidden">
+      <h3 class="text-xl font-semibold mb-4">Compare with Similar Products</h3>
+      <div id="comparisonsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </div>
+    <div id="analyticsSection" class="mt-8 hidden">
+      <h3 class="text-xl font-semibold mb-4">Product Analytics</h3>
+      <div id="analyticsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </div>
+  `;
+
+        // Show the generated listing container
         container.classList.remove("hidden");
         container.scrollIntoView({ behavior: "smooth" });
       }
+
       async function getComparisons(productId) {
         try {
           const comparisonsSection =

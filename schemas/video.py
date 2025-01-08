@@ -183,7 +183,7 @@ async def search_videos(title: str):
     if not results:
         # Default response if no videos found
         results = [Video(
-                id=f"comp_1_{abs(hash("677a67241f305bdd8827f546"))}",
+                id=f"comp_1_{abs(hash('677a67241f305bdd8827f546'))}",
                 title="Similar Product Review 1",
                 category="Electronics",
                 subcategory="Headphone",
