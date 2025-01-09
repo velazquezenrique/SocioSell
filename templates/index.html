@@ -555,26 +555,29 @@
       async function fetchGitHubData() {
     const headers = {
         'Authorization': `token ${config.github.token}`,
-        'Accept': 'application/vnd.github.v3+json'
+        'Accept': 'application/vnd.github.inertia-preview+json'
     };
 
     try {
         // Fetch data for the specific repository
-        const [repoData, contributors, prs] = await Promise.all([
+        const [repoData, contributors, prs, projects] = await Promise.all([
             fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}`, { headers })
                 .then(res => res.json()),
             fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/contributors`, { headers })
                 .then(res => res.json()),
             fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/pulls?state=all`, { headers })
+                .then(res => res.json()),
+            fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/projects`, { headers })
                 .then(res => res.json())
         ]);
 
         // Check if the specific repository is archived or active
-        const isActive = repoData.archived === false;
-        const activeProjectsCount = isActive ? 1 : 0;
+        const isActive = !repoData.archived;
 
         // Fetch total commit count from the repoData
         const defaultBranchCommitsCount = repoData.commits || await getCommitCount(repoData.default_branch);
+        // Count the number of projects associated with the repository
+        const projectCount = Array.isArray(projects) ? projects.length : 0;
 
         state.allContributors = contributors;
         updateFilterCounts(contributors);
@@ -587,7 +590,7 @@
             },
             contributors.length,
             prs.length,
-            activeProjectsCount
+            projectCount
         );
         renderFilterButtons(contributors.length);
         renderContributors(contributors);
