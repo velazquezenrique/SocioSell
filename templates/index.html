@@ -783,237 +783,151 @@
 
     return pullRequests;
 }
-      
+
       async function renderContributors(contributors) {
-    const contributorsContainer = document.getElementById('contributors-container');
-    if (!contributorsContainer) return;
+        const contributorsContainer = document.getElementById('contributors-container');
+        if (!contributorsContainer) return;
 
-    try {
-        // Fetch all pull requests for the repository
-        const allPullRequests = await fetchAllPullRequests();
+        try {
+            // Fetch all pull requests for the repository
+            const allPullRequests = await fetchAllPullRequests();
 
-        const contributorCards = await Promise.all(
-            contributors.map(contributor => createContributorCard(contributor, allPullRequests))
-        );
-        contributorsContainer.innerHTML = contributorCards.join('');
-    } catch (error) {
-        console.error('Error rendering contributors:', error);
-        showError('Failed to render contributor cards');
-    }
-}
-
-      function createContributorCard(contributor, allPullRequests) {
-    try {
-        // Format numbers for display
-        const formatNumber = (num) => num.toLocaleString();
-        
-        // Create badge based on contribution level
-        const getBadge = (contributions) => {
-            if (contributions >= 100) {
-                return '<span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm">Core Team</span>';
-            } else if (contributions >= 50) {
-                return '<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">Top Contributor</span>';
-            }
-            return '';
-        };
-
-        // Determine if grid or list view
-        const isGridView = document.getElementById('contributors-container').classList.contains('grid');
-        
-        if (isGridView) {
-            return `
-                <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-                    <div class="relative">
-                        <img src="${contributor.avatar_url}" alt="${contributor.login}" 
-                            class="w-full h-48 object-cover">
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-semibold text-white">${contributor.login}</h3>
-                                ${getBadge(contributor.contributions)}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="p-4">
-                        <div class="grid grid-cols-4 gap-3 mb-4">
-                            <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
-                                <div class="text-xs text-gray-500">Commits</div>
-                            </div>
-                            <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
-                                <div class="text-xs text-gray-500">PRs</div>
-                            </div>
-                            <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.issues || 0)}</div>
-                                <div class="text-xs text-gray-500">Issues</div>
-                            </div>
-                            <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
-                                <div class="text-xs text-gray-500">Points</div>
-                            </div>
-                        </div>
-                        
-                        <a href="${contributor.html_url}" target="_blank" 
-                            class="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                            View Profile <i class="fas fa-external-link-alt ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-            `;
-        } else {
-            return `
-                <div class="border rounded-xl p-6 mb-4 hover:shadow-lg transition-shadow">
-                    <div class="flex flex-wrap gap-6 items-start">
-                        <img src="${contributor.avatar_url}" alt="${contributor.login}" 
-                            class="w-32 h-32 rounded-lg object-cover">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-4 mb-2">
-                                <h3 class="text-xl font-semibold">${contributor.login}</h3>
-                                <div class="flex gap-2">
-                                    ${getBadge(contributor.contributions)}
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-4 gap-4 mb-4">
-                                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
-                                    <div class="text-sm text-gray-500">Commits</div>
-                                </div>
-                                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
-                                    <div class="text-sm text-gray-500">PRs</div>
-                                </div>
-                                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.issues || 0)}</div>
-                                    <div class="text-sm text-gray-500">Issues</div>
-                                </div>
-                                <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                    <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
-                                    <div class="text-sm text-gray-500">Points</div>
-                                </div>
-                            </div>
-                            <a href="${contributor.html_url}" target="_blank" 
-                                class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                                View Profile <i class="fas fa-external-link-alt ml-2"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
+            const contributorCards = await Promise.all(
+                contributors.map(contributor => createContributorCard(contributor, allPullRequests))
+            );
+            contributorsContainer.innerHTML = contributorCards.join('');
+        } catch (error) {
+            console.error('Error rendering contributors:', error);
+            showError('Failed to render contributor cards');
         }
-    } catch (error) {
-        console.error('Error creating contributor card:', error);
-        return '';
     }
-}
-      
+  
       async function createContributorCard(contributor, allPullRequests) {
-          try {
-              const headers = {
-                  'Authorization': `token ${config.github.token}`,
-                  'Accept': 'application/vnd.github.v3+json'
-              };
+      try {
+          const headers = {
+              'Authorization': `token ${config.github.token}`,
+              'Accept': 'application/vnd.github.v3+json'
+          };
 
-              // Fetch issues for this contributor
-              const issues = await fetch(
-                  `${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/issues?state=all&creator=${contributor.login}`,
-                  { headers }
-              ).then(res => res.json());
+          // Fetch issues for this contributor
+          const issues = await fetch(
+              `${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/issues?state=all&creator=${contributor.login}`,
+              { headers }
+          ).then(res => res.json());
 
-              // Format numbers for display
-              const formatNumber = (num) => num.toLocaleString();
-              
-              // Create badge based on contribution level
-              const getBadge = (contributions) => {
-                  if (contributions >= 100) {
-                      return '<span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm">Core Team</span>';
-                  } else if (contributions >= 50) {
-                      return '<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">Top Contributor</span>';
-                  }
-                  return '';
-              };
+          // Format numbers for display
+          const formatNumber = (num) => num?.toLocaleString() || '0';
+          
+          // Create badge based on contribution level
+          const getBadge = (contributions) => {
+              if (contributions >= 100) {
+                  return '<span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium">Core Team</span>';
+              } else if (contributions >= 50) {
+                  return '<span class="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-sm font-medium">Top Contributor</span>';
+              }
+              return '';
+          };
 
-              // Determine if grid or list view
-              const isGridView = document.getElementById('contributors-container').classList.contains('grid');
-              
-              if (isGridView) {
-                  return `
-                      <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-                          <div class="relative">
+          // Create stat tab with enhanced styling
+          const createStatTab = (value, label) => `
+              <div class="text-center p-3 bg-slate-100 backdrop-blur-sm rounded-lg 
+                        hover:bg-slate-200/95 transition-all duration-200 
+                        border border-slate-200 shadow-sm hover:shadow
+                        relative overflow-hidden group">
+                  <div class="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent opacity-50"></div>
+                  <div class="relative">
+                      <div class="text-lg font-bold text-slate-800 mb-0.5">${value}</div>
+                      <div class="text-sm text-slate-600 font-medium">${label}</div>
+                  </div>
+              </div>
+          `;
+
+          // External link icon SVG
+          const externalLinkIcon = `
+              <svg class="inline-block w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                  </path>
+              </svg>
+          `;
+
+          // Determine if grid or list view
+          const isGridView = document.getElementById('contributors-container').classList.contains('grid');
+          
+          if (isGridView) {
+              // Grid view code remains the same
+              return `
+                  <div class="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                      <div class="relative group">
+                          <div class="aspect-w-16 aspect-h-12 overflow-hidden">
                               <img src="${contributor.avatar_url}" alt="${contributor.login}" 
-                                  class="w-full h-48 object-cover">
-                              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
+                                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                          </div>
+                          <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent">
+                              <div class="absolute bottom-0 left-0 right-0 p-4">
                                   <div class="flex items-center justify-between">
-                                      <h3 class="text-lg font-semibold text-white">${contributor.login}</h3>
+                                      <h3 class="text-lg font-semibold text-white tracking-wide">${contributor.login}</h3>
                                       ${getBadge(contributor.contributions)}
                                   </div>
                               </div>
                           </div>
+                      </div>
+                      
+                      <div class="p-4">
+                          <div class="grid grid-cols-3 gap-3 mb-4">
+                              ${createStatTab(formatNumber(contributor.contributions), 'Commits')}
+                              ${createStatTab(formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length), 'PRs')}
+                              ${createStatTab(formatNumber(issues.length), 'Issues')}
+                          </div>
                           
-                          <div class="p-4">
-                              <div class="grid grid-cols-3 gap-3 mb-4">
-                                  <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                      <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
-                                      <div class="text-sm text-gray-500">Commits</div>
-                                  </div>
-                                  <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                      <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
-                                      <div class="text-sm text-gray-500">PRs</div>
-                                  </div>
-                                  <div class="text-center p-2 bg-gray-50 rounded-lg">
-                                      <div class="text-lg font-bold text-gray-700">${formatNumber(issues.length)}</div>
-                                      <div class="text-sm text-gray-500">Issues</div>
-                                  </div>
-                              </div>
-                              
-                              <a href="${contributor.html_url}" target="_blank" 
-                                  class="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                                  View Profile <i class="fas fa-external-link-alt ml-2"></i>
-                              </a>
-                          </div>
+                          <a href="${contributor.html_url}" target="_blank" rel="noopener noreferrer"
+                              class="block w-full text-center bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors font-medium">
+                              View Profile ${externalLinkIcon}
+                          </a>
                       </div>
-                  `;
-              } else {
-                  return `
-                      <div class="border rounded-xl p-6 mb-4 hover:shadow-lg transition-shadow">
-                          <div class="flex flex-wrap gap-6 items-start">
-                              <img src="${contributor.avatar_url}" alt="${contributor.login}" 
-                                  class="w-32 h-32 rounded-lg object-cover">
-                              <div class="flex-1">
-                                  <div class="flex items-center gap-4 mb-2">
-                                      <h3 class="text-xl font-semibold">${contributor.login}</h3>
-                                      <div class="flex gap-2">
-                                          ${getBadge(contributor.contributions)}
-                                      </div>
-                                  </div>
-                                  <div class="grid grid-cols-3 gap-4 mb-4">
-                                      <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                          <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
-                                          <div class="text-sm text-gray-500">Commits</div>
-                                      </div>
-                                      <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                          <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
-                                          <div class="text-sm text-gray-500">PRs</div>
-                                      </div>
-                                      <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                          <div class="text-lg font-bold text-gray-700">${formatNumber(issues.length)}</div>
-                                          <div class="text-sm text-gray-500">Issues</div>
-                                      </div>
-                                  </div>
-                                  <a href="${contributor.html_url}" target="_blank" 
-                                      class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                                      View Profile <i class="fas fa-external-link-alt ml-2"></i>
-                                  </a>
+                  </div>
+              `;
+          } else {
+              // Enhanced list view with better image handling and alignment
+              return `
+                  <div class="bg-white border border-slate-200 rounded-xl p-5 mb-4 hover:shadow-lg transition-all duration-300">
+                      <div class="flex flex-wrap md:flex-nowrap items-start gap-6">
+                          <div class="shrink-0 relative rounded-xl overflow-hidden group 
+                                    w-24 h-24 md:w-32 md:h-32 
+                                    shadow-md hover:shadow-xl transition-shadow duration-300">
+                              <div class="absolute inset-0 bg-slate-50">
+                                  <img src="${contributor.avatar_url}" alt="${contributor.login}" 
+                                      class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
                               </div>
                           </div>
-                      </div>
-                  `;
+
+                          <div class="flex-1 min-w-0 flex flex-col gap-5">
+                              <div class="flex items-center flex-wrap gap-3">
+                                  <h3 class="text-xl font-semibold text-slate-800">${contributor.login}</h3>
+                                  ${getBadge(contributor.contributions)}
+                              </div>
+
+                              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                  ${createStatTab(formatNumber(contributor.contributions), 'Commits')}
+                                  ${createStatTab(formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length), 'PRs')}
+                                  ${createStatTab(formatNumber(issues.length), 'Issues')}
+                              </div>
+
+                              <a href="${contributor.html_url}" target="_blank" rel="noopener noreferrer"
+                                  class="inline-flex items-center bg-indigo-600 text-white px-6 py-2.5 rounded-lg 
+                                        hover:bg-indigo-700 transition-colors font-medium self-start">
+                                  View Profile ${externalLinkIcon}
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                      `;
+                  }
+              } catch (error) {
+                  console.error('Error creating contributor card:', error);
+                  return '';
               }
-          } catch (error) {
-              console.error('Error creating contributor card:', error);
-              return '';
-          }
-      }
+        }
 
       function showError(message) {
           const contributorsContainer = document.getElementById('contributors-container');
