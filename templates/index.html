@@ -50,6 +50,14 @@
         animation: slideIn 0.3s ease;
       }
 
+      .contributor-card {
+            transition: transform 0.3s ease;
+            
+        }
+        .contributor-card:hover {
+            transform: translateY(-5px);
+        }
+
       @keyframes slideIn {
         from {
           transform: translateY(100%);
@@ -81,6 +89,9 @@
                         </button>
                         <button onclick="switchTab('video')" id="videoTab" class="px-4 py-2 rounded-lg transition-colors">
                             <i class="fas fa-video mr-2"></i>Video
+                        </button>   
+                           <button onclick="switchTab('contributors')" id="contributorsTab" class="px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-users mr-2"></i>Contributors
                         </button>
                     </div>
                 </div>
@@ -286,8 +297,93 @@
             >
               <!-- Content will be populated by JavaScript -->
             </div>
-          </div>
+          </div>       
+         
+          <div id="contributorSection" class="container mx-auto px-4 py-8 space-y-8">
+            <!-- Header Section -->
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-bold mb-4" id="mainTitle">Our Amazing Contributors</h1>
+                <p class="text-xl opacity-90" id="mainDescription">Meet the talented individuals who make our project possible through their dedication and expertise.</p>
+            </div>
+        
+            <!-- Stats Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12" id="stats-container">
+                <!-- Stats cards will be dynamically inserted here -->
+            </div>
+        
+            <!-- Main Content Section -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <!-- Controls Section -->
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <!-- Search Bar -->
+                    <div class="flex-1">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input 
+                                type="text" 
+                                id="search-input" 
+                                placeholder="Search contributors..." 
+                                class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                        </div>
+                    </div>
+        
+                    <!-- View and Filter Controls -->
+                    <div class="flex gap-2 items-center">
+                        <!-- Filter Dropdown -->
+                        <div class="relative">
+                            <button id="filterBtn" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">
+                                <i class="fas fa-filter mr-2"></i>
+                                <span id="currentFilter">All Contributors</span>
+                            </button>
+                            <!-- Filter Dropdown Menu -->
+                            <div id="filter-menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border py-2 z-50">
+                              <button data-filter="All Contributors" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center justify-between">
+                                  <span><i class="fas fa-users mr-2"></i>All Contributors</span>
+                                  <span class="bg-gray-200 px-2 py-0.5 rounded-full text-sm" id="all-count">0</span>
+                              </button>
+                              <button data-filter="Core Team" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center justify-between">
+                                  <span><i class="fas fa-star mr-2"></i>Core Team</span>
+                                  <span class="bg-gray-200 px-2 py-0.5 rounded-full text-sm" id="core-count">0</span>
+                              </button>
+                              <button data-filter="Maintainers" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center justify-between">
+                                  <span><i class="fas fa-shield-alt mr-2"></i>Maintainers</span>
+                                  <span class="bg-gray-200 px-2 py-0.5 rounded-full text-sm" id="maintainers-count">0</span>
+                              </button>
+                              <button data-filter="Community" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center justify-between">
+                                  <span><i class="fas fa-globe mr-2"></i>Community</span>
+                                  <span class="bg-gray-200 px-2 py-0.5 rounded-full text-sm" id="community-count">0</span>
+                              </button>
+                          </div>
+                        </div>
+        
+                        <!-- View Controls -->
+                        <button id="gridViewBtn" class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button id="listViewBtn" class="px-3 py-2 border rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+        
+                <!-- Filter Tags -->
+                <div class="flex flex-wrap gap-2 mb-4" id="active-filters">
+                    <!-- Active filters will be inserted here -->
+                </div>
+        
+                <!-- Contributors Grid Container -->
+                <div id="contributors-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Contributor cards will be dynamically inserted here -->
+                </div>
+        
+                <!-- Pagination -->
+                <div class="flex justify-center mt-8" id="pagination">
+                    <!-- Pagination will be dynamically inserted here -->
+                </div>
+            </div>
         </div>
+    
       </main>
 
       <!-- Notification -->
@@ -302,35 +398,624 @@
     </div>
 
     <script>
-      // Global state
-      let currentTab = "upload";
-      let uploadedFile = null;
-      let uploadedVideo = null;
+ 
+      const config = {
+          github: {
+              token: '', // ---------> add a secret token here
+              owner: 'Varsha-1605',
+              repo: 'SocioSell',
+              apiUrl: 'https://api.github.com'
+          },
+          filters: {
+              categories: [
+                  { label: 'All Contributors', icon: 'fas fa-users', threshold: 0 },
+                  { label: 'Core Team', icon: 'fas fa-star', threshold: 100 },
+                  { label: 'Maintainers', icon: 'fas fa-shield-alt', threshold: 50 },
+                  { label: 'Community', icon: 'fas fa-globe', threshold: 0 }
+              ]
+          }
+      };
 
-      // Event Listeners
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", handleFileSelect);
-      document
-        .getElementById("videoInput")
-        .addEventListener("change", handleVideoSelect);
-      document
-        .getElementById("dropZone")
-        .addEventListener("dragover", handleDragOver);
-      document.getElementById("dropZone").addEventListener("drop", handleDrop);
-      document
-        .getElementById("videoDropZone")
-        .addEventListener("dragover", handleDragOver);
-      document
-        .getElementById("videoDropZone")
-        .addEventListener("drop", handleVideoDrop);
-      document
-        .getElementById("searchInput")
-        .addEventListener("keyup", function (e) {
-          if (e.key === "Enter") searchAll();
-        });
+      let state = {
+          currentTab: "upload",
+          uploadedFile: null,
+          uploadedVideo: null,
+          allContributors: [],
+          currentFilter: 'All Contributors',
+          currentView: 'grid',
+          filterDropdownOpen: false
+      };
+    
+      function toggleFilterDropdown() {
+          const filterButtons = document.getElementById('filter-buttons');
+          state.filterDropdownOpen = !state.filterDropdownOpen;
+          filterButtons.classList.toggle('hidden');
+      }
 
-      // Tab Switching
+      function switchView(viewType) {
+          const contributorsContainer = document.getElementById('contributors-container');
+          const gridBtn = document.getElementById('gridViewBtn');
+          const listBtn = document.getElementById('listViewBtn');
+
+          state.currentView = viewType;
+
+          if (viewType === 'grid') {
+              contributorsContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
+              gridBtn.className = 'px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors';
+              listBtn.className = 'px-3 py-2 border rounded-lg text-gray-600 hover:bg-gray-100 transition-colors';
+          } else {
+              contributorsContainer.className = 'flex flex-col space-y-4';
+              listBtn.className = 'px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors';
+              gridBtn.className = 'px-3 py-2 border rounded-lg text-gray-600 hover:bg-gray-100 transition-colors';
+          }
+
+          // Re-render the contributors with the new view
+          renderContributors(state.allContributors);
+      }
+     
+      function initializeEventListeners() {
+          const elements = {
+              fileInput: document.getElementById("fileInput"),
+              videoInput: document.getElementById("videoInput"),
+              dropZone: document.getElementById("dropZone"),
+              videoDropZone: document.getElementById("videoDropZone"),
+              searchInput: document.getElementById("searchInput"),
+              contributorSearchInput: document.getElementById('search-input'),
+              statsContainer: document.getElementById('stats-container'),
+              filterButtons: document.getElementById('filter-buttons'),
+              contributorsContainer: document.getElementById('contributors-container')
+          };
+
+          elements.fileInput?.addEventListener("change", handleFileSelect);
+          elements.videoInput?.addEventListener("change", handleVideoSelect);
+          elements.dropZone?.addEventListener("dragover", handleDragOver);
+          elements.dropZone?.addEventListener("drop", handleDrop);
+          elements.videoDropZone?.addEventListener("dragover", handleDragOver);
+          elements.videoDropZone?.addEventListener("drop", handleVideoDrop);
+          
+
+          elements.searchInput?.addEventListener("keyup", (e) => {
+              if (e.key === "Enter") searchAll();
+          });
+
+
+          elements.contributorSearchInput?.addEventListener('input', debounce((e) => {
+              filterContributors(e.target.value.toLowerCase());
+          }, 300));
+
+          const filterBtn = document.getElementById('filterBtn');
+          const filterMenu = document.getElementById('filter-menu');
+
+          filterBtn?.addEventListener('click', (e) => {
+              e.stopPropagation();
+              filterMenu.classList.toggle('hidden');
+          });
+
+          document.addEventListener('click', (e) => {
+              if (!filterBtn?.contains(e.target) && !filterMenu?.contains(e.target)) {
+                  filterMenu?.classList.add('hidden');
+              }
+          });
+
+          // Add click handlers for filter menu buttons
+          filterMenu?.querySelectorAll('button[data-filter]').forEach(button => {
+              button.addEventListener('click', (e) => {
+                  const filterValue = e.currentTarget.getAttribute('data-filter');
+                  document.getElementById('currentFilter').textContent = filterValue;
+                  filterMenu.classList.add('hidden');
+                  
+                  state.currentFilter = filterValue;
+                  applyFilter(filterValue);
+              });
+          });
+
+            document.addEventListener('click', (e) => {
+                const filterDropdown = document.getElementById('filter-buttons');
+                const filterBtn = document.getElementById('filterDropdownBtn');
+                
+                if (!filterBtn?.contains(e.target) && !filterDropdown?.contains(e.target)) {
+                    filterDropdown?.classList.add('hidden');
+                    state.filterDropdownOpen = false;
+                }
+            });
+
+            const gridViewBtn = document.getElementById('gridViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+
+            gridViewBtn?.addEventListener('click', () => switchView('grid'));
+            listViewBtn?.addEventListener('click', () => switchView('list'));
+
+            const searchInput = document.getElementById('search-input');
+            searchInput?.addEventListener('input', debounce((e) => {
+                filterContributors(e.target.value.toLowerCase());
+            }, 300));
+
+            switchView(state.currentView);
+            return elements;
+           }
+
+      function debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+              clearTimeout(timeout);
+              timeout = setTimeout(() => func.apply(this, args), wait);
+          };
+      }
+
+      async function fetchGitHubData() {
+    const headers = {
+        'Authorization': `token ${config.github.token}`,
+        'Accept': 'application/vnd.github.v3+json'
+    };
+
+    try {
+        // Fetch data only for the specific repository
+        const [repoData, contributors, prs] = await Promise.all([
+            fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}`, { headers })
+                .then(res => res.json()),
+            fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/contributors`, { headers })
+                .then(res => res.json()),
+            fetch(`${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/pulls?state=all`, { headers })
+                .then(res => res.json())
+        ]);
+
+        // Check if the specific repository is archived or active
+        const isActive = repoData.archived === false;
+        const activeProjectsCount = isActive ? 1 : 0;
+
+        // Fetch commits from the default branch
+        const defaultBranch = repoData.default_branch || 'main'; // Fallback to 'main' if not provided
+        const commits = await fetch(
+            `${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/commits?sha=${defaultBranch}`,
+            { headers }
+        ).then(res => res.json());
+
+        const defaultBranchCommitsCount = Array.isArray(commits) ? commits.length : 0;
+
+    
+   
+        state.allContributors = contributors;
+        updateFilterCounts(contributors);
+
+        // Render the stats
+        renderStats(
+            {
+                ...repoData,
+                default_branch_commits_count: defaultBranchCommitsCount
+            },
+            contributors.length,
+            prs.length,
+            activeProjectsCount
+        );
+        renderFilterButtons(contributors.length);
+        renderContributors(contributors);
+    } catch (error) {
+        console.error('Error fetching GitHub data:', error);
+        showError('Failed to fetch GitHub data');
+    }
+}
+
+      function renderStats(repoData, contributorsCount, prsCount, activeProjectsCount) {
+          const stats = [
+              {
+                  icon: 'fas fa-users',
+                  count: `${contributorsCount}`,
+                  label: 'Total Contributors'
+              },
+              {
+                  icon: 'fas fa-code-branch',
+                  count: `${repoData.default_branch_commits_count || '0'}`,
+                  growth: '+8%',
+                  label: 'Total Commits'
+              },
+              {
+                  icon: 'fas fa-code-pull-request',
+                  count: `${prsCount}`,
+                  label: 'Pull Requests'
+              },
+              {
+                  icon: 'fas fa-project-diagram',
+                  count: `${activeProjectsCount}`,
+                  label: 'Active Projects'
+              }
+          ];
+
+          const statsContainer = document.getElementById('stats-container');
+          if (!statsContainer) return;
+
+          statsContainer.innerHTML = stats.map(stat => createStatCard(stat)).join('');
+        }
+
+      function createStatCard(stat) {
+          return `
+              <div class="bg-white rounded-xl p-6 shadow-lg">
+                  <div class="flex items-center space-x-4">
+                      <div class="bg-blue-100 p-3 rounded-lg">
+                          <i class="${stat.icon} text-blue-600 text-xl"></i>
+                      </div>
+                      <div>
+                          <div class="flex items-center gap-2">
+                              <span class="text-3xl font-bold text-gray-800">${stat.count}</span>
+                  
+                          </div>
+                          <p class="text-gray-600">${stat.label}</p>
+                      </div>
+                  </div>
+              </div>
+          `;
+      }
+
+      function updateActiveFilters(filterValue) {
+          const activeFilters = document.getElementById('active-filters');
+          if (filterValue === 'All Contributors') {
+              activeFilters.innerHTML = '';
+              return;
+          }
+          
+          activeFilters.innerHTML = `
+              <div class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full flex items-center gap-2">
+                  <span>${filterValue}</span>
+                  <button onclick="clearFilter()" class="hover:text-blue-800">
+                      <i class="fas fa-times"></i>
+                  </button>
+              </div>
+          `;
+      }
+
+      function clearFilter() {
+          state.currentFilter = 'All Contributors';
+          document.getElementById('currentFilter').textContent = 'All Contributors';
+          document.getElementById('active-filters').innerHTML = '';
+          filterContributors();
+      }
+     
+      function renderFilterButtons(contributors) {
+    const filterButtons = document.getElementById('filter-buttons');
+    if (!filterButtons) return;
+
+    const filterCounts = {
+        'All Contributors': contributors.length,
+        'Core Team': contributors.filter(c => c.contributions >= 100).length,
+        'Maintainers': contributors.filter(c => c.contributions >= 50).length,
+        'Community': contributors.filter(c => c.contributions < 50).length
+    };
+
+    filterButtons.innerHTML = config.filters.categories.map(filter => {
+        const count = filterCounts[filter.label] || 0;
+        return `
+            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center gap-2"
+                data-filter="${filter.label}" onclick="applyFilter('${filter.label}')">
+                <i class="${filter.icon}"></i>
+                ${filter.label} (${count})
+            </button>
+        `;
+    }).join('');
+}
+            
+      function applyFilter(filterLabel) {
+          state.currentFilter = filterLabel;
+
+          const filteredContributors = state.allContributors.filter(c => {
+              if (filterLabel === 'Core Team') return c.contributions >= 100;
+              if (filterLabel === 'Maintainers') return c.contributions >= 50 && c.contributions < 100;
+              if (filterLabel === 'Community') return c.contributions < 50;
+              return true; // 'All Contributors'
+          });
+
+          renderContributors(filteredContributors);
+          updateActiveFilters(filterLabel);
+      }
+      
+      function createFilterButton(filter) {
+          return `
+              <button class="${filter.active ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} 
+                      px-4 py-2 rounded-lg flex items-center gap-2">
+                  <i class="${filter.icon}"></i>
+                  ${filter.label}
+                  <span class="${filter.active ? 'bg-blue-500' : 'bg-gray-200'} 
+                          px-2 py-0.5 rounded-md text-sm">
+                      ${filter.count}
+                  </span>
+              </button>
+          `;
+      }
+      
+      function filterContributors(searchTerm = '') {
+    const searchInput = document.getElementById('search-input');
+    searchTerm = searchTerm || searchInput.value.toLowerCase();
+
+    const filtered = state.allContributors.filter(contributor => {
+        const matchesSearch = contributor.login.toLowerCase().includes(searchTerm);
+        
+        switch (state.currentFilter) {
+            case 'Core Team':
+                return matchesSearch && contributor.contributions >= 100;
+            case 'Maintainers':
+                return matchesSearch && contributor.contributions >= 50 && contributor.contributions < 100;
+            case 'Community':
+                return matchesSearch && contributor.contributions < 50;
+            default: // 'All Contributors'
+                return matchesSearch;
+        }
+    });
+
+    renderContributors(filtered);
+    // Update counts for the filtered results
+    updateFilterCounts(filtered);
+}
+
+      async function fetchAllPullRequests() {
+    const headers = {
+        'Authorization': `token ${config.github.token}`,
+        'Accept': 'application/vnd.github.v3+json'
+    };
+
+    let pullRequests = [];
+    let page = 1;
+    let hasMore = true;
+
+    while (hasMore) {
+        const response = await fetch(
+            `${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/pulls?state=all&per_page=30&page=${page}`,
+            { headers }
+        );
+        const data = await response.json();
+
+        if (response.status !== 200) {
+            console.error('Error fetching pull requests:', data.message);
+            break;
+        }
+
+        pullRequests = pullRequests.concat(data);
+        hasMore = data.length === 30; // Continue fetching if the page is full
+        page++;
+    }
+
+    return pullRequests;
+}
+      
+      async function renderContributors(contributors) {
+    const contributorsContainer = document.getElementById('contributors-container');
+    if (!contributorsContainer) return;
+
+    try {
+        // Fetch all pull requests for the repository
+        const allPullRequests = await fetchAllPullRequests();
+
+        const contributorCards = await Promise.all(
+            contributors.map(contributor => createContributorCard(contributor, allPullRequests))
+        );
+        contributorsContainer.innerHTML = contributorCards.join('');
+    } catch (error) {
+        console.error('Error rendering contributors:', error);
+        showError('Failed to render contributor cards');
+    }
+}
+
+      function createContributorCard(contributor, allPullRequests) {
+    try {
+        // Format numbers for display
+        const formatNumber = (num) => num.toLocaleString();
+        
+        // Create badge based on contribution level
+        const getBadge = (contributions) => {
+            if (contributions >= 100) {
+                return '<span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm">Core Team</span>';
+            } else if (contributions >= 50) {
+                return '<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">Top Contributor</span>';
+            }
+            return '';
+        };
+
+        // Determine if grid or list view
+        const isGridView = document.getElementById('contributors-container').classList.contains('grid');
+        
+        if (isGridView) {
+            return `
+                <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                    <div class="relative">
+                        <img src="${contributor.avatar_url}" alt="${contributor.login}" 
+                            class="w-full h-48 object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold text-white">${contributor.login}</h3>
+                                ${getBadge(contributor.contributions)}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="grid grid-cols-4 gap-3 mb-4">
+                            <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
+                                <div class="text-xs text-gray-500">Commits</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
+                                <div class="text-xs text-gray-500">PRs</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.issues || 0)}</div>
+                                <div class="text-xs text-gray-500">Issues</div>
+                            </div>
+                            <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
+                                <div class="text-xs text-gray-500">Points</div>
+                            </div>
+                        </div>
+                        
+                        <a href="${contributor.html_url}" target="_blank" 
+                            class="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                            View Profile <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+        } else {
+            return `
+                <div class="border rounded-xl p-6 mb-4 hover:shadow-lg transition-shadow">
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <img src="${contributor.avatar_url}" alt="${contributor.login}" 
+                            class="w-32 h-32 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-4 mb-2">
+                                <h3 class="text-xl font-semibold">${contributor.login}</h3>
+                                <div class="flex gap-2">
+                                    ${getBadge(contributor.contributions)}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-4 mb-4">
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
+                                    <div class="text-sm text-gray-500">Commits</div>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
+                                    <div class="text-sm text-gray-500">PRs</div>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.issues || 0)}</div>
+                                    <div class="text-sm text-gray-500">Issues</div>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
+                                    <div class="text-sm text-gray-500">Points</div>
+                                </div>
+                            </div>
+                            <a href="${contributor.html_url}" target="_blank" 
+                                class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                View Profile <i class="fas fa-external-link-alt ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error creating contributor card:', error);
+        return '';
+    }
+}
+      
+      async function createContributorCard(contributor, allPullRequests) {
+          try {
+              const headers = {
+                  'Authorization': `token ${config.github.token}`,
+                  'Accept': 'application/vnd.github.v3+json'
+              };
+
+              // Fetch issues for this contributor
+              const issues = await fetch(
+                  `${config.github.apiUrl}/repos/${config.github.owner}/${config.github.repo}/issues?state=all&creator=${contributor.login}`,
+                  { headers }
+              ).then(res => res.json());
+
+              // Format numbers for display
+              const formatNumber = (num) => num.toLocaleString();
+              
+              // Create badge based on contribution level
+              const getBadge = (contributions) => {
+                  if (contributions >= 100) {
+                      return '<span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm">Core Team</span>';
+                  } else if (contributions >= 50) {
+                      return '<span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">Top Contributor</span>';
+                  }
+                  return '';
+              };
+
+              // Determine if grid or list view
+              const isGridView = document.getElementById('contributors-container').classList.contains('grid');
+              
+              if (isGridView) {
+                  return `
+                      <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                          <div class="relative">
+                              <img src="${contributor.avatar_url}" alt="${contributor.login}" 
+                                  class="w-full h-48 object-cover">
+                              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
+                                  <div class="flex items-center justify-between">
+                                      <h3 class="text-lg font-semibold text-white">${contributor.login}</h3>
+                                      ${getBadge(contributor.contributions)}
+                                  </div>
+                              </div>
+                          </div>
+                          
+                          <div class="p-4">
+                              <div class="grid grid-cols-3 gap-3 mb-4">
+                                  <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                      <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
+                                      <div class="text-sm text-gray-500">Commits</div>
+                                  </div>
+                                  <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                      <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
+                                      <div class="text-sm text-gray-500">PRs</div>
+                                  </div>
+                                  <div class="text-center p-2 bg-gray-50 rounded-lg">
+                                      <div class="text-lg font-bold text-gray-700">${formatNumber(issues.length)}</div>
+                                      <div class="text-sm text-gray-500">Issues</div>
+                                  </div>
+                              </div>
+                              
+                              <a href="${contributor.html_url}" target="_blank" 
+                                  class="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                  View Profile <i class="fas fa-external-link-alt ml-2"></i>
+                              </a>
+                          </div>
+                      </div>
+                  `;
+              } else {
+                  return `
+                      <div class="border rounded-xl p-6 mb-4 hover:shadow-lg transition-shadow">
+                          <div class="flex flex-wrap gap-6 items-start">
+                              <img src="${contributor.avatar_url}" alt="${contributor.login}" 
+                                  class="w-32 h-32 rounded-lg object-cover">
+                              <div class="flex-1">
+                                  <div class="flex items-center gap-4 mb-2">
+                                      <h3 class="text-xl font-semibold">${contributor.login}</h3>
+                                      <div class="flex gap-2">
+                                          ${getBadge(contributor.contributions)}
+                                      </div>
+                                  </div>
+                                  <div class="grid grid-cols-3 gap-4 mb-4">
+                                      <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                          <div class="text-lg font-bold text-gray-700">${formatNumber(contributor.contributions)}</div>
+                                          <div class="text-sm text-gray-500">Commits</div>
+                                      </div>
+                                      <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                          <div class="text-lg font-bold text-gray-700">${formatNumber(allPullRequests.filter(pr => pr.user?.login === contributor.login).length)}</div>
+                                          <div class="text-sm text-gray-500">PRs</div>
+                                      </div>
+                                      <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                          <div class="text-lg font-bold text-gray-700">${formatNumber(issues.length)}</div>
+                                          <div class="text-sm text-gray-500">Issues</div>
+                                      </div>
+                                  </div>
+                                  <a href="${contributor.html_url}" target="_blank" 
+                                      class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                      View Profile <i class="fas fa-external-link-alt ml-2"></i>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  `;
+              }
+          } catch (error) {
+              console.error('Error creating contributor card:', error);
+              return '';
+          }
+      }
+
+      function showError(message) {
+          const contributorsContainer = document.getElementById('contributors-container');
+          if (contributorsContainer) {
+              contributorsContainer.innerHTML = `
+                  <div class="text-red-500 text-center py-8">
+                      <i class="fas fa-exclamation-circle mr-2"></i>${message}
+                  </div>
+              `;
+          }
+      }
+
       function switchTab(tab) {
         currentTab = tab;
         document
@@ -341,7 +1026,10 @@
           .classList.toggle("hidden", tab !== "search");
         document
           .getElementById("videoSection")
-          .classList.toggle("hidden", tab !== "video");
+          .classList.toggle("hidden", tab !== "video");  
+          document
+          .getElementById("contributorSection")
+          .classList.toggle("hidden", tab !== "contributors");
         document
           .getElementById("uploadTab")
           .classList.toggle("tab-active", tab === "upload");
@@ -350,10 +1038,63 @@
           .classList.toggle("tab-active", tab === "search");
         document
           .getElementById("videoTab")
-          .classList.toggle("tab-active", tab === "video");
+          .classList.toggle("tab-active", tab === "video");    
+        document
+          .getElementById("contributorsTab")
+          .classList.toggle("tab-active", tab === "contributors");
       }
+     
+      function updateFilterCounts(contributors) {
+    // Calculate counts based on contribution thresholds
+    const allCount = contributors.length;
+    const coreTeamCount = contributors.filter(c => c.contributions >= 100).length;
+    const maintainersCount = contributors.filter(c => c.contributions >= 50 && c.contributions < 100).length;
+    const communityCount = contributors.filter(c => c.contributions < 50).length;
 
-      // File Handling
+    // Update filter count elements if they exist
+    const elements = {
+        all: document.getElementById('all-count'),
+        core: document.getElementById('core-count'),
+        maintainers: document.getElementById('maintainers-count'),
+        community: document.getElementById('community-count')
+    };
+
+    // Safely update counts
+    if (elements.all) elements.all.textContent = allCount;
+    if (elements.core) elements.core.textContent = coreTeamCount;
+    if (elements.maintainers) elements.maintainers.textContent = maintainersCount;
+    if (elements.community) elements.community.textContent = communityCount;
+
+    // Also update the filter buttons if they exist
+    const filterButtons = document.getElementById('filter-buttons');
+    if (filterButtons) {
+        const filterCounts = {
+            'All Contributors': allCount,
+            'Core Team': coreTeamCount,
+            'Maintainers': maintainersCount,
+            'Community': communityCount
+        };
+
+        config.filters.categories.forEach(filter => {
+            const button = filterButtons.querySelector(`[data-filter="${filter.label}"]`);
+            if (button) {
+                const count = filterCounts[filter.label] || 0;
+                const countElement = button.querySelector('.count');
+                if (countElement) {
+                    countElement.textContent = count;
+                }
+            }
+        });
+    }
+
+    return {
+        allCount,
+        coreTeamCount,
+        maintainersCount,
+        communityCount
+    };
+}
+
       function handleFileSelect(e) {
         const file = e.target.files[0];
         if (file) displayPreview(file);
@@ -1324,6 +2065,14 @@
         }
         return "/static/placeholder.png";
       }
+
+      function init() {
+        const elements = initializeEventListeners();
+
+        fetchGitHubData();
+
+         }
+       init();
     </script>
   </body>
 </html>
