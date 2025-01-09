@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
     summary="Upload Product Image",
     description="Upload and analyze a product image for listing generation."
 )
+
 async def upload_image_route(
     files: List[UploadFile] = File(...),
     title: str = Form(...),
