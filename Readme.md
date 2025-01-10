@@ -166,57 +166,15 @@ Error: Image processing failed
 Solution: Verify image format (supported: jpg, png) and size (<5MB)
 ```
 
-## 🔧 Priority Areas for Contribution  
-
-### 1. Database Enhancements  
-With the MongoDB setup completed, further enhancements should focus on:  
-- **Data Pooling**: Implement connection pooling using `pymongo`'s built-in pooling feature to improve performance by reusing database connections and reducing overhead.
-- **Error Handling**:  
-  - Implement robust error-handling mechanisms for processing failures.  
-  - Log errors to allow debugging and tracking. 
-
-### 2. Processor Integration  
-- **Connect Processors**: Integrate `image_processor.py` and `video_processor.py` with `main.py`.  
-- **Error Handling**:  
-  - Implement robust error-handling mechanisms for processing failures.  
-  - Log errors to allow debugging and tracking.  
-- **Input Validation**:  
-  - Validate media file formats, sizes, and dimensions before processing.  
-  - Reject unsupported formats with clear error messages.  
-
-### 3. UI/UX Improvements  
-- **Progress Indicators**:  
-  - Show real-time status updates during image and video processing.  
-- **Responsive Design**:  
-  - Ensure a seamless user experience across devices, especially mobile.  
-  - Test and optimize for different screen sizes and resolutions.  
-
-## 🛣️ Project Roadmap
-
-### Phase 1 (Complete)
-- ✅ Basic image and video processing
-- ✅ Initial API setup
-- ✅ Database integration
-
-### Phase 2 (Current)
-- 🔄 Enhanced error handling
-- 📋 User authentication
-- 📋 Batch processing capabilities
-
-### Phase 3 (Future)
-- 📋 Advanced AI features
-- 📋 Social media platform integration
-- 📋 Analytics dashboard
-
 ## 📁 Project Structure  
 
 The detailed project structure is available in a separate file. Please refer to:  
-[📁 Project Structure Details](./docs/project_structure.md)
+[📁 Project Structure Details](./docs/PROJECT_STRUCTURE.md)
 
 ## 💡 API Endpoints
 
 The detailed API endpoints are available in a separate file. Please refer to:  
-[📁 Project Structure Details](./docs/project_structure.md)
+[💡 API Endpoints](./docs/PROJECT_STRUCTURE.md)
 
 
 ## 🤝 Contributing
@@ -232,44 +190,9 @@ graph TD
     E --> F[Create Pull Request]
 ```
 
-### Detailed Contribution Guide
-## Star this repository ⭐
+### **The detailed contributing guideline is available [here](./docs/CONTRIBUTING.md)**.
 
-#### 1. Development Workflow
-1. Find or create an issue
-2. Comment for assignment
-3. Create feature branch:
-```bash
-git checkout -b feature/your-feature-name
-```
-
-#### 2. Code Guidelines
-- Follow PEP 8
-- Add docstrings
-- Write unit tests
-- Handle exceptions properly
-- Use type hints
-
-#### 3. Submitting Changes
-```bash
-# Test your changes
-python -m pytest
-
-# Commit and push
-git add .
-git commit -m "feat: description"
-git push origin feature/your-feature-name
-```
-
-#### 4. Pull Request Process
-1. Create PR from feature branch
-2. Fill PR template
-3. Link related issue
-4. Await review
-
-### 🎯 Good First Issues
-- Look for issues tagged with `good-first-issue`
-- Join our [community discussions](https://github.com/Varsha-1605/SocioSell/discussions) for guidance
+### Star this repository ⭐
 
 ## 👥 Community
 
