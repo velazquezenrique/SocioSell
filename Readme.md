@@ -20,8 +20,7 @@
   An open-source initiative to transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology. </p>
 
 [🌟 Features](#-features) •
-[⚙️ Installation](#️-installation) •
-[🚀 Usage](#-usage) •
+[⚙️ Installation](#development-setup) •
 [💡 API Endpoints](#-api-endpoints) •
 [🤝 Contributing](#-contributing) •
 [👥 Community](#-community)
@@ -111,7 +110,7 @@ graph LR
     C --> D[Font Awesome]
 ```
 
-## ⚙️ Development Setup  
+## Development Setup  
 
 I. Clone the repository 
 > ```  
