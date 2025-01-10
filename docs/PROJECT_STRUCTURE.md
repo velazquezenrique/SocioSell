@@ -1,3 +1,8 @@
+## Table of Contents
+- [Project Structure](#📁-project-structure)
+- [API Endpoints](#💡-api-endpoints )
+- [Indexing Overview](#🗂️-indexing-overview )
+
 ## 📁 Project Structure
 ```
 SocioSell/
