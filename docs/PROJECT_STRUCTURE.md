@@ -1,9 +1,9 @@
 ## Table of Contents
-- [Project Structure](#📁-project-structure)
+- [Project Structure](#-project-structure)
 - [API Endpoints](#💡-api-endpoints )
-- [Indexing Overview](#🗂️-indexing-overview )
+- [Indexing Overview](#indexing-overview )
 
-## 📁 Project Structure
+## Project Structure
 ```
 SocioSell/
 ├── 📜 main.py                      # FastAPI application entry point
@@ -42,7 +42,7 @@ SocioSell/
 └── 📝 .gitignore                   # Git ignore rules
 ```
 
-## 💡 API Endpoints  
+## API Endpoints  
 
 ### Image Endpoints  
 
@@ -156,7 +156,7 @@ SocioSell/
 ---
 ---
 
-## 🗂️ Indexing Overview  
+## Indexing Overview  
 
 The indexing strategy is designed to:  
 - **Speed Up Queries**: Makes searching faster for fields like `id`, `title`, and timestamps.  
