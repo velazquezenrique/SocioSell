@@ -87,53 +87,10 @@ Watch our community demo:
   </tr>
 </table>
 
-## ⚠️ Current Implementation Status and Limitations
-
-### Processing Limitations
-- The system currently processes custom data that is not linked to the database
-- Uses `image_data` and `video_data` for accessing media details
-- Maximum processing capacity (due to Gemini API constraints):
-  - Images: Maximum 5 images per request
-  - Videos: Maximum 3 videos, each limited to 10 seconds
-
-### Implementation Notes for Contributors
-- `image_processor.py` and `video_processor.py` are implemented and functional
-- Integration needed: These processors need to be linked to `main.py`
-- Database integration is pending and is a key area for contribution
-
-### Priority Areas for Contribution
-1. Database Integration
-   - Implement MongoDB connection for media storage
-   - Create data models for products and listings
-   - Add database querying functionality
-
-2. Processor Integration
-   - Link `image_processor.py` and `video_processor.py` to `main.py`
-   - Implement error handling for processing failures
-   - Add input validation for media files
-
-3. UI/UX Improvements
-   - Add progress indicators for processing
-   - Implement drag-and-drop file upload
-   - Create responsive design for mobile users
-
-## 🛣️ Project Roadmap
-
-### Phase 1 (Current)
-- ✅ Basic image and video processing
-- ✅ Initial API setup
-- 🔄 Database integration
-
-### Phase 2 (Upcoming)
-- 📋 Enhanced error handling
-- 📋 User authentication
-- 📋 Batch processing capabilities
-
-### Phase 3 (Future)
-- 📋 Advanced AI features
-- 📋 Social media platform integration
-- 📋 Analytics dashboard
-
+## ⚠️ Limitations  
+- **Maximum Processing Capacity** (due to Gemini API constraints):  
+  - **Images**: Up to 5 images per request.  
+  - **Videos**: Up to 3 videos, each limited to 10 seconds in duration.  
 
 ## 🔧 Technology Stack
 
@@ -154,29 +111,40 @@ graph LR
     C --> D[Font Awesome]
 ```
 
-## ⚙️ Development Setup
+## ⚙️ Development Setup  
 
-```bash
-# Clone repository
-git clone https://github.com/Varsha-1605/SocioSell.git
-cd SocioSell
+I. Clone the repository 
+> ```  
+>  git clone https://github.com/Varsha-1605/SocioSell.git  
+> cd SocioSell
+> ```  
 
-# Set up virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Create .env file
-cat > .env << EOL
-GOOGLE_API_KEY=your_google_api_key
-MONGODB_URL=your_mongodb_connection_string
-EOL
-
-# Initialize database
-python database_setup.py
-```
+II. Set up a virtual environment
+> ```
+> python -m venv venv  
+> source venv/bin/activate  # Windows: > venv\Scripts\activate  
+> ```
+III. Install dependencies
+> ```
+> pip install -r requirements.txt  
+> ```
+IV. Create a `.env` file
+> ```
+> cat > .env << EOL  
+> GOOGLE_API_KEY=your_google_api_key  
+> MONGODB_URL=your_mongodb_connection_string  
+> EOL  
+> ```
+V. Initialize the database
+> ```
+> python database_setup.py  
+> ```
+VII. Start the development server
+> ```
+> uvicorn main:app --reload  
+> ```
+VIII. Access the application
+- Open your browser and go to `http://localhost:8000`.
 
 ### Troubleshooting Common Issues
 
@@ -198,72 +166,58 @@ Error: Image processing failed
 Solution: Verify image format (supported: jpg, png) and size (<5MB)
 ```
 
+## 🔧 Priority Areas for Contribution  
 
+### 1. Database Enhancements  
+With the MongoDB setup completed, further enhancements should focus on:  
+- **Data Pooling**: Implement connection pooling using `pymongo`'s built-in pooling feature to improve performance by reusing database connections and reducing overhead.
+- **Error Handling**:  
+  - Implement robust error-handling mechanisms for processing failures.  
+  - Log errors to allow debugging and tracking. 
 
-## 📁 Project Structure
-```
-SocioSell/
-├── 📜 main.py                    # FastAPI application entry point
-├── 📁 .github/                   # GitHub specific files
-│   └── ISSUE_TEMPLATE/          # Issue templates for contributions
-├── 📁 static/                    # Static assets and files
-├── 📁 templates/                 # HTML templates
-├── 🔧 content_processor.py       # Content analysis and processing
-├── 💾 database_setup.py          # Database initialization
-├── 🖼️ image_processor.py         # Image processing module
-├── 📊 image_data.py              # Image data structures
-├── 🎥 video_processor.py         # Video processing module
-├── 📊 video_data.py              # Video data structures
-├── 🧪 test_image_processor.py    # Image processing tests
-├── 🧪 test_video_processor.py    # Video processing tests
-├── 📋 requirements.txt           # Project dependencies
-├── 📝 README.md                  # Project documentation
-├── 🔒 .env                       # Environment variables
-└── 📝 .gitignore                # Git ignore rules
-```
-## 🚀 Usage
+### 2. Processor Integration  
+- **Connect Processors**: Integrate `image_processor.py` and `video_processor.py` with `main.py`.  
+- **Error Handling**:  
+  - Implement robust error-handling mechanisms for processing failures.  
+  - Log errors to allow debugging and tracking.  
+- **Input Validation**:  
+  - Validate media file formats, sizes, and dimensions before processing.  
+  - Reject unsupported formats with clear error messages.  
 
-1. Start the development server:
-```bash
-uvicorn main:app --reload
-```
+### 3. UI/UX Improvements  
+- **Progress Indicators**:  
+  - Show real-time status updates during image and video processing.  
+- **Responsive Design**:  
+  - Ensure a seamless user experience across devices, especially mobile.  
+  - Test and optimize for different screen sizes and resolutions.  
 
-2. Access the application at `http://localhost:8000`
+## 🛣️ Project Roadmap
+
+### Phase 1 (Complete)
+- ✅ Basic image and video processing
+- ✅ Initial API setup
+- ✅ Database integration
+
+### Phase 2 (Current)
+- 🔄 Enhanced error handling
+- 📋 User authentication
+- 📋 Batch processing capabilities
+
+### Phase 3 (Future)
+- 📋 Advanced AI features
+- 📋 Social media platform integration
+- 📋 Analytics dashboard
+
+## 📁 Project Structure  
+
+The detailed project structure is available in a separate file. Please refer to:  
+[📁 Project Structure Details](./docs/project_structure.md)
 
 ## 💡 API Endpoints
 
-<table>
-  <tr>
-    <th>Endpoint</th>
-    <th>Method</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>/upload/</code></td>
-    <td>POST</td>
-    <td>Upload & analyze products</td>
-  </tr>
-  <tr>
-    <td><code>/search/{title}</code></td>
-    <td>GET</td>
-    <td>Search product database</td>
-  </tr>
-  <tr>
-    <td><code>/listings/{product_id}</code></td>
-    <td>GET</td>
-    <td>Get listing details</td>
-  </tr>
-  <tr>
-    <td><code>/compare/{product_id}</code></td>
-    <td>GET</td>
-    <td>Compare products</td>
-  </tr>
-  <tr>
-    <td><code>/health</code></td>
-    <td>GET</td>
-    <td>Check health status of DB</td>
-  </tr>
-</table>
+The detailed API endpoints are available in a separate file. Please refer to:  
+[📁 Project Structure Details](./docs/project_structure.md)
+
 
 ## 🤝 Contributing
 
@@ -280,24 +234,8 @@ graph TD
 
 ### Detailed Contribution Guide
 ## Star this repository ⭐
-#### 1. Environment Setup
-```bash
-# Fork and clone
-git fork https://github.com/Varsha-1605/SocioSell
-git clone [your-fork-url]
-cd SocioSell
 
-# Setup virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Configure environment variables
-cp .env.example .env
-# Edit .env with your API keys
-```
-
-#### 2. Development Workflow
+#### 1. Development Workflow
 1. Find or create an issue
 2. Comment for assignment
 3. Create feature branch:
@@ -305,14 +243,14 @@ cp .env.example .env
 git checkout -b feature/your-feature-name
 ```
 
-#### 3. Code Guidelines
+#### 2. Code Guidelines
 - Follow PEP 8
 - Add docstrings
 - Write unit tests
 - Handle exceptions properly
 - Use type hints
 
-#### 4. Submitting Changes
+#### 3. Submitting Changes
 ```bash
 # Test your changes
 python -m pytest
@@ -323,7 +261,7 @@ git commit -m "feat: description"
 git push origin feature/your-feature-name
 ```
 
-#### 5. Pull Request Process
+#### 4. Pull Request Process
 1. Create PR from feature branch
 2. Fill PR template
 3. Link related issue
