@@ -263,6 +263,11 @@ uvicorn main:app --reload
     <td>GET</td>
     <td>Check health status of DB</td>
   </tr>
+  <tr>
+    <td><code>/pool-stats</code></td>
+    <td>GET</td>
+    <td>Check pool status of DB</td>
+  </tr>
 </table>
 
 ## 🤝 Contributing
