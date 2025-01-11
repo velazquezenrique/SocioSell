@@ -20,8 +20,7 @@
   An open-source initiative to transform social media content into comprehensive Amazon-style product listings using cutting-edge AI technology. </p>
 
 [🌟 Features](#-features) •
-[⚙️ Installation](#️-installation) •
-[🚀 Usage](#-usage) •
+[⚙️ Installation](#development-setup) •
 [💡 API Endpoints](#-api-endpoints) •
 [🤝 Contributing](#-contributing) •
 [👥 Community](#-community)
@@ -87,53 +86,10 @@ Watch our community demo:
   </tr>
 </table>
 
-## ⚠️ Current Implementation Status and Limitations
-
-### Processing Limitations
-- The system currently processes custom data that is not linked to the database
-- Uses `image_data` and `video_data` for accessing media details
-- Maximum processing capacity (due to Gemini API constraints):
-  - Images: Maximum 5 images per request
-  - Videos: Maximum 3 videos, each limited to 10 seconds
-
-### Implementation Notes for Contributors
-- `image_processor.py` and `video_processor.py` are implemented and functional
-- Integration needed: These processors need to be linked to `main.py`
-- Database integration is pending and is a key area for contribution
-
-### Priority Areas for Contribution
-1. Database Integration
-   - Implement MongoDB connection for media storage
-   - Create data models for products and listings
-   - Add database querying functionality
-
-2. Processor Integration
-   - Link `image_processor.py` and `video_processor.py` to `main.py`
-   - Implement error handling for processing failures
-   - Add input validation for media files
-
-3. UI/UX Improvements
-   - Add progress indicators for processing
-   - Implement drag-and-drop file upload
-   - Create responsive design for mobile users
-
-## 🛣️ Project Roadmap
-
-### Phase 1 (Current)
-- ✅ Basic image and video processing
-- ✅ Initial API setup
-- 🔄 Database integration
-
-### Phase 2 (Upcoming)
-- 📋 Enhanced error handling
-- 📋 User authentication
-- 📋 Batch processing capabilities
-
-### Phase 3 (Future)
-- 📋 Advanced AI features
-- 📋 Social media platform integration
-- 📋 Analytics dashboard
-
+## ⚠️ Limitations  
+- **Maximum Processing Capacity** (due to Gemini API constraints):  
+  - **Images**: Up to 5 images per request.  
+  - **Videos**: Up to 3 videos, each limited to 10 seconds in duration.  
 
 ## 🔧 Technology Stack
 
@@ -154,29 +110,40 @@ graph LR
     C --> D[Font Awesome]
 ```
 
-## ⚙️ Development Setup
+## Development Setup  
 
-```bash
-# Clone repository
-git clone https://github.com/Varsha-1605/SocioSell.git
-cd SocioSell
+I. Clone the repository 
+> ```  
+>  git clone https://github.com/Varsha-1605/SocioSell.git  
+> cd SocioSell
+> ```  
 
-# Set up virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Create .env file
-cat > .env << EOL
-GOOGLE_API_KEY=your_google_api_key
-MONGODB_URL=your_mongodb_connection_string
-EOL
-
-# Initialize database
-python database_setup.py
-```
+II. Set up a virtual environment
+> ```
+> python -m venv venv  
+> source venv/bin/activate  # Windows: > venv\Scripts\activate  
+> ```
+III. Install dependencies
+> ```
+> pip install -r requirements.txt  
+> ```
+IV. Create a `.env` file
+> ```
+> cat > .env << EOL  
+> GOOGLE_API_KEY=your_google_api_key  
+> MONGODB_URL=your_mongodb_connection_string  
+> EOL  
+> ```
+V. Initialize the database
+> ```
+> python database_setup.py  
+> ```
+VII. Start the development server
+> ```
+> uvicorn main:app --reload  
+> ```
+VIII. Access the application
+- Open your browser and go to `http://localhost:8000`.
 
 ### Troubleshooting Common Issues
 
@@ -198,37 +165,10 @@ Error: Image processing failed
 Solution: Verify image format (supported: jpg, png) and size (<5MB)
 ```
 
+## 📁 Project Structure  
 
-
-## 📁 Project Structure
-```
-SocioSell/
-├── 📜 main.py                    # FastAPI application entry point
-├── 📁 .github/                   # GitHub specific files
-│   └── ISSUE_TEMPLATE/          # Issue templates for contributions
-├── 📁 static/                    # Static assets and files
-├── 📁 templates/                 # HTML templates
-├── 🔧 content_processor.py       # Content analysis and processing
-├── 💾 database_setup.py          # Database initialization
-├── 🖼️ image_processor.py         # Image processing module
-├── 📊 image_data.py              # Image data structures
-├── 🎥 video_processor.py         # Video processing module
-├── 📊 video_data.py              # Video data structures
-├── 🧪 test_image_processor.py    # Image processing tests
-├── 🧪 test_video_processor.py    # Video processing tests
-├── 📋 requirements.txt           # Project dependencies
-├── 📝 README.md                  # Project documentation
-├── 🔒 .env                       # Environment variables
-└── 📝 .gitignore                # Git ignore rules
-```
-## 🚀 Usage
-
-1. Start the development server:
-```bash
-uvicorn main:app --reload
-```
-
-2. Access the application at `http://localhost:8000`
+The detailed project structure is available in a separate file. Please refer to:  
+[📁 Project Structure Details](./docs/PROJECT_STRUCTURE.md)
 
 ## 💡 API Endpoints
 
@@ -269,6 +209,8 @@ uvicorn main:app --reload
     <td>Check pool status of DB</td>
   </tr>
 </table>
+The detailed API endpoints are available in a separate file. Please refer to:  
+[💡 API Endpoints](./docs/PROJECT_STRUCTURE.md)
 
 ## 🤝 Contributing
 
@@ -283,60 +225,9 @@ graph TD
     E --> F[Create Pull Request]
 ```
 
-### Detailed Contribution Guide
-## Star this repository ⭐
-#### 1. Environment Setup
-```bash
-# Fork and clone
-git fork https://github.com/Varsha-1605/SocioSell
-git clone [your-fork-url]
-cd SocioSell
+### **The detailed contributing guideline is available [here](./docs/CONTRIBUTING.md)**.
 
-# Setup virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Configure environment variables
-cp .env.example .env
-# Edit .env with your API keys
-```
-
-#### 2. Development Workflow
-1. Find or create an issue
-2. Comment for assignment
-3. Create feature branch:
-```bash
-git checkout -b feature/your-feature-name
-```
-
-#### 3. Code Guidelines
-- Follow PEP 8
-- Add docstrings
-- Write unit tests
-- Handle exceptions properly
-- Use type hints
-
-#### 4. Submitting Changes
-```bash
-# Test your changes
-python -m pytest
-
-# Commit and push
-git add .
-git commit -m "feat: description"
-git push origin feature/your-feature-name
-```
-
-#### 5. Pull Request Process
-1. Create PR from feature branch
-2. Fill PR template
-3. Link related issue
-4. Await review
-
-### 🎯 Good First Issues
-- Look for issues tagged with `good-first-issue`
-- Join our [community discussions](https://github.com/Varsha-1605/SocioSell/discussions) for guidance
+### Star this repository ⭐
 
 ## 👥 Community
 
