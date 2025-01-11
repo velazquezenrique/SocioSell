@@ -44,8 +44,18 @@ load_dotenv()
 
 # MongoDB setup
 MONGODB_URL = os.getenv("MONGODB_URL")
-client = AsyncIOMotorClient(MONGODB_URL)
-db = client.social_media_products
+try:
+    client = AsyncIOMotorClient(
+        MONGODB_URL,
+        maxPoolSize=20,
+        minPoolSize=5,
+        connectTimeoutMS=10000   
+    )
+    db = client.social_media_products
+    logger.info("MongoDB client initialized with connection pooling")
+except Exception as e:
+    logger.error(f"Failed to initialize MongoDB client: {str(e)}")
+    raise
 
 # Image Collections
 product_collection = db["products"]
