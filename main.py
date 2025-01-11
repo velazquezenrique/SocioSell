@@ -99,6 +99,14 @@ async def health_check():
     # Log status
     logger.info(f"Health Check: DB status - {db_status}, Response Time - {response_time}ms")
 
+    try:
+        stats = await client.admin.command('serverStatus')
+        connection_stats = stats.get('connections', {})
+        logger.info(f"Connection Pool Stats: {connection_stats}")
+    except Exception as pool_exception:
+        logger.error(f"Failed to retrieve pool stats: {pool_exception}")
+
+
     return JSONResponse(
         content={
             "status": "healthy" if db_status == "connected" else "unhealthy",
@@ -107,6 +115,21 @@ async def health_check():
         },
         status_code=status_code
     )
+
+@app.get("/pool-stats", tags=["Monitoring"])
+async def pool_stats():
+    """
+    Endpoint to retrieve and log MongoDB connection pool stats.
+    """
+    try:
+        stats = await client.admin.command('serverStatus')
+        connection_stats = stats.get('connections', {})
+        logger.info(f"Connection Pool Stats: {connection_stats}")
+        return JSONResponse(content={"pool_stats": connection_stats}, status_code=200)
+    except Exception as e:
+        logger.error(f"Error fetching pool stats: {e}")
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
 
 if __name__ == "__main__":
     import uvicorn
