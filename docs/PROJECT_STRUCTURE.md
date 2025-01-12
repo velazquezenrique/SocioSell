@@ -11,7 +11,8 @@ SocioSell/
 │   └── ISSUE_TEMPLATE/              # Issue templates for contributions
 ├── 📁 static/                      # Static assets and files
 ├── 📁 templates/                   # HTML templates
-│   ├── 📊 index.html                  
+│   ├── 📊 index.html     
+│   ├── 📊 index.html     
 ├── 📁 models/                      # Models folder
 │   ├── 📊 analytics.py             # Analytics model
 │   ├── 📊 listing.py               # Listing model
@@ -53,7 +54,7 @@ SocioSell/
     <th>Description</th>
   </tr>
   <tr>
-    <td><code>/upload/image/</code></td>
+    <td><code>/upload_image/</code></td>
     <td>POST</td>
     <td>Upload & analyze a product image</td>
   </tr>
