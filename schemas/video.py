@@ -7,6 +7,7 @@ from typing import Optional
 from fastapi import File, UploadFile, Form
 from video_data import VIDEO_DATABASE
 from datetime import datetime
+from schemas.image import get_categories
     
 router = APIRouter()
 
@@ -17,6 +18,7 @@ async def upload_video(
     description: Optional[str] = Form(None)
 ):
     from main import logger
+    from main import db
     try:
         # Common keywords for each category
         category_keywords = {
@@ -26,6 +28,30 @@ async def upload_video(
             "sports": ["fitness", "workout", "sports", "exercise", "training"]
         }
 
+        # Fetch categories from the database
+        categories_data = await get_categories()
+
+        # Update category_keywords with video categories and subcategories from db
+        for category in categories_data["product_categories"]:
+            category_keywords[category] = category_keywords.get(category, [])
+
+        # Update category_keywords with video categories and subcategories from db
+        for category in categories_data["video_categories"]:
+            # Fetch subcategories for each video category
+            video_subcategories_cursor = db["videos"].distinct("subcategory", {"category": category})
+            video_subcategories = await video_subcategories_cursor  # Await the cursor to get the list
+
+            # Ensure subcategories are unique for each category
+            if category in category_keywords:
+                # Add subcategories and remove duplicates
+                category_keywords[category].extend(
+                    [subcategory for subcategory in video_subcategories if subcategory not in category_keywords[category]]
+                )
+                # Remove duplicates by converting the list to a set, then back to a list
+                category_keywords[category] = list(set(category_keywords[category]))
+            else:
+                category_keywords[category] = list(set(video_subcategories))  # Remove duplicates for new category
+
         # Determine category based on title
         video_category = "general"
         for category, keywords in category_keywords.items():
@@ -33,18 +59,37 @@ async def upload_video(
                 video_category = category
                 break
 
-        # Match with existing video data first
-        for category, videos in VIDEO_DATABASE.items():
-            for video_id, video_data in videos.items():
-                if any(keyword.lower() in title.lower() for keyword in video_data["title"].split()):
-                    return {
-                        "status": "success",
-                        "message": "Video processed successfully",
-                        "product_info": {
-                            "id": video_id,
-                            **video_data
-                        }
+        # Fetch videos from the database that match the determined category
+        videos_cursor = db["videos"].find({"category": video_category})
+        videos = await videos_cursor.to_list(length=None)
+
+        for video in videos:
+            if any(keyword.lower() in title.lower() for keyword in video["title"].split()):
+                # If a video is found with matching keywords, get its listings
+                video_id = str(video["_id"])  # Assuming video has a MongoDB ObjectId
+
+                # Call the get_video_listings function to get the listings for the video
+                video_listings = await get_video_listings(video_id)
+
+                return {
+                    "status": "success",
+                    "message": "Video processed successfully",
+                    "video_info": {
+                        "id": video_id,
+                        "title": video["title"],
+                        "category": video["category"],
+                        "subcategory": video["subcategory"],
+                        "duration": video["duration"],
+                        "views": video["views"],
+                        "highlights": video["highlights"],
+                        "transcript_summary": video["transcript_summary"],
+                        "key_features": video["key_features"],
+                        "price_range": video["price_range"],
+                        "created_at": video["created_at"],
+                        "updated_at": video["updated_at"],
+                        "listings": video_listings  # Add the listings to the response
                     }
+                }
 
         # Generate unique video ID
         unique_id = f"video_{abs(hash(title))}"[:15]
@@ -125,34 +170,38 @@ async def upload_video(
             ]
         })
 
-        # Generate a comprehensive response
+        video_data = Video(
+            id=unique_id,
+            title=title,
+            category=video_category,
+            subcategory=video_category,
+            duration="10:25",
+            views="15K",
+            highlights=category_info["highlights"],
+            transcript_summary=description or f"Detailed analysis of {title}",
+            key_features=category_info["key_features"],
+            price_range="$99 - $999",
+        )
+
+        video_listing_data = VideoListing(
+            video_id=unique_id,
+            platform="YouTube",
+            title=title,
+            views="10K",
+            rating=4.8,
+            key_timestamps={"0:00": "Introduction", "5:00": "Key Features"},
+            product_links=[
+                ProductLink(store="Amazon", price="$499"),
+                ProductLink(store="Best Buy", price="$519"),
+            ],
+        )
+
+        # Return structured response
         return {
             "status": "success",
             "message": "Video analyzed successfully",
-            "product_info": {
-                "id": unique_id,
-                "title": title,
-                "category": video_category,
-                "duration": "10:25",
-                "highlights": category_info["highlights"],
-                "transcript_summary": description or f"Detailed analysis of {title}",
-                "key_features": category_info["key_features"],
-                "price_range": "$99 - $999",
-                "analytics": {
-                    "views": "15K",
-                    "likes": "1.2K",
-                    "engagement_rate": "8.5%"
-                },
-                "platforms": [
-                    {"name": "YouTube", "views": "10K", "rating": 4.8},
-                    {"name": "TikTok", "views": "5K", "rating": 4.7}
-                ],
-                "recommendations": [
-                    "Similar product 1",
-                    "Alternative option 2",
-                    "Related item 3"
-                ]
-            }
+            "video_info": video_data,
+            "video_listing": video_listing_data,
         }
 
     except Exception as e:
@@ -233,7 +282,7 @@ async def get_video_listings(video_id: str):
 
     # Default response if no listing is found
     default_listing = VideoListing(
-        product_id=f"prod_{abs(hash(video_id))}",
+        video_id=f"prod_{abs(hash(video_id))}",
         platform="YouTube",
         title="Product Review",
         views="10K",
@@ -361,7 +410,7 @@ async def get_video_analytics(video_id: str):
 
     # Default analytics response if no data is found
     default_analytics = VideoAnalytics(
-        product_id=video_id,
+        video_id=video_id,
         engagement=VideoEngagement(
             views="5K",
             likes="500",

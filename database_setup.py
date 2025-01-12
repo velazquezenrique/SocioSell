@@ -88,9 +88,9 @@ def setup_product_database():
         video_collection.create_index([("key_features", ASCENDING)])
         video_collection.create_index([("highlights", ASCENDING)])        
         # Create indexes for video listing
-        video_listings_collection.create_index([("product_id", ASCENDING), ("id", ASCENDING)])
+        video_listings_collection.create_index([("video_id", ASCENDING), ("id", ASCENDING)])
         video_listings_collection.create_index([("id", ASCENDING)], unique=True)                  
-        video_listings_collection.create_index([("product_id", ASCENDING)])                  
+        video_listings_collection.create_index([("video_id", ASCENDING)])                  
         video_listings_collection.create_index([("platform", ASCENDING)])                    
         video_listings_collection.create_index([("title", ASCENDING)])                       
         video_listings_collection.create_index([("views", ASCENDING)])                       
@@ -99,11 +99,11 @@ def setup_product_database():
         video_listings_collection.create_index([("updated_at", ASCENDING)])                  
         video_listings_collection.create_index([("product_links.price", ASCENDING)]) 
         # Create indexes for video analytics
-        video_analytics_collection.create_index([("id", ASCENDING), ("product_id", ASCENDING)])
+        video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
         video_analytics_collection.create_index([("engagement.views", ASCENDING), ("engagement.likes", ASCENDING)])
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING), ("performance.click_through_rate", ASCENDING)])
         video_analytics_collection.create_index([("id", ASCENDING)], unique=True)                
-        video_analytics_collection.create_index([("product_id", ASCENDING)])                
+        video_analytics_collection.create_index([("video_id", ASCENDING)])                
         video_analytics_collection.create_index([("created_at", ASCENDING)])                
         video_analytics_collection.create_index([("updated_at", ASCENDING)])                
         video_analytics_collection.create_index([("engagement.views", ASCENDING)])          
@@ -179,7 +179,7 @@ def setup_product_database():
         
         # Insert sample data
         # product_references.insert_many(sample_products)
-        logger.info("Sample product references inserted successfully")
+        logger.info("File loaded successfully")
         
         # Insert sample listings
         # sample_listings = [

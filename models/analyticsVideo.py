@@ -18,7 +18,7 @@ class VideoPerformance(BaseModel):
     conversion_rate: str
 
 class VideoAnalytics(BaseModel):
-    product_id: str
+    video_id: str
     engagement: VideoEngagement
     audience: VideoAudience
     performance: VideoPerformance
