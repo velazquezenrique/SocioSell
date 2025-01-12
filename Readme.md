@@ -165,6 +165,15 @@ Error: Image processing failed
 Solution: Verify image format (supported: jpg, png) and size (<5MB)
 ```
 
+4. Metadata-generation-failed
+```bash
+Error: metadata-generation-failed
+Solution: Install Microsoft C++ Build Tools and upgrade pip, setuptools, and wheel:
+Python versions between 3.9 and 3.12 only
+1. Install from https://visualstudio.microsoft.com/visual-cpp-build-tools/.
+2. Run: pip install --upgrade pip setuptools wheel
+```
+
 ## 📁 Project Structure  
 
 The detailed project structure is available in a separate file. Please refer to:  
