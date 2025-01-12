@@ -13,6 +13,8 @@ from time import time
 from image_processor import ImageProcessor
 from routers import image, video, combined
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
+
 
 # Configure logging
 logging.basicConfig(
@@ -146,48 +148,61 @@ async def upload_image(request: Request, file: UploadFile):
 
 async def generate_recommendations(data):
     """
-    Generate personalized recommendations based on the product's category and key features using MongoDB.
+    Generate personalized recommendations based on the product's category and features using MongoDB.
+    Ensures at least 3-5 recommendations.
     """
     try:
-        # Connect to MongoDB
+        # Establish MongoDB connection
         uri = os.getenv("MONGODB_URL")
-        client = MongoClient(uri)
+        client = MongoClient(uri, server_api=ServerApi('1'))
         db = client.social_media_products
         product_collection = db["products"]
 
-        # Build the query for recommendations
         category = data.get("category", None)
         key_features = data.get("key_features", [])
 
-        query = {}
-        if category:
-            query["category"] = category
-        if key_features:
-            query["common_features"] = {"$in": key_features}
+        if not category:
+            logger.warning("No category provided for recommendation. Returning default response.")
+            return [{"name": "No recommendations available", "price": "N/A", "url": "#"}]
 
-        # Fetch recommendations from MongoDB
-        recommendations_cursor = product_collection.find(query).limit(5)
-        recommendations = []
+        # Primary query: match category and at least one key feature
+        primary_query = {
+            "category": category,
+            "common_features": {"$in": key_features}
+        }
 
-        for product in recommendations_cursor:
-            recommendations.append({
+        # Fallback query: match only the category if primary query has insufficient results
+        fallback_query = {"category": category}
+
+        # Fetch recommendations
+        recommendations = list(product_collection.find(primary_query).limit(5))
+        if len(recommendations) < 3:
+            additional_recommendations = list(
+                product_collection.find(fallback_query).limit(5 - len(recommendations))
+            )
+            recommendations.extend(additional_recommendations)
+
+        # Format recommendations
+        formatted_recommendations = [
+            {
                 "name": product.get("brand_options", ["Unknown Product"])[0],
-                "price": product.get("price_ranges", {}).get("budget", {}).get("min", "N/A"),
-                "description": f"Features: {', '.join(product.get('common_features', []))}"
-            })
+                "price": product.get("price_ranges", {}).get("mid_range", {}).get("min", "N/A"),
+                "features": product.get("common_features", []),
+            }
+            for product in recommendations
+        ]
 
-        # Close MongoDB connection
-        client.close()
+        # Return default if still insufficient recommendations
+        if not formatted_recommendations:
+            formatted_recommendations = [{"name": "No recommendations available", "price": "N/A", "url": "#"}]
 
-        # If no recommendations found, return a default message
-        if not recommendations:
-            return [{"name": "No recommendations available", "price": "N/A", "description": "Try different parameters."}]
-
-        return recommendations
+        return formatted_recommendations
 
     except Exception as e:
         logger.error(f"Error generating recommendations: {str(e)}")
-        return [{"name": "Error generating recommendations", "price": "N/A", "description": "Internal server error."}]
+        return [{"name": "Error generating recommendations", "price": "N/A", "url": "#"}]
+    finally:
+        client.close()
 
 
 # def _parse_recommendations(response_text):
