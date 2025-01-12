@@ -169,6 +169,7 @@ Solution: Verify image format (supported: jpg, png) and size (<5MB)
 ```bash
 Error: metadata-generation-failed
 Solution: Install Microsoft C++ Build Tools and upgrade pip, setuptools, and wheel:
+Python versions between 3.9 and 3.12 only
 1. Install from https://visualstudio.microsoft.com/visual-cpp-build-tools/.
 2. Run: pip install --upgrade pip setuptools wheel
 ```
