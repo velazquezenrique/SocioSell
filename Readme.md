@@ -174,6 +174,11 @@ Python versions between 3.9 and 3.12 only
 2. Run: pip install --upgrade pip setuptools wheel
 ```
 
+## 📁 Documentation for Deployment
+
+The detailed documentation for deployment is available in a separate file. Please refer to:
+[📁 documentation](./Deploy_Documentation.md)
+
 ## 📁 Project Structure  
 
 The detailed project structure is available in a separate file. Please refer to:  
