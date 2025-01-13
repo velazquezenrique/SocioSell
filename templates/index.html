@@ -553,7 +553,41 @@ footer {
       </div>
     </div>
 
-    <script>
+    <script
+    document.addEventListener('DOMContentLoaded', () => {
+      const imageUploadArea = document.getElementById('image-upload-area');
+      const videoUploadArea = document.getElementById('video-upload-area');
+      const imageUpload = document.getElementById('image-upload');
+      const videoUpload = document.getElementById('video-upload');
+  
+      function handleDragOver(e) {
+          e.preventDefault();
+          e.stopPropagation();
+      }
+  
+      function handleDrop(e, fileInput) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+              fileInput.files = e.dataTransfer.files;
+              handleFileUpload(fileInput);
+          }
+      }
+  
+      function handleFileUpload(fileInput) {
+          // Process the uploaded file here
+          console.log('File uploaded:', fileInput.files[0].name);
+      }
+  
+      imageUploadArea.addEventListener('dragover', handleDragOver);
+      imageUploadArea.addEventListener('drop', (e) => handleDrop(e, imageUpload));
+      videoUploadArea.addEventListener('dragover', handleDragOver);
+      videoUploadArea.addEventListener('drop', (e) => handleDrop(e, videoUpload));
+  
+      imageUpload.addEventListener('change', () => handleFileUpload(imageUpload));
+      videoUpload.addEventListener('change', () => handleFileUpload(videoUpload));
+  };
+  
  
       const config = {
           github: {
