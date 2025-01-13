@@ -12,7 +12,7 @@ SocioSell/
 ├── 📁 static/                      # Static assets and files
 ├── 📁 templates/                   # HTML templates
 │   ├── 📊 index.html     
-│   ├── 📊 index.html     
+│   ├── 📊 result.html     
 ├── 📁 models/                      # Models folder
 │   ├── 📊 analytics.py             # Analytics model
 │   ├── 📊 listing.py               # Listing model
