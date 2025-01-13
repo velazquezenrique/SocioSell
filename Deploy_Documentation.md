@@ -1,5 +1,5 @@
 
-```markdown
+
 # Documentation for Deploying SocioSell on Azure Virtual Machine  
 
 ## Overview  
@@ -35,9 +35,7 @@ The SocioSell repository can be accessed here:
 - Verify installation:  
   ```bash
   python --version
-  ```
 
----
 
 ### 2. Clone the SocioSell Repository  
 1. Open **Command Prompt** or **PowerShell** on the VM.  
