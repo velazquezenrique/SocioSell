@@ -156,8 +156,7 @@ Solution: Ensure GOOGLE_API_KEY is properly set in .env file
 2. MongoDB Connection
 ```bash
 Error: MongoDB connection failed  
-Solution: Check MONGODB_URL format and network connectivity  
-Example Format: mongodb+srv://<username>:<password>@<cluster-address>/<database>?retryWrites=true&w=majority  
+Solution: Check MONGODB_URL format and network connectivity
 ```
 
 3. Image Processing
