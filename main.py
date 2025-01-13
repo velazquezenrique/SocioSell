@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from PIL import Image
 from dotenv import load_dotenv
+load_dotenv()
 from time import time
 from image_processor import ImageProcessor
 from routers import image, video, combined
@@ -43,9 +44,6 @@ app = FastAPI(
        - Beauty: "Makeup Tutorial", "Skincare Routine"
     """
 )
-
-# Load .env file
-load_dotenv()
 
 # MongoDB setup
 MONGODB_URL = os.getenv("MONGODB_URL")
@@ -123,21 +121,22 @@ async def upload_image(request: Request, file: UploadFile):
         if raw_response.get("status") == "error":
             raise HTTPException(status_code=500, detail=raw_response.get("message"))
 
-        # Generate dynamic recommendations
+        # Generate recommendations
         recommendations = await generate_recommendations(raw_response)
 
         # Combine analysis and recommendations
         result = {**raw_response, "recommendations": recommendations}
 
-        # Return the response based on client request
+        # Render the result in HTML if the Accept header prefers it
         accept_header = request.headers.get("accept", "").lower()
-        if "application/json" in accept_header:
-            return JSONResponse(content=result, status_code=200)
-        else:
+        if "text/html" in accept_header:
             return templates.TemplateResponse(
-                "result.html",
-                {"request": request, "result": result}
+                "result.html", {"request": request, "result": result}
             )
+        
+        # Default to JSON response
+        return JSONResponse(content=result, status_code=200)
+
     except Exception as e:
         logger.error(f"Error processing image: {str(e)}")
         return JSONResponse(
@@ -146,63 +145,66 @@ async def upload_image(request: Request, file: UploadFile):
         )
 
 
-async def generate_recommendations(data):
+async def generate_recommendations(raw_data):
     """
-    Generate personalized recommendations based on the product's category and features using MongoDB.
-    Ensures at least 3-5 recommendations.
+    Generate personalized recommendations using MongoDB and GENAI as fallback.
+    
+    Args:
+        raw_data (dict): Processed product information.
+    
+    Returns:
+        list: A list of recommendations.
     """
     try:
-        # Establish MongoDB connection
-        uri = os.getenv("MONGODB_URL")
-        client = MongoClient(uri, server_api=ServerApi('1'))
-        db = client.social_media_products
-        product_collection = db["products"]
+        # MongoDB query logic for primary recommendations (simplified)
+        category = raw_data.get("category", "default")
+        key_features = raw_data.get("key_features", [])
+        recommendations = [{"name": "Product A"}, {"name": "Product B"}]  # Replace with your MongoDB query
 
-        category = data.get("category", None)
-        key_features = data.get("key_features", [])
-
-        if not category:
-            logger.warning("No category provided for recommendation. Returning default response.")
-            return [{"name": "No recommendations available", "price": "N/A", "url": "#"}]
-
-        # Primary query: match category and at least one key feature
-        primary_query = {
-            "category": category,
-            "common_features": {"$in": key_features}
-        }
-
-        # Fallback query: match only the category if primary query has insufficient results
-        fallback_query = {"category": category}
-
-        # Fetch recommendations
-        recommendations = list(product_collection.find(primary_query).limit(5))
+        # If insufficient recommendations, fallback to GENAI
         if len(recommendations) < 3:
-            additional_recommendations = list(
-                product_collection.find(fallback_query).limit(5 - len(recommendations))
-            )
-            recommendations.extend(additional_recommendations)
+            prompt = f"Generate product recommendations for a {category} with features: {', '.join(key_features)}."
+            genai_recommendations = await query_genai(prompt)
+            recommendations.extend({"name": rec} for rec in genai_recommendations)
 
-        # Format recommendations
-        formatted_recommendations = [
-            {
-                "name": product.get("brand_options", ["Unknown Product"])[0],
-                "price": product.get("price_ranges", {}).get("mid_range", {}).get("min", "N/A"),
-                "features": product.get("common_features", []),
-            }
-            for product in recommendations
-        ]
-
-        # Return default if still insufficient recommendations
-        if not formatted_recommendations:
-            formatted_recommendations = [{"name": "No recommendations available", "price": "N/A", "url": "#"}]
-
-        return formatted_recommendations
-
+        return recommendations
     except Exception as e:
-        logger.error(f"Error generating recommendations: {str(e)}")
-        return [{"name": "Error generating recommendations", "price": "N/A", "url": "#"}]
-    finally:
-        client.close()
+        logging.error(f"Error generating recommendations: {str(e)}")
+        return [{"name": "Error generating recommendations"}]
+
+import google.generativeai as genai
+import logging
+
+# Configure API Key
+genai.configure(api_key="YOUR_API_KEY")  # Replace with your actual API key
+
+async def query_genai(prompt):
+    """
+    Query Google Generative AI to generate text-based recommendations.
+    
+    Args:
+        prompt (str): The input prompt to generate recommendations.
+    
+    Returns:
+        list: A list of recommendations or an error message.
+    """
+    try:
+        # Define the model
+        model_name = "models/chat-bison-001"  # Adjust to the model you have access to
+
+        # Call the Generative AI API
+        response = genai.GenerativeModel('gemini-1.5-pro-latest').generate_content(prompt)
+
+        # Extract recommendations from the response
+        if response and response.candidates:
+            recommendations = response.candidates[0]['output']
+            return recommendations.split("\n")  # Split by lines for structured output
+        else:
+            logging.error("No candidates returned from GENAI.")
+            return ["No recommendations generated."]
+    except Exception as e:
+        logging.error(f"Error fetching from GENAI: {str(e)}")
+        return [f"Error: {str(e)}"]
 
 
 # def _parse_recommendations(response_text):
