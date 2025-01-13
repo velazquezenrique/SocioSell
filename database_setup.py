@@ -133,9 +133,9 @@ def setup_product_database():
         video_collection.create_index([("highlights", ASCENDING)])
 
         # Create indexes for video listing
-        video_listings_collection.create_index([("product_id", ASCENDING), ("id", ASCENDING)])
+        video_listings_collection.create_index([("video_id", ASCENDING), ("id", ASCENDING)])
         video_listings_collection.create_index([("id", ASCENDING)], unique=True)                  
-        video_listings_collection.create_index([("product_id", ASCENDING)])                  
+        video_listings_collection.create_index([("video_id", ASCENDING)])                  
         video_listings_collection.create_index([("platform", ASCENDING)])                    
         video_listings_collection.create_index([("title", ASCENDING)])                       
         video_listings_collection.create_index([("views", ASCENDING)])                       
@@ -145,11 +145,11 @@ def setup_product_database():
         video_listings_collection.create_index([("product_links.price", ASCENDING)])
 
         # Create indexes for video analytics
-        video_analytics_collection.create_index([("id", ASCENDING), ("product_id", ASCENDING)])
+        video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
         video_analytics_collection.create_index([("engagement.views", ASCENDING), ("engagement.likes", ASCENDING)])
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING), ("performance.click_through_rate", ASCENDING)])
         video_analytics_collection.create_index([("id", ASCENDING)], unique=True)                
-        video_analytics_collection.create_index([("product_id", ASCENDING)])                
+        video_analytics_collection.create_index([("video_id", ASCENDING)])                
         video_analytics_collection.create_index([("created_at", ASCENDING)])                
         video_analytics_collection.create_index([("updated_at", ASCENDING)])                
         video_analytics_collection.create_index([("engagement.views", ASCENDING)])          
@@ -159,14 +159,100 @@ def setup_product_database():
         video_analytics_collection.create_index([("audience.demographics", ASCENDING)])    
         video_analytics_collection.create_index([("audience.top_regions", ASCENDING)])     
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING)])  
+        video_analytics_collection.create_index([("performance.retention_rate", ASCENDING)])  
         video_analytics_collection.create_index([("performance.click_through_rate", ASCENDING)])
 
         logger.info("All indexes created successfully")
 
-        # Sample data insertion (commented out by default)
-        # Uncomment and modify as needed
-        # product_collection.insert_many(sample_products)
-        # logger.info("Sample product references inserted successfully")
+        # Sample product reference data
+        sample_products = [
+            {
+                "category": "Electronics",
+                "subcategory": "Smartphones",
+                "brand_options": ["Samsung Galaxy S24", "iPhone 15", "Google Pixel 8"],
+                "price_ranges": {
+                    "budget": {"min": 299, "max": 499},
+                    "mid_range": {"min": 500, "max": 799},
+                    "premium": {"min": 800, "max": 1299}
+                },
+                "common_features": [
+                    "5G Connectivity",
+                    "AI-Enhanced Camera",
+                    "AMOLED Display",
+                    "Fast Charging",
+                    "Wireless Charging"
+                ],
+                "keywords": ["smartphone", "mobile phone", "cell phone", "android", "ios"]
+            },
+            {
+                "category": "Electronics",
+                "subcategory": "Wireless Earbuds",
+                "brand_options": ["Apple AirPods Pro", "Samsung Galaxy Buds", "Google Pixel Buds"],
+                "price_ranges": {
+                    "budget": {"min": 49, "max": 99},
+                    "mid_range": {"min": 100, "max": 199},
+                    "premium": {"min": 200, "max": 299}
+                },
+                "common_features": [
+                    "Active Noise Cancellation",
+                    "Touch Controls",
+                    "Wireless Charging Case",
+                    "Water Resistance",
+                    "Voice Assistant Support"
+                ],
+                "keywords": ["earbuds", "wireless earphones", "tws", "headphones"]
+            },
+            {
+                "category": "Electronics",
+                "subcategory": "Smartwatches",
+                "brand_options": ["Apple Watch Series 9", "Samsung Galaxy Watch 6", "Google Pixel Watch"],
+                "price_ranges": {
+                    "budget": {"min": 149, "max": 249},
+                    "mid_range": {"min": 250, "max": 399},
+                    "premium": {"min": 400, "max": 799}
+                },
+                "common_features": [
+                    "Health Monitoring",
+                    "Fitness Tracking",
+                    "GPS",
+                    "Always-On Display",
+                    "Water Resistance"
+                ],
+                "keywords": ["smartwatch", "fitness tracker", "smart watch", "wearable"]
+            }
+        ]
+        
+        # Clear existing data
+        # product_references.delete_many({})
+        # listings.delete_many({})
+        
+        # Insert sample data
+        # product_references.insert_many(sample_products)
+        logger.info("File loaded successfully")
+        
+        # Insert sample listings
+        # sample_listings = [
+        #     {
+        #         "product_id": str(product_references.find_one({"brand_options": "iPhone 15"})["_id"]),
+        #         "title": "iPhone 15 Pro Max",
+        #         "category": "Electronics",
+        #         "subcategory": "Smartphones",
+        #         "description": "Latest iPhone with A17 Pro chip and titanium design",
+        #         "price": "$999",
+        #         "features": [
+        #             "48MP Main Camera",
+        #             "Titanium Design",
+        #             "Action Button"
+        #         ],
+        #         "keywords": ["iphone", "smartphone", "apple"],
+        #         "original_caption": "Just got the new iPhone 15 Pro! Amazing camera system!",
+        #         "created_at": datetime.utcnow(),
+        #         "status": "active"
+        #     }
+        # ]
+        
+        # listings.insert_many(sample_listings)
+        # logger.info("Sample listings inserted successfully")
 
     except Exception as e:
         logger.error(f"Error setting up database: {e}")

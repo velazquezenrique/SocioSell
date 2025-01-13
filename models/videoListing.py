@@ -11,7 +11,7 @@ class KeyTimestamp(BaseModel):
     description: str
 
 class VideoListing(BaseModel):
-    product_id: str
+    video_id: str
     platform: str
     title: str
     views: str
