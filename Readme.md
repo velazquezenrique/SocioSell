@@ -155,7 +155,7 @@ Solution: Ensure GOOGLE_API_KEY is properly set in .env file
 
 2. MongoDB Connection
 ```bash
-Error: MongoDB connection failed
+Error: MongoDB connection failed  
 Solution: Check MONGODB_URL format and network connectivity
 ```
 
@@ -173,6 +173,11 @@ Python versions between 3.9 and 3.12 only
 1. Install from https://visualstudio.microsoft.com/visual-cpp-build-tools/.
 2. Run: pip install --upgrade pip setuptools wheel
 ```
+
+## 📁 Documentation for Deployment
+
+The detailed documentation for deployment is available in a separate file. Please refer to:
+[📁 documentation](./Deploy_Documentation.md)
 
 ## 📁 Project Structure  
 

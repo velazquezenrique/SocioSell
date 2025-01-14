@@ -25,7 +25,8 @@ class ImageProcessor:
 
 BEGIN_ANALYSIS
 Product Name: [exact product name]
-Category: [main category/subcategory]
+Category: [main category]
+Subcategory: [sub category]
 Description: [2-3 sentences about the product]
 Price: [visible pricing information]
 Key Features:
@@ -58,6 +59,7 @@ END_ANALYSIS""",
         analysis_dict = {
             'product_name': '',
             'category': '',
+            'subcategory': '',
             'description': '',
             'price': '',
             'key_features': [],
@@ -82,6 +84,8 @@ END_ANALYSIS""",
                     analysis_dict['product_name'] = line.split(':', 1)[1].strip()
                 elif line.startswith('Category:'):
                     analysis_dict['category'] = line.split(':', 1)[1].strip()
+                elif line.startswith('Subcategory:'):
+                    analysis_dict['subcategory'] = line.split(':', 1)[1].strip()
                 elif line.startswith('Description:'):
                     analysis_dict['description'] = line.split(':', 1)[1].strip()
                 elif line.startswith('Price:'):
