@@ -1,7 +1,9 @@
 from pymongo import MongoClient, ASCENDING
+from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from pymongo.server_api import ServerApi
 import logging
 import os
+import time
 from models.listing import ProductListing
 from models.analytics import Analytics, SalesPerformance, CustomerBehavior, MarketingMetrics, Demographics
 from models.review import RecentReview
@@ -18,28 +20,66 @@ from video_data import(
     video_listings,
     video_analytics,
 )
- 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Configuration for retry and timeouts
+MAX_RETRIES = 5
+INITIAL_RETRY_DELAY = 1
+MAX_RETRY_DELAY = 30
+TIMEOUT_CONFIG = {
+    "connectTimeoutMS": 5000,
+    "socketTimeoutMS": 10000
+}
+
+def exponential_backoff(attempt):
+    """Calculate exponential backoff delay."""
+    return min(INITIAL_RETRY_DELAY * (2 ** attempt), MAX_RETRY_DELAY)
+
+def connect_to_mongodb():
+    """Establish a MongoDB connection with retries and timeouts."""
+    uri = os.getenv("MONGODB_URL")
+    if not uri:
+        logger.error("MONGODB_URL is not set in the environment.")
+        raise ValueError("MONGODB_URL is missing")
+
+    for attempt in range(MAX_RETRIES):
+        try:
+            logger.info(f"Attempting to connect to MongoDB (Attempt {attempt + 1}/{MAX_RETRIES})")
+            client = MongoClient(uri, server_api=ServerApi('1'), **TIMEOUT_CONFIG)
+            # Verify connection
+            client.admin.command("ping")
+            logger.info("Connected to MongoDB successfully")
+            return client
+        except (ConnectionFailure, ServerSelectionTimeoutError) as e:
+            delay = exponential_backoff(attempt)
+            logger.warning(f"Connection failed (Attempt {attempt + 1}/{MAX_RETRIES}): {e}")
+            if attempt < MAX_RETRIES - 1:
+                logger.info(f"Retrying in {delay} seconds...")
+                time.sleep(delay)
+            else:
+                logger.error("Maximum retry attempts reached. Exiting...")
+                raise
+        except Exception as e:
+            logger.error(f"Unexpected error while connecting to MongoDB: {e}")
+            raise
+
 def setup_product_database():
     """Setup product reference database with sample data"""
-    uri = os.getenv("MONGODB_URL")
-    
+    client = None
     try:
-        client = MongoClient(uri, server_api=ServerApi('1'))
+        client = connect_to_mongodb()
         db = client.social_media_products
         
-        # Create Image Collections
+        # Create Collections
         product_collection = db["products"]
         listing_collection = db["listings"]
         analytics_collection = db["analytics"]
         review_collection = db["reviews"]
-
-        # Video Collections
         video_collection = db["videos"]
         video_listings_collection = db["video_listings"]
         video_analytics_collection = db["video_analytics"]
@@ -62,6 +102,7 @@ def setup_product_database():
         product_collection.create_index([("price_range", ASCENDING)])
         product_collection.create_index([("created_at", ASCENDING)])
         product_collection.create_index([("updated_at", ASCENDING)])
+
         # Create indexes for listings
         listing_collection.create_index([("id", ASCENDING), ("product_id", ASCENDING)])
         listing_collection.create_index([("product_id", ASCENDING), ("created_at", ASCENDING)])
@@ -71,6 +112,7 @@ def setup_product_database():
         listing_collection.create_index([("title", ASCENDING)])
         listing_collection.create_index([("price", ASCENDING)])
         listing_collection.create_index([("features", ASCENDING)], name="features_index")
+
         # Create indexes for analytics
         analytics_collection.create_index([("id", ASCENDING), ("product_id", ASCENDING)])
         analytics_collection.create_index([("product_id", ASCENDING), ("created_at", ASCENDING)])
@@ -86,6 +128,7 @@ def setup_product_database():
         analytics_collection.create_index([("customer_behavior.average_rating", ASCENDING)])         
         analytics_collection.create_index([("marketing_metrics.click_through_rate", ASCENDING)])    
         analytics_collection.create_index([("marketing_metrics.social_media_engagement", ASCENDING)])
+
         # Create indexes for review
         review_collection.create_index([("product_id", ASCENDING), ("rating", ASCENDING)])
         review_collection.create_index([("user_id", ASCENDING), ("product_id", ASCENDING)])
@@ -112,7 +155,8 @@ def setup_product_database():
         video_collection.create_index([("created_at", ASCENDING)])            
         video_collection.create_index([("updated_at", ASCENDING)])           
         video_collection.create_index([("key_features", ASCENDING)])
-        video_collection.create_index([("highlights", ASCENDING)])        
+        video_collection.create_index([("highlights", ASCENDING)])
+
         # Create indexes for video listing
         video_listings_collection.create_index([("video_id", ASCENDING), ("id", ASCENDING)])
         video_listings_collection.create_index([("id", ASCENDING)])                  
@@ -123,7 +167,8 @@ def setup_product_database():
         video_listings_collection.create_index([("rating", ASCENDING)])                      
         video_listings_collection.create_index([("created_at", ASCENDING)])                  
         video_listings_collection.create_index([("updated_at", ASCENDING)])                  
-        video_listings_collection.create_index([("product_links.price", ASCENDING)]) 
+        video_listings_collection.create_index([("product_links.price", ASCENDING)])
+
         # Create indexes for video analytics
         video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
         video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
@@ -140,16 +185,15 @@ def setup_product_database():
         video_analytics_collection.create_index([("audience.demographics", ASCENDING)])    
         video_analytics_collection.create_index([("audience.top_regions", ASCENDING)])     
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING)])  
-        video_analytics_collection.create_index([("performance.click_through_rate", ASCENDING)])  
+        video_analytics_collection.create_index([("performance.click_through_rate", ASCENDING)])
 
+        logger.info("All indexes created successfully")
 
         # Clear Existing Products
         product_collection.delete_many({})
         # Insert Sample Products
         product_collection.insert_many([product.model_dump() for product in sample_products])
         logger.info("sample_products inserted")
-
-        #--------------------------------
 
         # Clear Existing Product Listings
         listing_collection.delete_many({})
@@ -175,8 +219,6 @@ def setup_product_database():
         listing_collection.insert_many([listing.model_dump() for listing in sample_product_listings])
         logger.info("sample_product_listings inserted")
 
-        #--------------------------------
-        
         # Clear Existing Analytics
         analytics_collection.delete_many({})
 
@@ -219,8 +261,6 @@ def setup_product_database():
         analytics_collection.insert_many([analytic.model_dump() for analytic in sample_product_analytics])
         logger.info("sample_product_analytics inserted")
 
-        #--------------------------------
-        
         # Clear Existing Reviews
         review_collection.delete_many({})
 
@@ -244,20 +284,16 @@ def setup_product_database():
         review_collection.insert_many([review.model_dump() for review in sample_reviews])
         logger.info("sample_reviews inserted")
 
-        # ================= Videos =================       
-        
         # Clear Existing Videos
         video_collection.delete_many({})
         # Insert sample_videos
         video_collection.insert_many([video.model_dump() for video in sample_videos])
         logger.info("sample_videos inserted")        
 
-        #--------------------------------
-        
         # Clear Existing video_listings
         video_listings_collection.delete_many({})
 
-        # Generate sample_reviews
+        # Generate sample_video_listings
         sample_video_listings = []
         for video_listing in video_listings:
             # Fetch the _id of the video from the database
@@ -281,13 +317,10 @@ def setup_product_database():
                         ]
                     )
                 )
-        
         # Insert sample_video_listings
         video_listings_collection.insert_many([video_listing.model_dump() for video_listing in sample_video_listings])
         logger.info("sample_video_listings inserted")
 
-        #--------------------------------
-        
         # Clear Existing video_analytics
         video_analytics_collection.delete_many({}) 
 
@@ -306,13 +339,16 @@ def setup_product_database():
                 sample_video_analytics.append(analytics)
 
         # Insert sample_video_analytics
-        video_analytics_collection.insert_many([video_analitic.model_dump() for video_analitic in sample_video_analytics])
+        video_analytics_collection.insert_many([video_analytic.model_dump() for video_analytic in sample_video_analytics])
         logger.info("sample_video_analytics inserted")
-        
+
     except Exception as e:
         logger.error(f"Error setting up database: {e}")
+        raise
     finally:
-        client.close()
+        if client:
+            client.close()
+            logger.info("MongoDB connection closed")
 
 if __name__ == "__main__":
     setup_product_database()
