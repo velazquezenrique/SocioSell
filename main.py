@@ -24,25 +24,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Social Media Product Listing Generator",
-    description="""
-    Product listing generator supporting both images and videos.
-    
-    Sample testing guide:
-    
-    1. Image Upload (/upload/):
-       Categories:
-       - Electronics: "Sony WH-1000XM4 Headphones"
-       - Fashion: "Nike Air Max 270"
-       - Home Decor: "Scandinavian Floor Lamp"
-       
-    2. Video Upload (/upload/video/):
-       Categories:
-       - Electronics: "iPhone 15 Review", "MacBook Pro Review"
-       - Fashion: "Nike Collection", "Adidas Shoes"
-       - Beauty: "Makeup Tutorial", "Skincare Routine"
-    """
-)
+    title="Social Media Product Listing Generator")
 
 # Load .env file
 load_dotenv()
