@@ -2,6 +2,23 @@ from pymongo import MongoClient, ASCENDING
 from pymongo.server_api import ServerApi
 import logging
 import os
+from models.listing import ProductListing
+from models.analytics import Analytics, SalesPerformance, CustomerBehavior, MarketingMetrics, Demographics
+from models.review import RecentReview
+from models.videoListing import VideoListing, ProductLink
+from models.analyticsVideo import VideoAnalytics, VideoAudience, VideoEngagement, VideoPerformance 
+from image_data import(
+    sample_products,
+    product_listings,
+    product_reviews,
+    product_analytics,
+)
+from video_data import(
+    sample_videos,
+    video_listings,
+    video_analytics,
+)
+ 
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -26,9 +43,18 @@ def setup_product_database():
         video_collection = db["videos"]
         video_listings_collection = db["video_listings"]
         video_analytics_collection = db["video_analytics"]
+
+        # Delete indexes
+        product_collection.drop_indexes()
+        listing_collection.drop_indexes()
+        analytics_collection.drop_indexes()
+        review_collection.drop_indexes()
+        video_collection.drop_indexes()
+        video_listings_collection.drop_indexes()
+        video_analytics_collection.drop_indexes()
         
         # Create indexes for products
-        product_collection.create_index([("id", ASCENDING)], unique=True)
+        product_collection.create_index([("id", ASCENDING)])
         product_collection.create_index([("title", ASCENDING)])
         product_collection.create_index([("category", ASCENDING)])
         product_collection.create_index([("subcategory", ASCENDING)])
@@ -41,14 +67,14 @@ def setup_product_database():
         listing_collection.create_index([("product_id", ASCENDING), ("created_at", ASCENDING)])
         listing_collection.create_index([("price", ASCENDING), ("updated_at", ASCENDING)])
         listing_collection.create_index([("features", ASCENDING), ("title", ASCENDING)])
-        listing_collection.create_index([("id", ASCENDING)], unique=True)
+        listing_collection.create_index([("id", ASCENDING)])
         listing_collection.create_index([("title", ASCENDING)])
         listing_collection.create_index([("price", ASCENDING)])
         listing_collection.create_index([("features", ASCENDING)], name="features_index")
         # Create indexes for analytics
         analytics_collection.create_index([("id", ASCENDING), ("product_id", ASCENDING)])
         analytics_collection.create_index([("product_id", ASCENDING), ("created_at", ASCENDING)])
-        analytics_collection.create_index([("id", ASCENDING)], unique=True)
+        analytics_collection.create_index([("id", ASCENDING)])
         analytics_collection.create_index([("product_id", ASCENDING)], unique=True)          
         analytics_collection.create_index([("created_at", ASCENDING)])          
         analytics_collection.create_index([("updated_at", ASCENDING)])         
@@ -63,7 +89,7 @@ def setup_product_database():
         # Create indexes for review
         review_collection.create_index([("product_id", ASCENDING), ("rating", ASCENDING)])
         review_collection.create_index([("user_id", ASCENDING), ("product_id", ASCENDING)])
-        review_collection.create_index([("id", ASCENDING)], unique=True)      
+        review_collection.create_index([("id", ASCENDING)])      
         review_collection.create_index([("product_id", ASCENDING)])      
         review_collection.create_index([("user_id", ASCENDING)])         
         review_collection.create_index([("rating", ASCENDING)])          
@@ -75,7 +101,7 @@ def setup_product_database():
         # Create indexes for video
         video_collection.create_index([("title", ASCENDING), ("views", ASCENDING)])
         video_collection.create_index([("views", ASCENDING), ("rating", ASCENDING)])
-        video_collection.create_index([("id", ASCENDING)], unique=True)               
+        video_collection.create_index([("id", ASCENDING)])               
         video_collection.create_index([("title", ASCENDING)])                 
         video_collection.create_index([("category", ASCENDING)])              
         video_collection.create_index([("subcategory", ASCENDING)])           
@@ -88,9 +114,9 @@ def setup_product_database():
         video_collection.create_index([("key_features", ASCENDING)])
         video_collection.create_index([("highlights", ASCENDING)])        
         # Create indexes for video listing
-        video_listings_collection.create_index([("product_id", ASCENDING), ("id", ASCENDING)])
-        video_listings_collection.create_index([("id", ASCENDING)], unique=True)                  
-        video_listings_collection.create_index([("product_id", ASCENDING)])                  
+        video_listings_collection.create_index([("video_id", ASCENDING), ("id", ASCENDING)])
+        video_listings_collection.create_index([("id", ASCENDING)])                  
+        video_listings_collection.create_index([("video_id", ASCENDING)], unique=True)                  
         video_listings_collection.create_index([("platform", ASCENDING)])                    
         video_listings_collection.create_index([("title", ASCENDING)])                       
         video_listings_collection.create_index([("views", ASCENDING)])                       
@@ -99,11 +125,11 @@ def setup_product_database():
         video_listings_collection.create_index([("updated_at", ASCENDING)])                  
         video_listings_collection.create_index([("product_links.price", ASCENDING)]) 
         # Create indexes for video analytics
-        video_analytics_collection.create_index([("id", ASCENDING), ("product_id", ASCENDING)])
+        video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
         video_analytics_collection.create_index([("engagement.views", ASCENDING), ("engagement.likes", ASCENDING)])
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING), ("performance.click_through_rate", ASCENDING)])
-        video_analytics_collection.create_index([("id", ASCENDING)], unique=True)                
-        video_analytics_collection.create_index([("product_id", ASCENDING)])                
+        video_analytics_collection.create_index([("id", ASCENDING)])                
+        video_analytics_collection.create_index([("video_id", ASCENDING)], unique=True)                
         video_analytics_collection.create_index([("created_at", ASCENDING)])                
         video_analytics_collection.create_index([("updated_at", ASCENDING)])                
         video_analytics_collection.create_index([("engagement.views", ASCENDING)])          
@@ -115,95 +141,172 @@ def setup_product_database():
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING)])  
         video_analytics_collection.create_index([("performance.click_through_rate", ASCENDING)])  
 
-        # Sample product reference data
-        sample_products = [
-            {
-                "category": "Electronics",
-                "subcategory": "Smartphones",
-                "brand_options": ["Samsung Galaxy S24", "iPhone 15", "Google Pixel 8"],
-                "price_ranges": {
-                    "budget": {"min": 299, "max": 499},
-                    "mid_range": {"min": 500, "max": 799},
-                    "premium": {"min": 800, "max": 1299}
-                },
-                "common_features": [
-                    "5G Connectivity",
-                    "AI-Enhanced Camera",
-                    "AMOLED Display",
-                    "Fast Charging",
-                    "Wireless Charging"
-                ],
-                "keywords": ["smartphone", "mobile phone", "cell phone", "android", "ios"]
-            },
-            {
-                "category": "Electronics",
-                "subcategory": "Wireless Earbuds",
-                "brand_options": ["Apple AirPods Pro", "Samsung Galaxy Buds", "Google Pixel Buds"],
-                "price_ranges": {
-                    "budget": {"min": 49, "max": 99},
-                    "mid_range": {"min": 100, "max": 199},
-                    "premium": {"min": 200, "max": 299}
-                },
-                "common_features": [
-                    "Active Noise Cancellation",
-                    "Touch Controls",
-                    "Wireless Charging Case",
-                    "Water Resistance",
-                    "Voice Assistant Support"
-                ],
-                "keywords": ["earbuds", "wireless earphones", "tws", "headphones"]
-            },
-            {
-                "category": "Electronics",
-                "subcategory": "Smartwatches",
-                "brand_options": ["Apple Watch Series 9", "Samsung Galaxy Watch 6", "Google Pixel Watch"],
-                "price_ranges": {
-                    "budget": {"min": 149, "max": 249},
-                    "mid_range": {"min": 250, "max": 399},
-                    "premium": {"min": 400, "max": 799}
-                },
-                "common_features": [
-                    "Health Monitoring",
-                    "Fitness Tracking",
-                    "GPS",
-                    "Always-On Display",
-                    "Water Resistance"
-                ],
-                "keywords": ["smartwatch", "fitness tracker", "smart watch", "wearable"]
-            }
-        ]
+
+        # Clear Existing Products
+        product_collection.delete_many({})
+        # Insert Sample Products
+        product_collection.insert_many([product.model_dump() for product in sample_products])
+        logger.info("sample_products inserted")
+
+        #--------------------------------
+
+        # Clear Existing Product Listings
+        listing_collection.delete_many({})
+
+        # Generate sample_product_listings
+        sample_product_listings = []
+        for listing in product_listings:
+            # Fetch the _id of the product from the database
+            result = product_collection.find_one({"title": listing["title"]}, {"_id": 1})
+            
+            if result:
+                sample_product_listings.append(
+                    ProductListing(
+                        product_id=str(result["_id"]),
+                        title=listing["title"],
+                        price=listing["price"],
+                        description=listing["description"],
+                        features=listing["features"]
+                    )
+                )
         
-        # Clear existing data
-        # product_references.delete_many({})
-        # listings.delete_many({})
+        # Insert sample_product_listings 
+        listing_collection.insert_many([listing.model_dump() for listing in sample_product_listings])
+        logger.info("sample_product_listings inserted")
+
+        #--------------------------------
         
-        # Insert sample data
-        # product_references.insert_many(sample_products)
-        logger.info("Sample product references inserted successfully")
+        # Clear Existing Analytics
+        analytics_collection.delete_many({})
+
+        # Generate sample_product_analytics
+        sample_product_analytics = [] 
+        for analytic in product_analytics:  
+            # Fetch the _id of the product from the database
+            result = product_collection.find_one({"title": analytic["title"]}, {"_id": 1})
+            
+            if result:
+                sample_product_analytics.append(
+                    Analytics(
+                        product_id=str(result["_id"]),
+                        sales_performance=SalesPerformance(
+                            total_sales=analytic["sales_performance"]["total_sales"],
+                            revenue=analytic["sales_performance"]["revenue"],
+                            average_price=analytic["sales_performance"]["average_price"],
+                            growth_rate=analytic["sales_performance"]["growth_rate"]
+                        ),
+                        customer_behavior=CustomerBehavior(
+                            view_to_purchase_rate=analytic["customer_behavior"]["view_to_purchase_rate"],
+                            cart_abandonment_rate=analytic["customer_behavior"]["cart_abandonment_rate"],
+                            repeat_purchase_rate=analytic["customer_behavior"]["repeat_purchase_rate"],
+                            average_rating=analytic["customer_behavior"]["average_rating"]
+                        ),
+                        demographics=Demographics(
+                            age_groups=analytic["demographics"]["age_groups"],
+                            top_locations=analytic["demographics"]["top_locations"]
+                        ),
+                        marketing_metrics=MarketingMetrics(
+                            click_through_rate=analytic["marketing_metrics"]["click_through_rate"],
+                            conversion_rate=analytic["marketing_metrics"]["conversion_rate"],
+                            return_on_ad_spend=analytic["marketing_metrics"]["return_on_ad_spend"],
+                            social_media_engagement=analytic["marketing_metrics"]["social_media_engagement"]
+                        )
+                    )
+                )
         
-        # Insert sample listings
-        # sample_listings = [
-        #     {
-        #         "product_id": str(product_references.find_one({"brand_options": "iPhone 15"})["_id"]),
-        #         "title": "iPhone 15 Pro Max",
-        #         "category": "Electronics",
-        #         "subcategory": "Smartphones",
-        #         "description": "Latest iPhone with A17 Pro chip and titanium design",
-        #         "price": "$999",
-        #         "features": [
-        #             "48MP Main Camera",
-        #             "Titanium Design",
-        #             "Action Button"
-        #         ],
-        #         "keywords": ["iphone", "smartphone", "apple"],
-        #         "original_caption": "Just got the new iPhone 15 Pro! Amazing camera system!",
-        #         "created_at": datetime.utcnow(),
-        #         "status": "active"
-        #     }
-        # ]
+        # Insert sample_product_analytics
+        analytics_collection.insert_many([analytic.model_dump() for analytic in sample_product_analytics])
+        logger.info("sample_product_analytics inserted")
+
+        #--------------------------------
         
-        # listings.insert_many(sample_listings)
-        # logger.info("Sample listings inserted successfully")
+        # Clear Existing Reviews
+        review_collection.delete_many({})
+
+        # Generate sample_reviews
+        sample_reviews = []
+        for review in product_reviews: 
+            # Fetch the _id of the product from the database
+            result = product_collection.find_one({"title": review["product_title"]}, {"_id": 1})
+            if result:
+                sample_reviews.append(
+                    RecentReview(
+                        product_id=str(result["_id"]),
+                        user_id=review["user_id"],
+                        rating=review["rating"],
+                        title=review["title"],
+                        comment=review["comment"],
+                        verified_purchase=review["verified_purchase"]
+                    )
+                )
+        # Insert sample_reviews
+        review_collection.insert_many([review.model_dump() for review in sample_reviews])
+        logger.info("sample_reviews inserted")
+
+        # ================= Videos =================       
+        
+        # Clear Existing Videos
+        video_collection.delete_many({})
+        # Insert sample_videos
+        video_collection.insert_many([video.model_dump() for video in sample_videos])
+        logger.info("sample_videos inserted")        
+
+        #--------------------------------
+        
+        # Clear Existing video_listings
+        video_listings_collection.delete_many({})
+
+        # Generate sample_reviews
+        sample_video_listings = []
+        for video_listing in video_listings:
+            # Fetch the _id of the video from the database
+            result = video_collection.find_one({"title": video_listing["title"]}, {"_id": 1})
+            if result:
+                sample_video_listings.append(
+                    VideoListing(
+                        video_id=str(result["_id"]),
+                        platform=video_listing["platform"],
+                        title=video_listing["title"],
+                        views=video_listing["views"],
+                        rating=video_listing["rating"],
+                        key_timestamps={
+                            "00:00": "Introduction",
+                            "02:00": "Main features",
+                            "04:00": "Conclusion"
+                        },
+                        product_links=[
+                            ProductLink(store="Amazon", price="$199"),
+                            ProductLink(store="Best Buy", price="$205"),
+                        ]
+                    )
+                )
+        
+        # Insert sample_video_listings
+        video_listings_collection.insert_many([video_listing.model_dump() for video_listing in sample_video_listings])
+        logger.info("sample_video_listings inserted")
+
+        #--------------------------------
+        
+        # Clear Existing video_analytics
+        video_analytics_collection.delete_many({}) 
+
+        # Generate sample_video_analytics
+        sample_video_analytics = []
+        for video_analytic in video_analytics:
+            # Fetch the _id of the video from the database
+            result = video_collection.find_one({"title": video_analytic["title"]}, {"_id": 1})
+            if result:
+                analytics = VideoAnalytics(
+                    video_id=str(result["_id"]),
+                    engagement=VideoEngagement(**video_analytic["engagement"]),
+                    audience=VideoAudience(**video_analytic["audience"]),
+                    performance=VideoPerformance(**video_analytic["performance"])
+                )
+                sample_video_analytics.append(analytics)
+
+        # Insert sample_video_analytics
+        video_analytics_collection.insert_many([video_analitic.model_dump() for video_analitic in sample_video_analytics])
+        logger.info("sample_video_analytics inserted")
         
     except Exception as e:
         logger.error(f"Error setting up database: {e}")
