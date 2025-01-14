@@ -141,6 +141,7 @@ async def generate_recommendations(data):
         product_collection = db["products"]
 
         category = data.get("category", None)
+        subcategory = data.get("subcategory", None)
         key_features = data.get("key_features", [])
 
         if not category:
@@ -150,11 +151,13 @@ async def generate_recommendations(data):
         # Primary query: match category and at least one key feature
         primary_query = {
             "category": category,
+            "subcategory": subcategory,
             "common_features": {"$in": key_features}
         }
 
         # Fallback query: match only the category if primary query has insufficient results
-        fallback_query = {"category": category}
+        fallback_query = {"category": category,
+                          "subcategory": subcategory}
 
         # Fetch recommendations
         recommendations = list(product_collection.find(primary_query).limit(5))
