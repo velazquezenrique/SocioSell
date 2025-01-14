@@ -1,3 +1,14 @@
+/* Root Variables for Theme Colors */
+:root {
+  --primary-color: #2563eb; /* Blue */
+  --secondary-color: #1d4ed8; /* Darker Blue */
+  --accent-color: #f39c12; /* Orange */
+  --background-color: #f4f4f4; /* Light Gray */
+  --text-color: #333; /* Dark Text */
+  --white: #ffffff; /* White */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow Color */
+}
+
 /* Custom Animations */
 @keyframes float {
   0% { transform: translateY(0px); }
@@ -5,39 +16,6 @@
   100% { transform: translateY(0px); }
 }
 
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-      transform: translateY(20px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-@keyframes wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
-}
-
-@keyframes zoomIn {
-  0% { transform: scale(0.9); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Smooth Transition */
-body {
-  scroll-behavior: smooth;
-}
-
-/* Floating Animation */
 .float-animation {
   animation: float 3s ease-in-out infinite;
 }
@@ -54,267 +32,149 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2563eb;
+  background: var(--primary-color);
   border-radius: 4px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1d4ed8;
-  transform: scale(1.1);
+  background: var(--secondary-color);
 }
 
-/* Header */
-.header {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
-  color: white;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease-out;
-}
-
-.header .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  animation: fadeIn 1s ease-out;
-}
-
-.header .nav-links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.header .nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-.header .nav-links a:hover {
-  color: #93c5fd;
-}
-
-.header .nav-links a:hover::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: white;
-  animation: fadeIn 0.3s ease-out;
-}
-
-/* Banner */
-.banner {
-  position: relative;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: white;
-  padding: 3rem 2rem;
-  text-align: center;
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.3s ease;
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-  animation: fadeIn 1.5s ease-out;
+  background: var(--white);
+  box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-.banner h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  animation: fadeIn 1.5s ease-out;
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
 }
 
-.banner p {
-  font-size: 1.2rem;
-  animation: fadeIn 1.8s ease-out;
-}
-
-.banner .btn-primary {
-  margin-top: 1rem;
-  padding: 0.8rem 1.5rem;
-  background: #1d4ed8;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.banner .btn-primary:hover {
-  background: #2563eb;
-  transform: scale(1.05);
-}
-
-/* Product Card */
-.product-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  overflow: hidden;
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
-  position: relative;
-  animation: fadeIn 0.5s ease-out;
-}
-
-.product-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-}
-
-.product-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.product-card img:hover {
-  transform: scale(1.1);
-}
-
-.product-card .details {
-  padding: 1rem;
-  text-align: center;
-}
-
-.product-card .details h3 {
-  font-size: 1.2rem;
-  color: #2563eb;
-  margin-bottom: 0.5rem;
-  animation: zoomIn 0.5s ease-out;
-}
-
-.product-card .details p {
-  color: #6b7280;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-
-.product-card .details .price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #1d4ed8;
-}
-
-/* Add to Cart Button */
-.add-to-cart {
-  background: #2563eb;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: all 0.3s ease-in-out, transform 0.2s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.add-to-cart:hover {
-  background: #1d4ed8;
-  transform: scale(1.05);
-}
-
-.add-to-cart::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  background: rgba(255, 255, 255, 0.2);
+/* Loading Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary-color);
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.5s ease;
+  animation: spin 1s linear infinite;
 }
 
-.add-to-cart:hover::after {
-  transform: translate(-50%, -50%) scale(1);
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Modal Popup */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: fadeIn 0.5s ease-out;
-}
-
-.modal-content {
-  background: white;
+/* Image Upload Zone */
+.upload-zone {
+  border: 2px dashed var(--primary-color);
+  transition: all 0.3s ease;
   padding: 2rem;
   border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  animation: zoomIn 0.3s ease-out;
+  background-color: var(--white);
+  box-shadow: 0 2px 5px var(--shadow-color);
 }
 
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
+.upload-zone:hover {
+  border-color: var(--secondary-color);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+/* Custom Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: var(--white);
+  padding: 0.8rem 1.5rem;
   border: none;
-  font-size: 1.5rem;
-  color: #2563eb;
+  border-radius: 5px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-.modal-close:hover {
-  color: #1d4ed8;
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-/* Footer */
-.footer {
-  background: #1d4ed8;
-  color: white;
-  padding: 2rem;
-  text-align: center;
-  font-size: 0.9rem;
+/* Comparison Card Styles */
+.comparison-card {
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  background: var(--white);
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.comparison-card:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.02);
+}
+
+/* Feature Tag Styles */
+.feature-tag {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.feature-tag:hover {
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+/* Notification Styles */
+.notification {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  animation: slideIn 0.3s ease forwards;
   position: relative;
-  animation: fadeIn 1s ease-out;
+  margin-bottom: 1rem;
 }
 
-.footer a {
-  color: #93c5fd;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-  color: #ffffff;
-}
-
-/* Additional Animations for Elements */
-.bounce-animation {
-  animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+@keyframes slideIn {
+  from {
+      transform: translateY(-20px);
+      opacity: 0;
+  }
+  to {
       transform: translateY(0);
+      opacity: 1;
   }
-  40% {
-      transform: translateY(-30px);
-  }
-  60% {
-      transform: translateY(-15px);
-  }
+}
+
+/* Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the tooltip */
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Card Flip Animation */
@@ -343,44 +203,629 @@ body {
 }
 
 .card-flip-front {
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--white);
+  box-shadow: 0 4px 10px var(--shadow-color);
 }
 
 .card-flip-back {
-  background: #2563eb;
-  color: white;
+  background: var(--secondary-color);
+  color: var(--white);
   transform: rotateY(180deg);
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 1rem;
+  border-radius: 10px;
 }
 
-/* Notification Toast */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #1d4ed8;
-  color: white;
-  padding: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.5s ease-out, fadeOut 0.5s ease-out 3s forwards;
-}
-
-@keyframes fadeOut {
-  from {
-      opacity: 1;
+/* Responsive Design Enhancements */
+@media (max-width: 768px) {
+  .upload-zone {
+      padding: 1rem;
   }
-  to {
+
+  .btn-primary {
+      padding: 0.5rem 1rem;
+  }
+
+  .comparison-card, .card-hover {
+      margin-bottom: 1rem;
+  }
+
+  .notification {
+      font-size: 0.9rem;
+  }
+}
+
+/* Footer Styles */
+.footer {
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  position: relative;
+  box-shadow: 0 -2px 10px var(--shadow-color);
+}
+
+.footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+/* Additional Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+  }
+  40% {
+      transform: translateY(-10px);
+  }
+  60% {
+      transform: translateY(-5px);
+  }
+}
+
+/* Apply Bounce Animation */
+.bounce-animation {
+  animation: bounce 1s infinite;
+}
+
+/* Card Hover Effect */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Additional Styles for Input Fields */
+input[type="text"], input[type="email"], textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease-out;
+  z-index: 1000; /* Ensure modal is on top */
+}
+
+.modal-content {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  animation: zoomIn 0.3s ease-out;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+  color: var(--secondary-color);
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
       opacity: 0;
   }
+  to {
+      opacity: 1;
+  }
 }
 
-/* Tooltip */
+/* Zoom In Animation */
+@keyframes zoomIn {
+  from {
+      transform: scale(0.9);
+      opacity: 0;
+  }
+  to {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+/* Responsive Modal Styles */
+@media (max-width: 768px) {
+  .modal-content {
+      padding: 1rem;
+  }
+
+  .modal-close {
+      font-size: 1.2rem;
+  }
+}
+
+/* Alert Styles */
+.alert {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Success Alert */
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Warning Alert */
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Error Alert */
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Card Styles for Different Purposes */
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Flexbox Utility Classes */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+/* Grid Utility Classes */
+.grid {
+  display: grid;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+/* Miscellaneous Styles */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+p {
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.custom-checkbox label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-checkbox label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  background: var(--primary-color);
+}
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-radio label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%; /* Make it circular */
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-radio input[type="radio"]:checked + label:before {
+  background: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Add a glow effect */
+}
+
+/* Custom Select Styles */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: none; /* Hide the default select */
+}
+
+.custom-select .select-selected {
+  background-color: var(--white);
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select .select-selected:hover {
+  border-color: var(--primary-color);
+}
+
+.custom-select .select-items {
+  position: absolute;
+  background-color: var(--white);
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  z-index: 99;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  display: none; /* Hidden by default */
+}
+
+.custom-select .select-items div {
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-select .select-items div:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Show the dropdown when selected */
+.custom-select.open .select-items {
+  display: block;
+}
+
+/* Active State for Selected Item */
+.custom-select .select-selected:after {
+  content: '▼'; /* Arrow down */
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}
+
+/* Active State for Selected Item when open */
+.custom-select.open .select-selected:after {
+  content: '▲'; /* Arrow up */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .modal-content {
+      padding: 1rem;
+  }
+
+  .btn-primary {
+      padding: 0.5rem 1rem;
+  }
+
+  .notification {
+      font-size: 0.9rem;
+  }
+
+  .custom-select .select-selected {
+      padding: 0.5rem;
+  }
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+/* Animation for Elements on Load */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Additional Styles for Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Additional Styles for Paragraphs */
+p {
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Custom Card Styles */
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Card Header Styles */
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Card Body Styles */
+.card-body {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Card Footer Styles */
+.card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Badge Styles */
+.badge {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+/* Progress Bar Styles */
+.progress {
+  background-color: #e5e7eb;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 20px;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  background-color: var(--primary-color);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+  .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+}
+
+/* Custom Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination a {
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin: 0 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Custom Alert Styles */
+.alert {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Custom Tooltip Styles */
 .tooltip {
   position: relative;
   display: inline-block;
@@ -408,61 +853,2056 @@ body {
   opacity: 1;
 }
 
-/* Responsive Design Enhancements */
-@media (max-width: 768px) {
-  .header {
-      flex-direction: column;
-      align-items: flex-start;
-  }
+/* Custom Input Styles */
+input[type="text"], input[type="email"], textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
 
-  .header .nav-links {
-      flex-direction: column;
-      gap: 0.5rem;
-  }
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
 
-  .banner h1 {
-      font-size: 2.5rem;
-  }
+/* Textarea Styles */
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
 
-  .banner p {
-      font-size: 1rem;
-  }
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
 
-  .product-card {
-      margin-bottom: 1rem;
-  }
+.custom-checkbox input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
 
-  .footer {
-      font-size: 0.8rem;
+.custom-checkbox label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-checkbox label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  background: var(--primary-color);
+}
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-radio label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%; /* Make it circular */
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-radio input[type="radio"]:checked + label:before {
+  background: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Add a glow effect */
+}
+
+/* Custom Select Styles */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: none; /* Hide the default select */
+}
+
+.custom-select .select-selected {
+  background-color: var(--white);
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select .select-selected:hover {
+  border-color: var(--primary-color);
+}
+
+.custom-select .select-items {
+  position: absolute;
+  background-color: var(--white);
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  z-index: 99;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  display: none; /* Hidden by default */
+}
+
+.custom-select .select-items div {
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-select .select-items div:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Show the dropdown when selected */
+.custom-select.open .select-items {
+  display: block;
+}
+
+/* Active State for Selected Item */
+.custom-select .select-selected:after {
+  content: '▼'; /* Arrow down */
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}
+
+/* Active State for Selected Item when open */
+.custom-select.open .select-selected:after {
+  content: '▲'; /* Arrow up */
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+/* Animation for Elements on Load */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }
 
-/* Additional Button Styles */
-.btn-secondary {
-  background: #f39c12;
-  color: white;
-  padding: 0.5rem 1rem;
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Additional Styles for Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-weight: bold; /* Make headings bold */
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Additional Styles for Paragraphs */
+p {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1rem; /* Add space below paragraphs */
+}
+
+/* Custom List Styles */
+ul, ol {
+  margin-left: 1.5rem; /* Indent lists */
+  margin-bottom: 1rem; /* Space below lists */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Button Styles */
+.btn {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.8rem 1.5rem;
   border: none;
   border-radius: 5px;
-  transition: background 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-.btn-secondary:hover {
-  background: #e67e22;
-  transform: scale(1.05);
+.btn:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
 }
 
-/* Loading Spinner */
-.spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid #2563eb;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
+/* Card Styles for Different Purposes */
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  margin: 1rem 0;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
 }
+
+/* Card Header Styles */
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Card Body Styles */
+.card-body {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Card Footer Styles */
+.card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Badge Styles */
+.badge {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+/* Progress Bar Styles */
+.progress {
+  background-color: #e5e7eb;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 20px;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  background-color: var(--primary-color);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+  .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+}
+
+/* Custom Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination a {
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin: 0 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Custom Alert Styles */
+.alert {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Custom Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the tooltip */
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Custom Input Styles */
+input[type="text"], input[type="email"], textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+/* Textarea Styles */
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+
+.custom-checkbox label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-checkbox label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  background: var(--primary-color);
+}
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-radio label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%; /* Make it circular */
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-radio input[type="radio"]:checked + label:before {
+  background: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Add a glow effect */
+}
+
+/* Custom Select Styles */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: none; /* Hide the default select */
+}
+
+.custom-select .select-selected {
+  background-color: var(--white);
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select .select-selected:hover {
+  border-color: var(--primary-color);
+}
+
+.custom-select .select-items {
+  position: absolute;
+  background-color: var(--white);
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  z-index: 99;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  display: none; /* Hidden by default */
+}
+
+.custom-select .select-items div {
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-select .select-items div:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Show the dropdown when selected */
+.custom-select.open .select-items {
+  display: block;
+}
+
+/* Active State for Selected Item */
+.custom-select .select-selected:after {
+  content: '▼'; /* Arrow down */
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}
+
+/* Active State for Selected Item when open */
+.custom-select.open .select-selected:after {
+  content: '▲'; /* Arrow up */
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+/* Animation for Elements on Load */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Additional Styles for Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-weight: bold; /* Make headings bold */
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Additional Styles for Paragraphs */
+p {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1rem; /* Add space below paragraphs */
+}
+
+/* Custom List Styles */
+ul, ol {
+  margin-left: 1.5rem; /* Indent lists */
+  margin-bottom: 1rem; /* Space below lists */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Button Styles */
+.btn {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.btn:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+/* Card Styles for Different Purposes */
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Card Header Styles */
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Card Body Styles */
+.card-body {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Card Footer Styles */
+.card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Badge Styles */
+.badge {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+/* Progress Bar Styles */
+.progress {
+  background-color: #e5e7eb;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 20px;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  background-color: var(--primary-color);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+  .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+}
+
+/* Custom Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination a {
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin: 0 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Custom Alert Styles */
+.alert {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Custom Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the tooltip */
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Custom Input Styles */
+input[type="text"], input[type="email"], textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+/* Textarea Styles */
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+
+.custom-checkbox label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-checkbox label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  background: var(--primary-color);
+}
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-radio label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%; /* Make it circular */
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-radio input[type="radio"]:checked + label:before {
+  background: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Add a glow effect */
+}
+
+/* Custom Select Styles */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: none; /* Hide the default select */
+}
+
+.custom-select .select-selected {
+  background-color: var(--white);
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select .select-selected:hover {
+  border-color: var(--primary-color);
+}
+
+.custom-select .select-items {
+  position: absolute;
+  background-color: var(--white);
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  z-index: 99;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  display: none; /* Hidden by default */
+}
+
+.custom-select .select-items div {
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-select .select-items div:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Show the dropdown when selected */
+.custom-select.open .select-items {
+  display: block;
+}
+
+/* Active State for Selected Item */
+.custom-select .select-selected:after {
+  content: '▼'; /* Arrow down */
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}
+
+/* Active State for Selected Item when open */
+.custom-select.open .select-selected:after {
+  content: '▲'; /* Arrow up */
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+/* Animation for Elements on Load */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Additional Styles for Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-weight: bold; /* Make headings bold */
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Additional Styles for Paragraphs */
+p {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1rem; /* Add space below paragraphs */
+}
+
+/* Custom List Styles */
+ul, ol {
+  margin-left: 1.5rem; /* Indent lists */
+  margin-bottom: 1rem; /* Space below lists */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Button Styles */
+.btn {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.btn:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+/* Card Styles for Different Purposes */
+.card {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  margin: 1rem 0; /* Add vertical spacing between cards */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+/* Card Header Styles */
+.card-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Card Body Styles */
+.card-body {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Card Footer Styles */
+.card-footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Badge Styles */
+.badge {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 0.5rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
+/* Progress Bar Styles */
+.progress {
+  background-color: #e5e7eb;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 20px;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  background-color: var(--primary-color);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Table Styles */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.table th {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+  .table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+}
+
+/* Custom Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination a {
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin: 0 0.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Custom Alert Styles */
+.alert {
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Custom Tooltip Styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position above the tooltip */
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Custom Input Styles */
+input[type="text"], input[type="email"], textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5);
+}
+
+/* Textarea Styles */
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+
+.custom-checkbox label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-checkbox label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 4px;
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  background: var(--primary-color);
+}
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  display: flex;
+  align-items: center;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+.custom-radio label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%; /* Make it circular */
+  background: var(--white);
+  transition: background 0.3s ease;
+}
+
+.custom-radio input[type="radio"]:checked + label:before {
+  background: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Add a glow effect */
+}
+
+/* Custom Select Styles */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: none; /* Hide the default select */
+}
+
+.custom-select .select-selected {
+  background-color: var(--white);
+  padding: 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select .select-selected:hover {
+  border-color: var(--primary-color);
+}
+
+.custom-select .select-items {
+  position: absolute;
+  background-color: var(--white);
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  z-index: 99;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px var(--shadow-color);
+  display: none; /* Hidden by default */
+}
+
+.custom-select .select-items div {
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-select .select-items div:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Show the dropdown when selected */
+.custom-select.open .select-items {
+  display: block;
+}
+
+/* Active State for Selected Item */
+.custom-select .select-selected:after {
+  content: '▼'; /* Arrow down */
+  position: absolute;
+  right: 10px;
+  top: 12px;
+}
+
+/* Active State for Selected Item when open */
+.custom-select.open .select-selected:after {
+  content: '▲'; /* Arrow up */
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+/* Animation for Elements on Load */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Additional Styles for Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  margin-bottom: 0.5rem; /* Space below headings */
+  font-weight: bold; /* Make headings bold */
+}
+
+h1 {
+  font-size: 2.5rem; /* Size for main headings */
+}
+
+h2 {
+  font-size: 2rem; /* Size for secondary headings */
+}
+
+h3 {
+  font-size: 1.75rem; /* Size for tertiary headings */
+}
+
+h4 {
+  font-size: 1.5rem; /* Size for fourth-level headings */
+}
+
+h5 {
+  font-size: 1.25rem; /* Size for fifth-level headings */
+}
+
+h6 {
+  font-size: 1rem; /* Size for sixth-level headings */
+}
+
+/* Additional Styles for Paragraphs */
+p {
+  color: #666; /* Text color for paragraphs */
+  line-height: 1.5; /* Line height for readability */
+  margin-bottom: 1rem; /* Space below paragraphs */
+}
+
+/* Custom List Styles */
+ul, ol {
+  margin-left: 1.5rem; /* Indent lists */
+  margin-bottom: 1rem; /* Space below lists */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Button Styles */
+.btn {
+  background-color: var(--primary-color); /* Primary button color */
+  color: var(--white); /* Text color for buttons */
+  padding: 0.8rem 1.5rem; /* Padding for buttons */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transition effects */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+}
+
+.btn:hover {
+  background-color: var(--secondary-color); /* Change color on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Card Styles for Different Purposes */
+.card {
+  background: var(--white); /* Card background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+  padding: 1.5rem; /* Padding inside cards */
+  margin: 1rem 0; /* Vertical spacing between cards */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Card Header Styles */
+.card-header {
+  font-size: 1.5rem; /* Font size for card headers */
+  font-weight: bold; /* Bold text */
+  margin-bottom: 1rem; /* Space below header */
+  color: var(--text-color); /* Text color */
+}
+
+/* Card Body Styles */
+.card-body {
+  font-size: 1rem; /* Font size for card body */
+  color: #666; /* Text color */
+  line-height: 1.5; /* Line height for readability */
+}
+
+/* Card Footer Styles */
+.card-footer {
+  margin-top: 1rem; /* Space above footer */
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+}
+
+/* Badge Styles */
+.badge {
+  background-color: var(--primary-color); /* Badge background color */
+  color: var(--white); /* Badge text color */
+  padding: 0.5rem 0.75rem; /* Padding for badges */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 0.875rem; /* Font size for badges */
+  display: inline-block; /* Inline block for layout */
+}
+
+/* Progress Bar Styles */
+.progress {
+  background-color: #e5e7eb; /* Background color for progress bar */
+  border-radius: 5px; /* Rounded corners */
+  overflow: hidden; /* Hide overflow */
+  height: 20px; /* Height of the progress bar */
+  margin: 1rem 0; /* Vertical spacing */
+}
+
+.progress-bar {
+  background-color: var(--primary-color); /* Progress bar color */
+  height: 100%; /* Full height */
+  transition: width 0.3s ease; /* Transition for width changes */
+}
+
+/* Table Styles */
+.table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Collapse borders */
+  margin: 1rem 0; /* Vertical spacing */
+}
+
+.table th, .table td {
+  padding: 1rem; /* Padding for table cells */
+  border: 1px solid #e5e7eb; /* Border color */
+  text-align: left; /* Left align text */
+}
+
+.table th {
+  background-color: var(--primary-color); /* Header background color */
+  color: var(--white); /* Header text color */
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+  .table {
+      display: block; /* Make table block for scrolling */
+      overflow-x: auto; /* Enable horizontal scrolling */
+      white-space: nowrap; /* Prevent text wrapping */
+  }
+}
+
+/* Custom Pagination Styles */
+.pagination {
+  display: flex; /* Flexbox for layout */
+  justify-content: center; /* Center pagination */
+  margin: 1rem 0; /* Vertical spacing */
+}
+
+.pagination a {
+  color: var(--primary-color); /* Link color */
+  padding: 0.5rem 1rem; /* Padding for links */
+  border: 1px solid var(--primary-color); /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  margin: 0 0.25rem; /* Spacing between links */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transition effects */
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color); /* Change background on hover */
+  color: var(--white); /* Change text color on hover */
+}
+
+/* Custom Alert Styles */
+.alert {
+  padding: 1rem; /* Padding for alerts */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 1rem; /* Space below alerts */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+}
+
+.alert-success {
+  background-color: #d4edda; /* Success alert background */
+  color: #155724; /* Success alert text color */
+}
+
+.alert-error {
+  background-color: #f8d7da; /* Error alert background */
+  color: #721c24; /* Error alert text color */
+}
+
+.alert-warning {
+  background-color: #fff3cd; /* Warning alert background */
+  color: #856404; /* Warning alert text color */
+}
+
+/* Custom Tooltip Styles */
+.tooltip {
+  position: relative; /* Position relative for tooltip */
+  display: inline-block; /* Inline block for layout */
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden; /* Hidden by default */
+  width: 120px; /* Tooltip width */
+  background-color: #555; /* Tooltip background color */
+  color: #fff; /* Tooltip text color */
+  text-align: center; /* Center text */
+  border-radius: 5px; /* Rounded corners */
+  padding: 5px 0; /* Padding for tooltip */
+  position: absolute; /* Absolute positioning */
+  z-index: 1; /* Layering */
+  bottom: 125%; /* Position above the tooltip */
+  left: 50%; /* Center horizontally */
+  margin-left: -60px; /* Center adjustment */
+  opacity: 0; /* Start invisible */
+  transition: opacity 0.3s; /* Transition for visibility */
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible; /* Show on hover */
+  opacity: 1; /* Fully visible */
+}
+
+/* Custom Input Styles */
+input[type="text"], input[type="email"], textarea {
+  width: 100%; /* Full width */
+  padding: 0.8rem; /* Padding for inputs */
+  border: 1px solid #e5e7eb; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  transition: border-color 0.3s ease; /* Transition for border color */
+}
+
+input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+  border-color: var(--primary-color); /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.5); /* Shadow effect on focus */
+}
+
+/* Textarea Styles */
+textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  display: flex; /* Flexbox for layout */
+  align-items: center; /* Center items vertically */
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none; /* Hide the default checkbox */
+}
+
+.custom-checkbox label {
+  position: relative; /* Position relative for label */
+  padding-left: 25px; /* Space for custom checkbox */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.custom-checkbox label:before {
+  content: ''; /* Empty content for custom checkbox */
+  position: absolute; /* Absolute positioning */
+  left: 0; /* Align to the left */
+  top: 0; /* Align to the top */
+  width: 20px; /* Width of the checkbox */
+  height: 20px; /* Height of the checkbox */
+  border: 2px solid var(--primary-color); /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  background: var(--white); /* Background color */
+  transition: background 0.3s ease; /* Transition for background */
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  background: var(--primary-color); /* Change background when checked */
+}
+
+/* Custom Radio Button Styles */
+.custom-radio {
+  display: flex; /* Flexbox for layout */
+  align-items: center; /* Center items vertically */
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Hide the default radio button */
+}
+
+.custom-radio label {
+  position: relative; /* Position relative for label */
+  padding-left: 25px; /* Space for custom radio button */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.custom-radio label:before {
+  content: ''; /* Empty content for custom radio button */
+  position: absolute; /* Absolute positioning */
+  left: 0; /* Align to the left */
+  top: 0; /* Align to the top */
+  width: 20px; /* Width of the radio button */
+  height: 20px; /* Height of the radio button */
+  border: 2px solid var(--primary-color); /* Border color */
+  border-radius: 50%; /* Make it circular */
+  background: var(--white); /* Background color */
+  transition: background 0.3s ease; /* Transition for background */
+}
+
+.custom-radio input[type="radio"]:checked + label:before {
+  background: var(--primary-color); /* Change background when checked */
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); /* Add a glow effect */
+}
+
+/* Custom Select Styles */
+.custom-select {
+  position: relative; /* Position relative for dropdown */
+  display: inline-block; /* Inline block for layout */
+  width: 100%; /* Full width */
+}
+
+.custom-select select {
+  display: none; /* Hide the default select */
+}
+
+.custom-select .select-selected {
+  background-color: var(--white); /* Background color for selected item */
+  padding: 0.8rem; /* Padding for selected item */
+  border: 1px solid #e5e7eb; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: border-color 0.3s ease; /* Transition for border color */
+}
+
+.custom-select .select-selected:hover {
+  border-color: var(--primary-color); /* Change border color on hover */
+}
+
+.custom-select .select-items {
+  position: absolute; /* Absolute positioning for dropdown items */
+  background-color: var(--white); /* Background color for dropdown */
+  border: 1px solid #e5e7eb; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  z-index: 99; /* Layering */
+  width: 100%; /* Full width */
+  max-height: 200px; /* Max height for dropdown */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+  display: none; /* Hidden by default */
+}
+
+.custom-select .select-items div {
+  padding: 0.8rem; /* Padding for dropdown items */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background 0.3s ease; /* Transition for background */
+}
+
+.custom-select .select-items div:hover {
+  background-color: rgba(37, 99, 235, 0.1); /* Change background on hover */
+}
+
+/* Show the dropdown when selected */
+.custom-select.open .select-items {
+  display: block; /* Show dropdown */
+}
+
+/* Active State for Selected Item */
+.custom-select .select-selected:after {
+  content: '▼'; /* Arrow down */
+  position: absolute; /* Positioning for the arrow */
+  right: 10px; /* Position from the right */
+  top: 12px; /* Position from the top */
+}
+
+/* Active State for Selected Item when open */
+.custom-select.open .select-selected:after {
+  content: '▲'; /* Arrow up when dropdown is open */
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center; /* Center text */
+}
+
+.text-right {
+  text-align: right; /* Right align text */
+}
+
+.mt-2 {
+  margin-top: 0.5rem; /* Margin top utility */
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem; /* Margin bottom utility */
+}
+
+.p-2 {
+  padding: 0.5rem; /* Padding utility */
+}
+
+/* Animation for Elements on Load */
+@keyframes fadeIn {
+  from {
+      opacity: 0; /* Start invisible */
+      transform: translateY(20px); /* Start from below */
+  }
+  to {
+      opacity: 1; /* Fully visible */
+      transform: translateY(0); /* End position */
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards; /* Apply fade-in animation */
+}
+
+/* Additional Styles for Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color); /* Heading text color */
+  margin-bottom: 0.5rem; /* Space below headings */
+  font-weight: bold; /* Make headings bold */
+}
+
+h1 {
+  font-size: 2.5rem; /* Size for main headings */
+}
+
+h2 {
+  font-size: 2rem; /* Size for secondary headings */
+}
+
+h3 {
+  font-size: 1.75rem; /* Size for tertiary headings */
+}
+
+h4 {
+  font-size: 1.5rem; /* Size for fourth-level headings */
+}
+
+h5 {
+  font-size: 1.25rem; /* Size for fifth-level headings */
+}
+
+h6 {
+  font-size: 1rem; /* Size for sixth-level headings */
+}
+
+/* Additional Styles for Paragraphs */
+p {
+  color: #666; /* Text color for paragraphs */
+  line-height: 1.5; /* Line height for readability */
+  margin-bottom: 1rem; /* Space below paragraphs */
+}
+
+/* Custom List Styles */
+ul, ol {
+  margin-left: 1.5rem; /* Indent lists */
+  margin-bottom: 1rem; /* Space below lists */
+}
+
+li {
+  margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Button Styles */
+.btn {
+  background-color: var(--primary-color); /* Primary button color */
+  color: var(--white); /* Text color for buttons */
+  padding: 0.8rem 1.5rem; /* Padding for buttons */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transition effects */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+}
+
+.btn:hover {
+  background-color: var(--secondary-color); /* Change color on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Card Styles for Different Purposes */
+.card {
+  background: var(--white); /* Card background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+  padding: 1.5rem; /* Padding inside cards */
+  margin: 1rem 0; /* Vertical spacing between cards */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Card Header Styles */
+.card-header {
+  font-size: 1.5rem; /* Font size for card headers */
+  font-weight: bold; /* Bold text */
+  margin-bottom: 1rem; /* Space below header */
+  color: var(--text-color); /* Text color */
+}
+
+/* Card Body Styles */
+.card-body {
+  font-size: 1rem; /* Font size for card body */
+  color: #666; /* Text color for card body */
+  line-height: 1.5; /* Line height for readability */
+}
+
+/* Card Footer Styles */
+.card-footer {
+  margin-top: 1rem; /* Space above footer */
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+}
+
+/* Badge Styles */
+.badge {
+  background-color: var(--primary-color); /* Badge background color */
+  color: var(--white); /* Badge text color */
+  padding: 0.5rem 0.75rem; /* Padding for badges */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 0.875rem; /* Font size for badges */
+  display: inline-block; /* Inline block for layout */
+}
+
+/* Progress Bar Styles */
+.progress {
+  background-color: #e5e7eb; /* Background color for progress bar */
+  border-radius: 5px; /* Rounded corners */
+  overflow: hidden; /* Hide overflow */
+  height: 20px; /* Height of the progress bar */
+  margin: 1rem 0; /* Vertical spacing */
+}
+
+.progress-bar {
+  background-color: var(--primary-color); /* Progress bar color */
+  height: 100%; /* Full height */
+  transition: width 0.3s ease; /* Transition for width changes */
+}
+
+/* Table Styles */
+.table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Collapse borders */
+  margin: 1rem 0; /* Vertical spacing */
+}
+
+.table th, .table td {
+  padding: 1rem; /* Padding for table cells */
+  border: 1px solid #e5e7eb; /* Border color */
+  text-align: left; /* Left align text */
+}
+
+.table th {
+  background-color: var(--primary-color); /* Header background color */
+  color: var(--white); /* Header text color */
+}
+
+/* Responsive Table Styles */
+@media (max-width: 768px) {
+  .table {
+      display: block; /* Make table block for scrolling */
+      overflow-x: auto; /* Enable horizontal scrolling */
+      white-space: nowrap; /* Prevent text wrapping */
+  }
+}
+
+/* Custom Pagination Styles */
+.pagination {
+  display: flex; /* Flexbox for layout */
+  justify-content: center; /* Center pagination */
+  margin: 1rem 0; /* Vertical spacing */
+}
+
+.pagination a {
+  color: var(--primary-color); /* Link color */
+  padding: 0.5rem 1rem; /* Padding for links */
+  border: 1px solid var(--primary-color); /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  margin: 0 0.25rem; /* Spacing between links */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transition effects */
+}
+
+.pagination a:hover {
+  background-color: var(--primary-color); /* Change background on hover */
+  color: var(--white); /* Change text color on hover */
+}
+
+/* Custom Alert Styles */
+.alert {
+  padding: 1rem; /* Padding for alerts */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 1rem; /* Space below alerts */
+  box-shadow: 0 4px 10px var(--shadow-color); /* Shadow effect */
+}
+
+.alert-success {
+  background-color: #d4edda; /* Success alert background */
+  color: #155724; /* Success alert text color */
+}
+
+.alert-error {
+  background-color: #f8d7da; /* Error alert background */
+  color: #721c24; /* Error alert text color */
+}
+
+.alert-warning {
+  background-color: #fff3cd; /* Warning alert background */
+  color: #856404; /* Warning alert text color */
+}
+
+/* Custom Tooltip Styles */
+.tooltip {
+  position: relative; /* Position relative for tooltip */
+  display: inline-block; /* Inline block for layout */
+}
+
