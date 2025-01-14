@@ -10,149 +10,200 @@
       rel="stylesheet"
     />
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-:root {
-    --primary-color: #4a90e2;
-    --secondary-color: #f39c12;
-    --text-color: #333;
-    --background-color: #f4f4f4;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-}
-
-header {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-}
-
-.logo img {
-    height: 40px;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-}
-
-.nav-links li {
-    margin-left: 2rem;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: var(--primary-color);
-}
-
-.cart-icon {
-    position: relative;
-    cursor: pointer;
-}
-
-.cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: var(--secondary-color);
-    color: #fff;
-    font-size: 0.8rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-}
-
-#hero {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero-bg.jpg') no-repeat center center/cover;
-    color: #fff;
-}
-
-#hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-#hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-}
-
-.cta-button {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 0.8rem 2rem;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-    background-color: #3a7bc8;
-}
-
-#products {
-    padding: 5rem 5%;
-}
-
-#products h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.product-card {
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+  
+  :root {
+      --primary-color: #4a90e2;
+      --secondary-color: #f39c12;
+      --text-color: #333;
+      --background-color: #f4f4f4;
+      --hover-color: #3a7bc8;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      overflow-x: hidden;
+  }
+  
+  header {
+      background-color: #fff;
+      box-shadow: 0 4px 10px var(--shadow-color);
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+      transition: background-color 0.3s ease;
+  }
+  
+  header.scrolled {
+      background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+  }
+  
+  .logo img {
+      height: 40px;
+      transition: transform 0.3s ease;
+  }
+  
+  .logo img:hover {
+      transform: scale(1.1);
+  }
+  
+  .nav-links {
+      display: flex;
+      list-style: none;
+  }
+  
+  .nav-links li {
+      margin-left: 2rem;
+  }
+  
+  .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 600;
+      transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+      color: var(--primary-color);
+      transform: translateY(-2px);
+  }
+  
+  .cart-icon {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+  }
+  
+  .cart-icon:hover {
+      transform: scale(1.1);
+  }
+  
+  .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--secondary-color);
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+  }
+  
+  #hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero-bg.jpg') no-repeat center center/cover;
+      color: #fff;
+      animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  
+  #hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: slideIn 0.5s ease forwards;
+      opacity: 0;
+  }
+  
+  @keyframes slideIn {
+      from {
+          transform: translateY(-50px);
+          opacity: 0;
+      }
+      to {
+          transform: translateY(0);
+          opacity: 1;
+      }
+  }
+  
+  #hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+  }
+  
+  .cta-button {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 0.8rem 2rem;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .cta-button:hover {
+      background-color: var(--hover-color);
+      transform: translateY(-2px);
+  }
+  
+  #products {
+      padding: 5rem 5%;
+  }
+  
+  #products h2 {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+  }
+  
+  .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+  }
+  
+  .product-card {
     background-color: #fff;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow-color);
 }
 
 .product-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-image:hover {
+    transform: scale(1.05);
 }
 
 .product-info {
@@ -162,6 +213,11 @@ nav {
 .product-title {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.product-title:hover {
+    color: var(--primary-color);
 }
 
 .product-price {
@@ -179,11 +235,12 @@ nav {
     text-decoration: none;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .add-to-cart:hover {
     background-color: #e67e22;
+    transform: translateY(-2px);
 }
 
 footer {
@@ -191,6 +248,9 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1rem;
+    position: relative;
+    animation: fadeIn 1s ease forwards;
+    opacity: 0;
 }
 
 @media screen and (max-width: 768px) {
@@ -213,8 +273,19 @@ footer {
     #hero p {
         font-size: 1rem;
     }
+
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px var(--shadow-color);
+    }
 }
-</style>    
+
+
+</style>   
   </head>
   <body class="bg-gray-50">
     <div class="min-h-screen">
@@ -559,7 +630,15 @@ footer {
       const videoUploadArea = document.getElementById('video-upload-area');
       const imageUpload = document.getElementById('image-upload');
       const videoUpload = document.getElementById('video-upload');
-  
+      /* Scroll effect for header */
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+});
       function handleDragOver(e) {
           e.preventDefault();
           e.stopPropagation();
