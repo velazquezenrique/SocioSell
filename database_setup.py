@@ -126,6 +126,7 @@ def setup_product_database():
         video_listings_collection.create_index([("product_links.price", ASCENDING)]) 
         # Create indexes for video analytics
         video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
+        video_analytics_collection.create_index([("id", ASCENDING), ("video_id", ASCENDING)])
         video_analytics_collection.create_index([("engagement.views", ASCENDING), ("engagement.likes", ASCENDING)])
         video_analytics_collection.create_index([("performance.retention_rate", ASCENDING), ("performance.click_through_rate", ASCENDING)])
         video_analytics_collection.create_index([("id", ASCENDING)])                
