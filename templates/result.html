@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analysis Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        p {
+            line-height: 1.6;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background: #e9ecef;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #0056b3;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .back-link:hover {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI-Generated Product Details</h1>
+
+        <h2>Product Details:</h2>
+        <p><strong>Name:</strong> {{ result.product_name }}</p>
+        <p><strong>Category:</strong> {{ result.category }}</p>
+        <p><strong>Sub-Category:</strong> {{ result.subcategory }}</p>
+        <p><strong>Description:</strong> {{ result.description }}</p>
+        <p><strong>Price:</strong> {{ result.price }}</p>
+
+        <h2>Key Features:</h2>
+        <ul>
+            {% for feature in result.key_features %}
+                <li>{{ feature }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Search Keywords:</h2>
+        <ul>
+            {% for keyword in result.search_keywords %}
+                <li>{{ keyword }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Product Recommendations:</h2>
+        <ul>
+            {% for rec in result.recommendations %}
+                <li>
+                    <a href="{{ rec.url }}">{{ rec.name }}</a> - {{ rec.price }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <br>
+        <a href="/" class="back-link">Go Back</a>
+    </div>
+</body>
+</html>
