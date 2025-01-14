@@ -233,7 +233,7 @@ async def get_video_listings(video_id: str):
 
     # Default response if no listing is found
     default_listing = VideoListing(
-        product_id=f"prod_{abs(hash(video_id))}",
+        video_id=f"prod_{abs(hash(video_id))}",
         platform="YouTube",
         title="Product Review",
         views="10K",
@@ -336,15 +336,15 @@ async def get_comparable_videos(video_id: str, limit: int = 3):
 async def get_video_analytics(video_id: str):
     from main import db
 
-    try:
-        # Validate and convert the video_id to ObjectId
-        object_id = ObjectId(video_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid video ID format")
+    # try:
+    #     # Validate and convert the video_id to ObjectId
+    #     object_id = ObjectId(video_id)
+    # except Exception:
+    #     raise HTTPException(status_code=400, detail="Invalid video ID format")
 
     try:
         # Fetch video analytics from the database
-        video_analytics_data = await db["video_analytics"].find_one({"_id": object_id})
+        video_analytics_data = await db["video_analytics"].find_one({"video_id": video_id})
 
         if video_analytics_data:
             # Prepare analytics data
@@ -361,7 +361,7 @@ async def get_video_analytics(video_id: str):
 
     # Default analytics response if no data is found
     default_analytics = VideoAnalytics(
-        product_id=video_id,
+        video_id=video_id,
         engagement=VideoEngagement(
             views="5K",
             likes="500",
