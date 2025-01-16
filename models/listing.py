@@ -4,7 +4,6 @@ from datetime import datetime
 
 class ProductListing(BaseModel):
     product_id: str  # Refers to Product's ID
-    id: str
     title: str
     price: str
     description: str

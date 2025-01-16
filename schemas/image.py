@@ -14,14 +14,19 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 # Upload and analyze a product image for listing generation.
+
 async def upload_image(
-    files: List[UploadFile] = File(...),  # Accepts multiple files
+    files: List[UploadFile] = File(...),  
     title: str = Form(...),
     caption: Optional[str] = Form(None)
 ):
+    from main import db  
+    search_term = title.lower()  
+    
     try:
         logger.info(f"Received upload request - Files: {len(files)}, Title: {title}")
 
+        # Validate file count
         if len(files) > 5:
             logger.warning(f"Upload rejected - Too many files: {len(files)}")
             raise HTTPException(
@@ -29,36 +34,52 @@ async def upload_image(
                 detail="Max 5 images are allowed. Please remove extra files and try again."
             )
         
+        # Process the uploaded files
         processed_files = []
         for file in files:
             processed_files.append(file.filename)
             logger.info(f"Processed file: {file.filename}")
 
-        # Your existing logic for generating listings...
-        for key, response in SAMPLE_RESPONSES.items():
-            if key in title.lower():
-                logger.info(f"Generated listing for title: {title}")
-                return {
-                    "status": "success",
-                    "message": f"Successfully processed {len(files)} image(s)",
-                    "processed_files": processed_files,
-                    "listing": response
-                }
+        # Search for listings with similar titles in the database
+        try:
+            listings_cursor = db["listings"].find({"title": {"$regex": search_term, "$options": "i"}})
+        except Exception as db_error:
+            logger.error(f"Database error: {db_error}")
+            raise HTTPException(status_code=500, detail="Database error occurred")
+        
+        listings = await listings_cursor.to_list(length=None)
 
-        return {
-            "status": "success",
-            "message": f"Successfully processed {len(files)} image(s)",
-            "processed_files": processed_files,
-            "listing": {
-                "product_id": "generic_123",
-                "title": title,
-                "category": "General",
-                "description": caption or "Product description",
-                "price": "$99.99",
-                "features": ["Feature 1", "Feature 2", "Feature 3"]
+        if listings:
+            # Convert ObjectId to string for JSON compatibility and return listings
+            for listing in listings:
+                listing["id"] = str(listing["_id"])  # Convert _id to id for Pydantic compatibility
+
+            return {
+                "status": "success",
+                "message": f"Successfully processed {len(files)} image(s)",
+                "processed_files": processed_files,
+                "listings": [ProductListing(**listing) for listing in listings]
             }
-        }
+        else:
+            # If no listings are found, return a fallback listing in the correct model format
+            default_listing = ProductListing(
+                id=f"list_{abs(hash(title))}",
+                product_id="generic_123",
+                title=title,
+                description=caption or "Product description",
+                price="$99.99",
+                features=["Standard feature 1", "Standard feature 2", "Standard feature 3"]
+            )
+
+            return {
+                "status": "success",
+                "message": f"Successfully processed {len(files)} image(s)",
+                "processed_files": processed_files,
+                "listings": [default_listing]  # Convert Pydantic model to dictionary
+            }
+
     except Exception as e:
+        logger.error(f"Error processing upload: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Search for products by title across different categories.

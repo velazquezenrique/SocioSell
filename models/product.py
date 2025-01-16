@@ -3,7 +3,7 @@ from typing import List, Optional
 from datetime import datetime
 
 class Product(BaseModel):
-    id: str
+    id: Optional[str] = None
     title: str
     category: str
     subcategory: str

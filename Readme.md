@@ -155,8 +155,10 @@ Solution: Ensure GOOGLE_API_KEY is properly set in .env file
 
 2. MongoDB Connection
 ```bash
-Error: MongoDB connection failed
-Solution: Check MONGODB_URL format and network connectivity
+Error: MongoDB connection failed  
+Solution: Verify MONGODB_URL format and network access.  
+Format: MONGODB_URL=mongodb+srv://<username>:<password>@<cluster-address>/<database>?retryWrites=true&w=majority  
+Replace <username>, <password>, <cluster-address>, and <database> with your details.
 ```
 
 3. Image Processing
@@ -164,6 +166,20 @@ Solution: Check MONGODB_URL format and network connectivity
 Error: Image processing failed
 Solution: Verify image format (supported: jpg, png) and size (<5MB)
 ```
+
+4. Metadata-generation-failed
+```bash
+Error: metadata-generation-failed
+Solution: Install Microsoft C++ Build Tools and upgrade pip, setuptools, and wheel:
+Python versions between 3.9 and 3.12 only
+1. Install from https://visualstudio.microsoft.com/visual-cpp-build-tools/.
+2. Run: pip install --upgrade pip setuptools wheel
+```
+
+## 📁 Documentation for Deployment
+
+The detailed documentation for deployment is available in a separate file. Please refer to:
+[📁 documentation](./Deploy_Documentation.md)
 
 ## 📁 Project Structure  
 
