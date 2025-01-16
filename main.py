@@ -31,8 +31,18 @@ load_dotenv()
 
 # MongoDB setup
 MONGODB_URL = os.getenv("MONGODB_URL")
-client = AsyncIOMotorClient(MONGODB_URL)
-db = client.social_media_products
+try:
+    client = AsyncIOMotorClient(
+        MONGODB_URL,
+        maxPoolSize=20,
+        minPoolSize=5,
+        connectTimeoutMS=10000   
+    )
+    db = client.social_media_products
+    logger.info("MongoDB client initialized with connection pooling")
+except Exception as e:
+    logger.error(f"Failed to initialize MongoDB client: {str(e)}")
+    raise
 
 # Image Collections
 product_collection = db["products"]
@@ -80,6 +90,14 @@ async def health_check():
     # Log status
     logger.info(f"Health Check: DB status - {db_status}, Response Time - {response_time}ms")
 
+    try:
+        stats = await client.admin.command('serverStatus')
+        connection_stats = stats.get('connections', {})
+        logger.info(f"Connection Pool Stats: {connection_stats}")
+    except Exception as pool_exception:
+        logger.error(f"Failed to retrieve pool stats: {pool_exception}")
+
+
     return JSONResponse(
         content={
             "status": "healthy" if db_status == "connected" else "unhealthy",
@@ -88,6 +106,21 @@ async def health_check():
         },
         status_code=status_code,
     )
+
+
+@app.get("/pool-stats", tags=["Monitoring"])
+async def pool_stats():
+    """
+    Endpoint to retrieve and log MongoDB connection pool stats.
+    """
+    try:
+        stats = await client.admin.command('serverStatus')
+        connection_stats = stats.get('connections', {})
+        logger.info(f"Connection Pool Stats: {connection_stats}")
+        return JSONResponse(content={"pool_stats": connection_stats}, status_code=200)
+    except Exception as e:
+        logger.error(f"Error fetching pool stats: {e}")
+        return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
 @app.post("/upload_image")

@@ -188,9 +188,45 @@ The detailed project structure is available in a separate file. Please refer to:
 
 ## 💡 API Endpoints
 
+<table>
+  <tr>
+    <th>Endpoint</th>
+    <th>Method</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>/upload/</code></td>
+    <td>POST</td>
+    <td>Upload & analyze products</td>
+  </tr>
+  <tr>
+    <td><code>/search/{title}</code></td>
+    <td>GET</td>
+    <td>Search product database</td>
+  </tr>
+  <tr>
+    <td><code>/listings/{product_id}</code></td>
+    <td>GET</td>
+    <td>Get listing details</td>
+  </tr>
+  <tr>
+    <td><code>/compare/{product_id}</code></td>
+    <td>GET</td>
+    <td>Compare products</td>
+  </tr>
+  <tr>
+    <td><code>/health</code></td>
+    <td>GET</td>
+    <td>Check health status of DB</td>
+  </tr>
+  <tr>
+    <td><code>/pool-stats</code></td>
+    <td>GET</td>
+    <td>Check pool status of DB</td>
+  </tr>
+</table>
 The detailed API endpoints are available in a separate file. Please refer to:  
 [💡 API Endpoints](./docs/PROJECT_STRUCTURE.md)
-
 
 ## 🤝 Contributing
 
