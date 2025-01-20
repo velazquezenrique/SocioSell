@@ -1,0 +1,23 @@
+name: Keep Render Service Active
+
+on:
+  schedule:
+    # Runs every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  ping:
+    name: Ping Service
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Send HTTP Request
+        run: |
+          response=$(curl -s -w "\n%{http_code}" https://sociosell.onrender.com/ || echo "Request failed")
+          echo "Ping executed at $(date)"
+          echo "Response: $response"
+
+      - name: Check Response
+        if: failure()
+        run: echo "Ping attempt failed, but continuing workflow"
