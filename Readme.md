@@ -42,6 +42,10 @@ Watch our community demo:
 [🎥 Watch Demo](https://github.com/Varsha-1605/SocioSell/blob/main/static/folder/Untitled%20video%20-%20Made%20with%20Clipchamp.mp4)
 
 ---
+# Project WorkFlow Diagram:
+![Image](https://github.com/user-attachments/assets/c23279b3-fc68-4603-b496-d6df93c1fb3d)
+
+---
 
 ## 🌟 Features
 
