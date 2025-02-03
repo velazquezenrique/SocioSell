@@ -1386,7 +1386,9 @@ footer {
               <i class="fa-solid fa-circle-xmark text-red-400 hover:text-red-600 absolute top-1 right-1 cursor-pointer"
                 onclick="removeFile(${newIndex})"></i>
             `;
+            file.src=e.target.result;
             previewContainer.appendChild(previewDiv);
+            
             updateUploadButton();
           };
           reader.readAsDataURL(file);
@@ -1435,9 +1437,11 @@ footer {
         e.preventDefault();
         e.currentTarget.classList.remove("border-blue-600");
         const file = e.dataTransfer.files[0];
-        console.log(file)
         if (file) {
           uploadedFiles.push(file)
+          const dT = new DataTransfer();
+          dT.items.add(file);
+          document.getElementById("fileInput").files = dT.files;
           displayPreview();
         }
       }
@@ -1469,7 +1473,7 @@ footer {
       // Generate Listings
       async function generateListing() {
         const title = document.getElementById("productTitle").value;
-        const files = document.getElementById("fileInput").files;
+        const files = uploadedFiles;
 
         if (!files || files.length === 0 || !title) {
           showNotification("Please provide both image(s) and title", "error");
@@ -1495,9 +1499,7 @@ footer {
             method: "POST",
             body: formData,
           });
-
           if (!response.ok) {
-            // If the response is not OK, log the error details
             const errorData = await response.json();
             console.error("Error details:", errorData);
             throw new Error(errorData.detail || "Failed to generate listing");
@@ -1506,7 +1508,11 @@ footer {
           const data = await response.json();
 
           if (data.status === "success") {
-            displayGeneratedListing(data.listing);
+            const container = document.getElementById("generatedListing");
+            // Clear the container before adding new listings
+            container.innerHTML = "";
+            data.listings.forEach((listing) => displayGeneratedListing(listing))
+            
             showNotification("Listing generated successfully!");
           } else {
             throw new Error(data.message || "Failed to generate listing");
@@ -1706,85 +1712,90 @@ footer {
 
       function displayGeneratedListing(listing) {
         const container = document.getElementById("generatedListing");
-        const previewImage = document.getElementById("previewImage");
 
-        if (!previewImage) {
-          console.error("previewImage element not found");
-          return;
+        if (!uploadedFiles[0]) {
+            console.error("previewImage element not found");
+            return;
         }
 
-        // Ensure the previewImage has a valid src
-        if (!previewImage.src) {
-          console.error("previewImage.src is undefined or empty");
-          return;
+        if (!uploadedFiles[0].src) {
+            console.error("previewImage.src is undefined or empty");
+            return;
         }
 
-        // Update the container with the generated listing details
-        container.innerHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div>
-        <img src="${
-          previewImage.src
-        }" class="w-full rounded-lg mb-4 object-cover h-[300px]">
-        <h2 class="text-2xl font-bold mb-2">${listing.title}</h2>
-        <p class="text-gray-600 mb-4">${listing.description}</p>
-        <div class="text-2xl font-bold text-blue-600 mb-4">${
-          listing.price
-        }</div>
-      </div>
-      <div class="space-y-6">
-        <div>
-          <h3 class="text-xl font-semibold mb-4">Features</h3>
-          <div class="space-y-3">
-            ${listing.features
-              .map(
-                (feature) => `
-              <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0">
-                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
-                </div>
-                <span class="text-gray-700">${feature}</span>
+        // Create a wrapper div for each listing
+        const listingDiv = document.createElement("div");
+        listingDiv.classList.add("p-4", "rounded-lg", "mt-6", "border", "border-gray-300", "shadow-sm");
+
+        listingDiv.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <img src="${
+              uploadedFiles[0].src
+            }" class="w-full rounded-lg mb-4 object-cover h-[300px]">
+            <h2 class="text-2xl font-bold mb-2">${listing.title}</h2>
+            <p class="text-gray-600 mb-4">${listing.description}</p>
+            <div class="text-2xl font-bold text-blue-600 mb-4">${
+              listing.price
+            }</div>
+          </div>
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-4">Features</h3>
+              <div class="space-y-3">
+                ${listing.features
+                  .map(
+                    (feature) => ` 
+                  <div class="flex items-center space-x-3">
+                    <div class="flex-shrink-0">
+                      <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span class="text-gray-700">${feature}</span>
+                  </div>
+                `
+                  )
+                  .join("")}
               </div>
-            `
-              )
-              .join("")}
+            </div>
+            <div class="flex space-x-4 pt-4">
+              <button onclick="getComparisons('${listing.product_id}')" 
+                      class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300">
+                <i class="fas fa-sync-alt mr-2"></i>Compare
+              </button>
+              <button onclick="getAnalytics('${listing.product_id}')"
+                      class="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-all duration-300">
+                <i class="fas fa-chart-line mr-2"></i>Analytics
+              </button>
+            </div>
           </div>
         </div>
-        <div class="flex space-x-4 pt-4">
-          <button onclick="getComparisons('${listing.product_id}')" 
-                  class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-all duration-300">
-            <i class="fas fa-sync-alt mr-2"></i>Compare
-          </button>
-          <button onclick="getAnalytics('${listing.product_id}')"
-                  class="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-all duration-300">
-            <i class="fas fa-chart-line mr-2"></i>Analytics
-          </button>
+        <div id="comparisonsSection-${listing.product_id}" class="mt-8 hidden">
+          <h3 class="text-xl font-semibold mb-4">Compare with Similar Products</h3>
+          <div id="comparisonsGrid-${listing.product_id}" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
         </div>
-      </div>
-    </div>
-    <div id="comparisonsSection" class="mt-8 hidden">
-      <h3 class="text-xl font-semibold mb-4">Compare with Similar Products</h3>
-      <div id="comparisonsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-    </div>
-    <div id="analyticsSection" class="mt-8 hidden">
-      <h3 class="text-xl font-semibold mb-4">Product Analytics</h3>
-      <div id="analyticsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-    </div>
-  `;
+        <div id="analyticsSection-${listing.product_id}" class="mt-8 hidden">
+          <h3 class="text-xl font-semibold mb-4">Product Analytics</h3>
+          <div id="analyticsGrid-${listing.product_id}" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
+      `;
 
-        // Show the generated listing container
+        // Append the new listing inside the container
+        container.appendChild(listingDiv);
+
+        // Show the container and scroll to the latest listing
         container.classList.remove("hidden");
-        container.scrollIntoView({ behavior: "smooth" });
-      }
+        listingDiv.scrollIntoView({ behavior: "smooth" });
+    }
+
 
       async function getComparisons(productId) {
         try {
           const comparisonsSection =
-            document.getElementById("comparisonsSection");
+            document.getElementById(`comparisonsSection-${productId}`);
           comparisonsSection.classList.remove("hidden");
-          const comparisonsGrid = document.getElementById("comparisonsGrid");
+          const comparisonsGrid = document.getElementById(`comparisonsGrid-${productId}`);
           comparisonsGrid.innerHTML =
             '<div class="col-span-3 text-center"><i class="fas fa-spinner spinner text-blue-600 text-3xl"></i></div>';
 
@@ -1878,9 +1889,9 @@ footer {
 
       async function getAnalytics(productId) {
         try {
-          const analyticsSection = document.getElementById("analyticsSection");
+          const analyticsSection = document.getElementById(`analyticsSection-${productId}`);
           analyticsSection.classList.remove("hidden");
-          const analyticsGrid = document.getElementById("analyticsGrid");
+          const analyticsGrid = document.getElementById(`analyticsGrid-${productId}`);
           analyticsGrid.innerHTML =
             '<div class="col-span-3 text-center"><i class="fas fa-spinner spinner text-blue-600 text-3xl"></i></div>';
 
