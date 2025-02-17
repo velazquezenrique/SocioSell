@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
+        <form id="signup-form">
+            <input type="text" id="username" placeholder="Username" class="w-full p-2 mb-2 border rounded"><br>
+
+            <input type="email" id="email" placeholder="Email" class="w-full p-2 mb-2 border rounded">
+            <p id="email-error" class="text-red-500 text-sm hidden">Please enter a valid email address.</p>
+
+            <input type="password" id="password" placeholder="Password" class="w-full p-2 mb-2 border rounded">
+            <p id="password-error" class="text-red-500 text-sm hidden">Password must be at least 8 characters long, include an uppercase letter, lowercase letter, number, and special character.</p>
+
+            <br>
+            <button type="submit" class="w-full bg-orange-500 text-white p-2 rounded hover:bg-orange-600">Sign Up</button>
+        </form>
+        <p class="mt-2 text-sm">Already have an account? <a href="/login_page" class="text-orange-500">Login here</a></p>
+    </div>
+
+    <script>
+        document.getElementById("signup-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const emailError = document.getElementById("email-error");
+            const passwordError = document.getElementById("password-error");
+
+            // Email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Password validation regex
+            const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+
+            let valid = true;
+
+            if (!emailRegex.test(email)) {
+                emailError.classList.remove("hidden");
+                valid = false;
+            } else {
+                emailError.classList.add("hidden");
+            }
+
+            if (!passwordRegex.test(password)) {
+                passwordError.classList.remove("hidden");
+                valid = false;
+            } else {
+                passwordError.classList.add("hidden");
+            }
+
+            if (!valid) return;
+
+            const response = await fetch("/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password }),
+            });
+
+            const data = await response.json();
+            alert(data.message);
+            if (data.message === "User signed up successfully!") {
+                window.location.href = "/login_page";
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
